@@ -1,5 +1,12 @@
 source 'https://rubygems.org'
 
+gem 'kaminari'
+
+gem 'barista'
+
+gem 'omniauth'
+gem 'omniauth-facebook', '1.4.0'
+
 gem 'paperclip'
 gem 'aws-sdk'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

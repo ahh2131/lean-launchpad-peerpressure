@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fromuser:</strong>
+  <%= @activity.fromUser %>
+</p>
+
+<p>
+  <strong>Touser:</strong>
+  <%= @activity.toUser %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @activity.type %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @activity.product %>
+</p>
+
+<%= link_to 'Edit', edit_activity_path(@activity) %> |
+<%= link_to 'Back', activities_path %>
