@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :activities
 
   resources :products
-  root 'products#test'
+  root 'products#index'
 
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]

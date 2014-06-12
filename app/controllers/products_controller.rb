@@ -6,7 +6,34 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.all
+    #@products = Product.all
+
+        @user_id = session[:user_id]
+
+        if @user_id
+                @followers = Activity.where(:fromUser => @user_id)
+                .where(:type => "follow").execute
+                @follower_id_array = []
+                @followers.each do |follower|
+                        if follower.toUser
+                                @follower_id_array << follower.toUser
+                        end
+                end
+                @activities = Activity.where(:fromUser => @follower_id_array)
+                .where(:type => "add").execute
+                @product_id_array = []
+                @activities.each do |activity|
+                        if activity.product
+                                @product_id_array << activity.product
+                        end
+                end
+                @products = Product.find_all_by_objectId(@product_id_array)
+        else
+                #if user not signed in, get a different set of activity
+
+                #and send a message
+                @not_signed_in = 1
+        end
   end
 
   # GET /products/1

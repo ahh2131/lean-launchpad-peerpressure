@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DevVigmeCom</title>
+  <title>Vigme</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
   <%= csrf_meta_tags %>
 </head>
+
 <body>
+<header>
+<%= render "layouts/header" %>
+</header>
 <div id="user-widget">
   <% if current_user %>
     Welcome <strong><%= current_user.name %></strong>!
@@ -15,6 +21,7 @@
     <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
   <% end %>
 </div>
+<%= render "layouts/sidebar" %>
 <%= yield %>
 
 </body>
