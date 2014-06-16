@@ -4,8 +4,8 @@ config.paperclip_defaults = {
   :storage => :s3,
   :s3_credentials => {
     :bucket => 'vigme',
-    :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-    :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+    :access_key_id => 'AKIAITTBRQZLSRSPV4AQ',
+    :secret_access_key => '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'
   }
 }
   # Code is not reloaded between requests.

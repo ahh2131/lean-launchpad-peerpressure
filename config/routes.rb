@@ -1,12 +1,25 @@
 Rails.application.routes.draw do
+  resources :test_modules
   resources :activities
-
   resources :products
   root 'products#index'
+  get 'profile' => 'profile#show'
+  get 'profile/:id' => 'profile#show'
+
+  post 'products/new' => 'products#findImages'
+  get 'product/add' => 'products#saveProduct', as: 'save_product'
+  post 'product/share' => 'products#share', as: 'share_product'
 
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]
+
+#theme testing
+  get 'test_module/colorz' => 'test_modules#colorz'
+  get 'test_module/escape' => 'test_modules#escape'
+
+
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

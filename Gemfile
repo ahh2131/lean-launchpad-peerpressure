@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+gem 'fastimage'
+
+gem 'nokogiri'
+
 gem 'bootstrap-sass', '~> 3.1.1'
 
 gem 'kaminari'

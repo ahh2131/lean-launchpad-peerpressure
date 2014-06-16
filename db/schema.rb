@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140611234207) do
+ActiveRecord::Schema.define(version: 20140613003751) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
     t.string   "toUser"
-    t.string   "type"
+    t.string   "activity_type"
     t.string   "product"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -44,10 +44,33 @@ ActiveRecord::Schema.define(version: 20140611234207) do
 
   add_index "categories", ["parent"], name: "parent", using: :btree
 
+  create_table "category_product", id: false, force: true do |t|
+    t.integer "product",  null: false
+    t.integer "category", null: false
+  end
+
+  add_index "category_product", ["category"], name: "category", using: :btree
+  add_index "category_product", ["product"], name: "product", using: :btree
+
   create_table "category_shopstyle_category", id: false, force: true do |t|
     t.integer "category",                       null: false
     t.string  "shopstyle_category", limit: 250, null: false
   end
+
+  create_table "color_palette", id: false, force: true do |t|
+    t.integer "r",     null: false
+    t.integer "g",     null: false
+    t.integer "b",     null: false
+    t.integer "color", null: false
+  end
+
+  create_table "colors", id: false, force: true do |t|
+    t.integer "id",                     null: false
+    t.string  "name",       limit: 250, null: false
+    t.float   "percentage",             null: false
+  end
+
+  add_index "colors", ["id"], name: "id", using: :btree
 
   create_table "price_log", id: false, force: true do |t|
     t.integer  "product",             null: false
@@ -57,6 +80,16 @@ ActiveRecord::Schema.define(version: 20140611234207) do
   end
 
   add_index "price_log", ["product"], name: "product", using: :btree
+
+  create_table "product_color", id: false, force: true do |t|
+    t.integer "product_id",           null: false
+    t.integer "color",      limit: 1, null: false
+    t.float   "percentage",           null: false
+  end
+
+  add_index "product_color", ["color"], name: "color", using: :btree
+  add_index "product_color", ["percentage"], name: "percentage", using: :btree
+  add_index "product_color", ["product_id"], name: "product_id_2", using: :btree
 
   create_table "products", force: true do |t|
     t.string   "local_id",                             limit: 256,  default: "-1", null: false
@@ -191,6 +224,7 @@ ActiveRecord::Schema.define(version: 20140611234207) do
     t.datetime "oauth_expires_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
   end
 
 end
