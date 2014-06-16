@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 #theme testing
   get 'test_module/colorz' => 'test_modules#colorz'
   get 'test_module/escape' => 'test_modules#escape'
-
+  get 'test_module/flat' => 'test_modules#flat'
 
   
   # The priority is based upon order of creation: first created -> highest priority.

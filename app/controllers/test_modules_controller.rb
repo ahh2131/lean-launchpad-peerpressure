@@ -3,6 +3,10 @@ class TestModulesController < ApplicationController
 
   # GET /test_modules
   # GET /test_modules.json
+
+  def flat
+  end
+  
   def colorz
   end
 
