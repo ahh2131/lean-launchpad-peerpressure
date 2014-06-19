@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140613003751) do
+ActiveRecord::Schema.define(version: 20140617192507) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -93,57 +93,57 @@ ActiveRecord::Schema.define(version: 20140613003751) do
 
   create_table "products", force: true do |t|
     t.string   "local_id",                             limit: 256,  default: "-1", null: false
-    t.string   "local_image_id",                       limit: 250,                 null: false
-    t.string   "name",                                 limit: 250,                 null: false
-    t.float    "price",                                                            null: false
+    t.string   "local_image_id",                       limit: 250,  default: "0",  null: false
+    t.string   "name",                                 limit: 250,  default: "",   null: false
+    t.float    "price",                                             default: 0.0,  null: false
     t.float    "sale_price",                                        default: 0.0,  null: false
     t.integer  "in_sale",                              limit: 1,    default: 0,    null: false
     t.datetime "in_sale_date"
-    t.string   "currency",                             limit: 250,                 null: false
-    t.float    "display_price",                                                    null: false
-    t.float    "previous_display_price",                                           null: false
-    t.integer  "shipping_free",                        limit: 1,                   null: false
-    t.integer  "shipping_price",                                                   null: false
-    t.integer  "in_stock",                             limit: 1,                   null: false
+    t.string   "currency",                             limit: 250,  default: "",   null: false
+    t.float    "display_price",                                     default: 0.0,  null: false
+    t.float    "previous_display_price",                            default: 0.0,  null: false
+    t.integer  "shipping_free",                        limit: 1,    default: 0,    null: false
+    t.integer  "shipping_price",                                    default: -1,   null: false
+    t.integer  "in_stock",                             limit: 1,    default: -1,   null: false
     t.integer  "product_in_api",                       limit: 1,    default: 1,    null: false
-    t.integer  "brand",                                                            null: false
-    t.integer  "retailer_id",                                                      null: false
+    t.integer  "brand",                                             default: -1,   null: false
+    t.integer  "retailer_id",                                       default: -1,   null: false
     t.text     "search_tags",                                                      null: false
-    t.string   "source",                               limit: 20,                  null: false
+    t.string   "source",                               limit: 20,   default: "",   null: false
     t.float    "ctr",                                               default: 0.0,  null: false
     t.integer  "likes",                                             default: 0,    null: false
     t.integer  "likes_week",                                        default: 0,    null: false
-    t.integer  "likes_local",                                                      null: false
+    t.integer  "likes_local",                                       default: -1,   null: false
     t.integer  "likes_processed",                      limit: 1,    default: 0,    null: false
-    t.string   "buy_url",                              limit: 1024,                null: false
+    t.string   "buy_url",                              limit: 1024, default: "",   null: false
     t.string   "crawler_url",                          limit: 2048
-    t.string   "local_page_url",                       limit: 1024,                null: false
-    t.string   "image_url",                            limit: 1024,                null: false
-    t.integer  "width_original",                                                   null: false
-    t.integer  "height_original",                                                  null: false
-    t.integer  "width",                                                            null: false
-    t.integer  "height",                                                           null: false
+    t.string   "local_page_url",                       limit: 1024, default: "",   null: false
+    t.string   "image_url",                            limit: 1024, default: "",   null: false
+    t.integer  "width_original",                                    default: -1,   null: false
+    t.integer  "height_original",                                   default: -1,   null: false
+    t.integer  "width",                                             default: -1,   null: false
+    t.integer  "height",                                            default: -1,   null: false
     t.integer  "show_product",                         limit: 1,    default: 0,    null: false
     t.integer  "image_processed",                      limit: 1,    default: 0,    null: false
-    t.integer  "image_result",                         limit: 1,                   null: false
-    t.integer  "image_folder",                                                     null: false
-    t.string   "image_hash",                           limit: 80,                  null: false
+    t.integer  "image_result",                         limit: 1,    default: -1,   null: false
+    t.integer  "image_folder",                                      default: 0,    null: false
+    t.string   "image_hash",                           limit: 80,   default: "",   null: false
     t.integer  "image_pure_white",                     limit: 1,    default: 0,    null: false
     t.datetime "palette_processed",                                                null: false
-    t.integer  "left_x",                                                           null: false
-    t.integer  "right_x",                                                          null: false
-    t.integer  "top_y",                                                            null: false
-    t.integer  "bottom_y",                                                         null: false
+    t.integer  "left_x",                                            default: -1,   null: false
+    t.integer  "right_x",                                           default: -1,   null: false
+    t.integer  "top_y",                                             default: -1,   null: false
+    t.integer  "bottom_y",                                          default: -1,   null: false
     t.integer  "ftp_transfer_processed",               limit: 1,    default: 0,    null: false
     t.datetime "ftp_transfer_datetime",                                            null: false
     t.integer  "ftp_transfer_deleted_source",          limit: 1,    default: 0,    null: false
     t.datetime "ftp_transfer_deleted_source_datetime",                             null: false
     t.integer  "similarity_processed",                 limit: 1,    default: 0,    null: false
-    t.integer  "similarity_result",                    limit: 1,                   null: false
+    t.integer  "similarity_result",                    limit: 1,    default: -1,   null: false
     t.integer  "manually_processed",                   limit: 1,    default: 0,    null: false
-    t.integer  "manually_result",                      limit: 1,                   null: false
+    t.integer  "manually_result",                      limit: 1,    default: -1,   null: false
     t.integer  "active_processed",                     limit: 1,    default: 0,    null: false
-    t.integer  "active_result",                        limit: 1,                   null: false
+    t.integer  "active_result",                        limit: 1,    default: -1,   null: false
     t.integer  "categories_processed",                 limit: 1,    default: 0,    null: false
     t.date     "local_extract_date",                                               null: false
     t.datetime "vigme_inserted",                                                   null: false

@@ -34,19 +34,30 @@ MINIMUM_DIMENSION = 250
                 end
                 @products = Product.where(:id => @product_id_array)
         else
-                #if user not signed in, get a different set of activity
-   # we convert the returned JSON data to native Ruby
-   # data structure - a hash
-                url ="http://labs.vigme.com/interface/interface_products.php?type=popular&clear=1"
+                url ="http://labs.vigme.com/interface/interface_products.php?user=1&type=popular"
+
+                if params[:more] == 1
+                  more = "&clear=-1"
+                else
+                  more = "&clear=1"
+                end
+                p params[:more]
+
+                url = url + more
+
                 resp = Net::HTTP.get_response(URI.parse(url))
                 data = resp.body
                 result = JSON.parse(data)
 
                 @products = result["products"]
-                p @products
                 #and send a message
                 @not_signed_in = 1
         end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /products/1

@@ -17,7 +17,7 @@ namespace :s3_import do
                 url = "http://www.vigme.com/photos/"
                 path = product.image_folder.to_s + "/" + product.id.to_s + ".jpg"
                 url = url + path
-                p url 
+#                p url 
                 urlCheck = URI.parse(url)
                 req = Net::HTTP.new(urlCheck.host, urlCheck.port)
                 res = req.request_head(urlCheck.path)
@@ -30,7 +30,7 @@ namespace :s3_import do
 					product.ftp_transfer_deleted_source = 1
 					product.ftp_transfer_deleted_source_datetime = Time.now
 					product.save
-					p "Product Id:   " + product.id.to_s
+#					p "Product Id:   " + product.id.to_s
 					p "Amazon s3 URL:" + product.image_s3.url.to_s
 					path_to_file = "/var/www/vigme.com/photos/" + path
 					File.delete(path_to_file) if File.exist?(path_to_file)

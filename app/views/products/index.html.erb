@@ -1,3 +1,7 @@
-<div class="products-div">
+<div class="col-md-offset-1 col-xs-offset-1">
+<%= render 'shared/filters' %>
+</div>
+<div id="product-list" class="products-div">
 <%= render 'shared/product_list', products: @products %>
 </div>
+<a style="display: none"><%= button_to 'More', {:controller => "products", :action => "index", :more => 1}, id: 'more_products', :method => :get, remote: true %></a>

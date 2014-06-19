@@ -3,6 +3,8 @@ class TestModulesController < ApplicationController
 
   # GET /test_modules
   # GET /test_modules.json
+  def caphov
+  end
 
   def flat
   end

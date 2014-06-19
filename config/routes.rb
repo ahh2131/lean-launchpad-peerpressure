@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get 'test_module/colorz' => 'test_modules#colorz'
   get 'test_module/escape' => 'test_modules#escape'
   get 'test_module/flat' => 'test_modules#flat'
+  get 'test_module/caphov' => 'test_modules#caphov'
+
 
   
   # The priority is based upon order of creation: first created -> highest priority.

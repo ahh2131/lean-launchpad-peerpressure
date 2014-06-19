@@ -1,15 +1,10 @@
+
 <% products.each do |product| %>
-<div class="portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;">
+<div class="portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
   <a href="/products/<%= product["id"] %>">
                 <div class="portfolio-wrapper center-cropped" style="background-image: url('<%= product["image"] %>');">
-                 <!--<img class="product" src="" alt="Image 1" style="top: 0px;"> -->
-                <!--  <div class="label_style">
-                    <a href="#"><span class="icon_1"></span></a>
-                    <div class="label_text">
-                      <h2>scarabaeidae</h2>
-                      <p>Rezonum &amp; Collections</p>
-                    </div>
-                  </div> -->
                 </div> </a>
               </div> 
   <% end %>
+
+	

@@ -1,15 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  provider: MyString
-  uid: MyString
-  name: MyString
-  oauth_token: MyString
-  oauth_expires_at: 2014-06-09 16:30:48
-
-two:
-  provider: MyString
-  uid: MyString
-  name: MyString
-  oauth_token: MyString
-  oauth_expires_at: 2014-06-09 16:30:48
+<% 1000.times do |n| %>
+user_<%= n %>:
+  name: <%= "user#{n}" %>
+  provider: facebook
+<% end %>
