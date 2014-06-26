@@ -3,8 +3,10 @@ Rails.application.routes.draw do
   resources :activities
   resources :products
   root 'products#index'
+  get 'social' => 'products#socialFeed', as: 'social_feed'
   get 'profile' => 'profile#show'
   get 'profile/:id' => 'profile#show'
+  post 'profile/follow' => 'profile#follow', as: 'profile_follow'
 
   post 'products/new' => 'products#findImages'
   get 'product/add' => 'products#saveProduct', as: 'save_product'

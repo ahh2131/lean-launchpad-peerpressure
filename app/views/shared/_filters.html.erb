@@ -1,29 +1,7 @@
-
-<div id="vigme-cloth-type" class="btn-group select select-block">
-	<button class="btn dropdown-toggle clearfix btn-primary" data-toggle="dropdown">
-		<span class="filter-option pull-left">X-Men</span>&nbsp;
-		<span class="caret"></span>
-</button>
-
-<span class="dropdown-arrow dropdown-arrow-inverse"></span>
-
-<ul class="dropdown-menu dropdown-inverse" role="menu" style="max-height: 255px; overflow-y: auto; min-height: 93px;">
-	<li rel="0"><a tabindex="-1" href="#" class="">
-		<span class="pull-left">Choose hero</span></a></li>
-	<li rel="1"><a tabindex="-1" href="#" class="">
-		<span class="pull-left">Spider Man</span></a></li>
-	<li rel="2"><a tabindex="-1" href="#" class="">
-		<span class="pull-left">Wolverine</span></a></li>
-	<li rel="3"><a tabindex="-1" href="#" class="">
-		<span class="pull-left">Captain America</span></a></li>
-	<li rel="4" class="selected"><a tabindex="-1" href="#" class="">
-			<span class="pull-left">X-Men</span></a></li>
-	<li rel="5"><a tabindex="-1" href="#" class=""><span class="pull-left">Crocodile</span></a></li>
+<ul class="list">
+	<li class="vigme-filters"><%= link_to 'All', '/products?all=1' %></a> </li>
+	<% @categories.each do |category| %>
+	<li class="vigme-filters"><%= link_to category.name, '/products?' + category.name.delete(' ') + '=1' %></a> </li>
+		
+	<% end %>
 </ul>
-</div> 
-<ul id="filters" class="clearfix"> 
-							<li href="/products"><span class="filter active" data-filter="app card icon web">All</span></li>
-							<li><span class="filter" data-filter="logo  web">Photography</span></li>
-							<li><span class="filter" data-filter="app card icon web">Inspirations</span></li>
-							<li><span class="filter" data-filter="logo  web">Icon</span></li>
-						</ul>

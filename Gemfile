@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'mechanize'
+
 gem 'fastimage'
 
 gem 'nokogiri'

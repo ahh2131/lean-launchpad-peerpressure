@@ -1,4 +1,18 @@
  @import 'bootstrap';
+ a {
+ color: #000000;
+  &:visited {
+
+  }
+  &:hover {
+
+  }
+}
+
+ .vigme-header-profile {
+ 	margin-right: 100px;
+ 	float: right;
+ }
 .vigme-nav {
 	background-color: #eff0f2;
 	margin-top: -20px;
@@ -9,6 +23,7 @@
 }
 .swatches {
 	padding-top: 30px;
+	margin-right: 0px;
 }
  .navbar {
  /* background-image: url('vigme-navbar.png'); 

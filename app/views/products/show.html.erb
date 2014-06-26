@@ -1,10 +1,26 @@
 <p id="notice"><%= notice %></p>
-<div class="row col-md-offset-2 product-detail-padding">
+<div class="row">
+<div class="col-md-4 col-md-offset-2 product-detail-padding">
 <p>
   <%= @product.name %>
 </p>
- <img src="<%= @product.image_s3_url %>" class="img-thumbnail" >
-<%= link_to 'Share', share_product_path(:id => @product.id), :method => :post %> |
-<%= link_to 'Back', products_path %>
+ <img src="<%= @product.image_s3_url || "http://www.vigme.com/photos/" + @product.image_folder.to_s + "/" + @product.id.to_s %>" class="img-thumbnail" >
+</div>
+<% if session[:user_id] %>
+<div class="vigme-button-div col-md-4">
+<a href="<%= @product.buy_url %>">
+<button type="button" class="vigme-button btn btn-primary">Buy</button>
+</a>
+
+<%= button_to 'Save', {controller: 'products', action: 'share', :product => @product.id}, :method => :post, :class => 'vigme-button btn btn-primary' %>
+</div>
+<% else %>
+<div class="vigme-button-div col-md-4">
+<a href="/auth/facebook">
+<button type="button" class="vigme-button btn btn-primary">Sign Up to Buy and Share!</button>
+</a>
+</div>
+
+<% end %>
 
 </div>

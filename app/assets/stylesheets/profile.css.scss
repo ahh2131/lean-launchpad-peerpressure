@@ -1,3 +1,21 @@
 // Place all the styles related to the Profile controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-profile-products {
+	z-index: 5;
+	background-size: contain;
+    width: 150px;  
+    height: 150px; 
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.vigme-profile-header {
+	padding-bottom: 30px;
+}
+.vigme-saved-products {
+}
+.circular {
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+}

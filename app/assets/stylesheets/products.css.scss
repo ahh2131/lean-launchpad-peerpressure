@@ -1,6 +1,22 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-social-product-group {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.vigme-button-div {
+  padding-top: 32px;
+}
+.vigme-button {
+min-width: 113px;
+height: 71px;
+font-size: 27px;
+margin-bottom:20px;
+}
+.vigme-filters {
+  margin-bottom: 15px;
+}
 #vigme-cloth-type {
   width: 20%;
   min-width: 100px;
