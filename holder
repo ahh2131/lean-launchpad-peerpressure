@@ -3,7 +3,7 @@ labs.vigme.com:
   "/":
     vigme: !ruby/object:Mechanize::Cookie
       name: vigme
-      value: hbf83e1e83nro9dpi86hv0cj56
+      value: 9r0ouqhtcc0cg6vsq9u2uiua72
       domain: labs.vigme.com
       for_domain: false
       path: "/"
@@ -11,5 +11,5 @@ labs.vigme.com:
       httponly: false
       expires: 
       max_age: 
-      created_at: &1 2014-06-27 09:58:54.016076285 -04:00
+      created_at: &1 2014-06-27 09:52:47.507610393 -04:00
       accessed_at: *1
