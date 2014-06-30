@@ -1,4 +1,4 @@
-<%= form_for :link, url: products_new_path do |f| %>
+<%= form_for :link, remote: true, url: products_new_path do |f| %>
   <p>
     <%= f.label :url %><br>
     <%= f.text_field :url %>

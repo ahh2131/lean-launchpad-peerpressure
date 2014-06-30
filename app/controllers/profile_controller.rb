@@ -14,6 +14,13 @@ class ProfileController < ApplicationController
 
 	  @saved_products = userSavedProducts(@user_id)
 	  @added_products = userAddedProducts(@user_id)
+
+	  @following = Activity.where(:fromUser => @user_id, :activity_type => "follow").count
+	  @followers = Activity.where(:toUser => @user_id, :activity_type =>"follow").count
+
+	  @vigor = Activity.where(:toUser => @user_id, :activity_type => "seen").count
+	  @vigor_array = Array.new(@vigor)
+
 	end
 
 	def follow

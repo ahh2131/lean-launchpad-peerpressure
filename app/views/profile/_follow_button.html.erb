@@ -1,6 +1,4 @@
-<% if session[:user_id] == user_info.id %>
-
-<% else %>
+<% if session[:user_id] != user_info.id %>
 
 	<% if unfollow == 1 %>
 		<%= button_to 'Unfollow', {controller: 'profile', action: 'follow', :user_to_follow => user_info.id}, :method => :post, :class => 'vigme-button btn btn-primary' %>

@@ -1,13 +1,17 @@
 
-<div class="vigme-social-product-group row"> 
-	<%= profile.id %> | <%= profile.name %>
+<div class="vigme-social-profile-row row"> 
+		<%= image_tag profile.image %>
+
+	<%= profile.name %>
 </div>
+<div class="vigme-social-product-group">
 <% products.each do |product| %>
 <div class="portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
   <a href="/products/<%= product.id %>?from_user=<%= profile.id %>">
-                <div class="portfolio-wrapper center-cropped" style="background-image: url('<%= product.image_s3_url %>');">
+                <div class="portfolio-wrapper vigme-product-social" style="background-image: url('<%= product.image_s3_url %>');">
                 </div> </a>
               </div> 
   <% end %>
+</div>
 
 	

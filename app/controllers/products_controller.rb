@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 layout 'application'
 
-PRODUCTS_PER_USER = 3
+PRODUCTS_PER_USER = 6
 MINIMUM_DIMENSION = 250
 
   def test
@@ -153,7 +153,11 @@ MINIMUM_DIMENSION = 250
         activity.toUser = params[:from_user]
         activity.save
       end
-    end   
+    end  
+    respond_to do |format|
+      format.html { render "show" }
+      format.js
+    end 
   end
 
   def isProductSeenByUser
@@ -201,7 +205,8 @@ MINIMUM_DIMENSION = 250
       session[:product_link] = params[:link][:url]
       itExists = doesProductExist(session[:product_link])
       if itExists != 0
-        redirect_to :controller => 'products', :action => 'show', :id => itExists
+        return render :js => "window.location = '/products/#{itExists.to_s}'"
+    #    redirect_to :controller => 'products', :action => 'show', :id => itExists
       else
         url = open(params[:link][:url])
         @image_array = []
@@ -218,6 +223,11 @@ MINIMUM_DIMENSION = 250
           headerImage = headerImage + 1
         end 
         session[:image_array] = @image_array
+      end
+
+      respond_to do |format|
+        format.html 
+        format.js
       end
       
   end
