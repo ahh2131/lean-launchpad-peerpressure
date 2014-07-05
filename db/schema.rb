@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617192507) do
+ActiveRecord::Schema.define(version: 20140705150440) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -72,6 +72,13 @@ ActiveRecord::Schema.define(version: 20140617192507) do
 
   add_index "colors", ["id"], name: "id", using: :btree
 
+  create_table "log", force: true do |t|
+    t.integer  "user",                    null: false
+    t.string   "action",      limit: 20,  null: false
+    t.string   "description", limit: 250, null: false
+    t.datetime "date",                    null: false
+  end
+
   create_table "price_log", id: false, force: true do |t|
     t.integer  "product",             null: false
     t.datetime "date",                null: false
@@ -116,7 +123,7 @@ ActiveRecord::Schema.define(version: 20140617192507) do
     t.integer  "likes_local",                                       default: -1,   null: false
     t.integer  "likes_processed",                      limit: 1,    default: 0,    null: false
     t.string   "buy_url",                              limit: 1024, default: "",   null: false
-    t.string   "crawler_url",                          limit: 2048
+    t.string   "extractor_url",                        limit: 2048
     t.string   "local_page_url",                       limit: 1024, default: "",   null: false
     t.string   "image_url",                            limit: 1024, default: "",   null: false
     t.integer  "width_original",                                    default: -1,   null: false
@@ -160,10 +167,10 @@ ActiveRecord::Schema.define(version: 20140617192507) do
   end
 
   add_index "products", ["brand"], name: "brand", using: :btree
-  add_index "products", ["crawler_url"], name: "crawlerUrl", length: {"crawler_url"=>333}, using: :btree
   add_index "products", ["ctr"], name: "ctr", using: :btree
   add_index "products", ["display_price"], name: "priceCZK", using: :btree
   add_index "products", ["display_price"], name: "priceCZK_2", using: :btree
+  add_index "products", ["extractor_url"], name: "crawlerUrl", length: {"extractor_url"=>333}, using: :btree
   add_index "products", ["id", "image_pure_white", "show_product", "display_price"], name: "id+pureWhite+showProduct", unique: true, using: :btree
   add_index "products", ["image_hash"], name: "image_hash", using: :btree
   add_index "products", ["image_pure_white", "show_product", "in_sale"], name: "idx3", using: :btree
@@ -182,6 +189,15 @@ ActiveRecord::Schema.define(version: 20140617192507) do
   add_index "products", ["show_product"], name: "show_product", using: :btree
   add_index "products", ["source"], name: "country", using: :btree
   add_index "products", ["url_extractor_updated"], name: "extractorUpdated", using: :btree
+
+  create_table "rankings", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "category_id"
+    t.string   "time_period"
+    t.integer  "score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "retailers", force: true do |t|
     t.integer "local_id",                                             null: false

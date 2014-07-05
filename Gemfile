@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'whenever'
+
 gem 'mechanize'
 
 gem 'fastimage'
