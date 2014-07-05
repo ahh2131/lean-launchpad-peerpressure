@@ -8,6 +8,7 @@ layout 'application'
 
 PRODUCTS_PER_USER = 6
 MINIMUM_DIMENSION = 250
+PER_USER_SIMILAR = 4
 
   def test
   end
@@ -109,18 +110,41 @@ MINIMUM_DIMENSION = 250
     end
   end
 
+  # use this to get a list of user ids that have recent activity, from any list of user id's
+  def getRecentActivityIdArrayFromIdArray(id_array)
+    @follower_id_array = Activity.where(:fromUser => session[:user_id])
+    .where(:activity_type => "follow").distinct(:toUser).limit(10).pluck(:toUser)
+    # get user ids from activities
+    # then use this array of user ids and get products from each
+    @activity_array_unprocessed = Activity.order("MAX(created_at) DESC").select(:fromUser, :created_at).where(:fromUser => id_array)
+    .where(:activity_type => ["add", "share"]).group(:fromUser)
+    @recent_activity_id_array = []
+    @activity_array_unprocessed.each do |activity|
+      @recent_activity_id_array << activity.fromUser
+    end
+    return @recent_activity_id_array
+  end
+
+  def getUniqueProductsFromUserArray(perUser, id_array, offset)
+    products = []
+    id_array.each do |follower_id|
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").limit(perUser).offset(offset).pluck(:product)
+      @product_ids.each do |product_id|
+        products << Product.where(:id => product_id).first
+      end
+    end
+    # go through products and weed out ones that are the same
+    products = products.uniq{|product| product.id}
+    return products
+  end
+
   # document this, super important
   def socialFeed
     @follower_id_array = Activity.where(:fromUser => session[:user_id])
     .where(:activity_type => "follow").distinct(:toUser).limit(10).pluck(:toUser)
     # get user ids from activities
     # then use this array of user ids and get products from each
-    @activity_array_unprocessed = Activity.order("MAX(created_at) DESC").select(:fromUser, :created_at).where(:fromUser => @follower_id_array)
-    .where(:activity_type => ["add", "share"]).group(:fromUser)
-    @recent_activity_id_array = []
-    @activity_array_unprocessed.each do |activity|
-      @recent_activity_id_array << activity.fromUser
-    end
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array)
 
     @products_for_each_user = []
     @social_feed_profiles = []
@@ -144,6 +168,8 @@ MINIMUM_DIMENSION = 250
   # GET /products/1
   # GET /products/1.json
   def show
+    product_shared_by_ids = Activity.where(:activity_type => "save", :product => params[:id]).limit(10).pluck(:fromUser)
+    @product_shared_by = User.find(product_shared_by_ids)
     if !params[:from_user].nil? && params[:from_user].to_i != session[:user_id].to_i
       if isProductSeenByUser == 0
         activity = Activity.new 
@@ -154,10 +180,39 @@ MINIMUM_DIMENSION = 250
         activity.save
       end
     end  
+
+    @other_products_from_user = findOtherProductsFromUser
+
+    users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products)
+
+    multiplier = getOffsetMultiplier
+    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, PER_USER_SIMILAR*multiplier)
+    p params[:more]
     respond_to do |format|
       format.html { render "show" }
-      format.js
+      format.js { render "index" }
     end 
+  end
+
+  def getOffsetMultiplier
+    if params[:more].to_i == 1
+      session[:more] = session[:more].to_i + 1
+    else
+      session[:more] = 0
+    end
+    return session[:more].to_i
+  end
+
+  def findOtherProductsFromUser
+    original_user = Activity.where(:activity_type => ["save", "add"], :product => params[:id]).order("created_at asc").pluck(:fromUser).first
+    other_activity_from_user = Activity.where(:activity_type => ["add", "save"], :fromUser => original_user).limit(6).pluck(:product)
+    @other_products_from_user = Product.find(other_activity_from_user)
+    @other_products_from_user.each_with_index  do |product, index|
+      if product.id == params[:id].to_i
+        @other_products_from_user.slice!(index)
+      end
+    end
   end
 
   def isProductSeenByUser
@@ -227,7 +282,7 @@ MINIMUM_DIMENSION = 250
 
       respond_to do |format|
         format.html 
-        format.js
+        format.js 
       end
       
   end

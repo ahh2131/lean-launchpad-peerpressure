@@ -1,6 +1,23 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-products-mini {
+    z-index: 5;
+   background-size: contain;
+    width: 100px;  
+    height: 150px; 
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.vigme-product-header {
+    margin-top: 1%;
+    margin-bottom: 10px;
+}
+.vigme-product-header-image{
+  height: 50px;
+  width: 50px;
+  margin-bottom: 10px;
+}
 .no-margin {
   margin-left:0px;
 }
@@ -39,13 +56,14 @@
   padding-top:5px;
 }
 .vigme-button-div {
-  padding-top: 32px;
+  padding-top: 0px;
 }
 .vigme-button {
 min-width: 113px;
-height: 71px;
+height: 56px;
 font-size: 27px;
-margin-bottom:20px;
+margin-bottom:10px;
+border-radius: 0px;
 }
 .vigme-filters {
   margin-bottom: 15px;
@@ -81,6 +99,7 @@ margin-bottom:20px;
 }​
 .product-detail-padding {
 	padding-top: 60px;
+  margin-bottom: 10px;
 }
 .grow {
   display: inline-block;

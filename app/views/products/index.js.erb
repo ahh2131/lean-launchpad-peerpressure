@@ -1,1 +1,1 @@
-$('#product-list').append('<%= escape_javascript(render "shared/product_list", products: @products) %>');
+$('#product-list').append('<%= escape_javascript(render "shared/product_list", products: @products || @similar_products) %>');

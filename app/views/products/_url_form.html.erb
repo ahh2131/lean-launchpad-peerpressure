@@ -1,10 +1,10 @@
 <%= form_for :link, remote: true, url: products_new_path do |f| %>
   <p>
     <%= f.label :url %><br>
-    <%= f.text_field :url %>
+    <%= f.text_field :url, :class => "vigme-post-product-field" %>
   </p>
  
   <p>
-    <%= f.submit %>
+    <%= f.submit 'Add Product', :class => "btn btn-primary" %>
   </p>
 <% end %>
