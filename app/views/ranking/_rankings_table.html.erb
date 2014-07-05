@@ -1,0 +1,25 @@
+<div class="row">
+	<div class="vigme-ranking-header">
+		<h3><%= title %></h3>
+	</div>
+</div>
+<table class="table table-bordered table-striped table-hover">
+	<thead>
+		<tr>
+			<th> Rank </th>
+			<th> Profile </th>
+			<th> Name </th>
+			<th> Follow </th>
+		</tr>
+	</thead>
+	<tbody>
+		<% users.each_with_index do |user, index| %>
+			<tr>
+				<td><%= index + 1 %></td>
+				<td><a href="profile/<%= user.id %>"><%= image_tag user.image %></a></td>
+				<td><%= user.name %></td>
+				<td class="vigme-rankings-follow"><%= button_to 'Follow', {controller: 'profile', action: 'follow', :user_to_follow => user.id}, :method => :post, :class => 'vigme-rankings-button btn btn-info' %></td>
+		<% end %>
+
+	</tbody>
+</table>

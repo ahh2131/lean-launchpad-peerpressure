@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   get 'product/add' => 'products#saveProduct', as: 'save_product'
   post 'product/share' => 'products#share', as: 'share_product'
 
+  get 'rankings' => 'ranking#index', as: 'ranking'
+
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]

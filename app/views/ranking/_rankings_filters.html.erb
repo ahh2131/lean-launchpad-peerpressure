@@ -1,0 +1,7 @@
+<ul class="vigme-rankings-list list">
+	<li class="vigme-filters"><%= link_to 'All', '/rankings?all=1' %></a> </li>
+	<% @categories.each do |category| %>
+	<li class="vigme-filters"><%= link_to category.name, '/rankings?' + category.name.delete(' ') + '=1' %></a> </li>
+		
+	<% end %>
+</ul>
