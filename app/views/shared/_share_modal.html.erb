@@ -1,0 +1,37 @@
+
+<div class="modal fade" id="<%= modal_id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Share Your Style!</h4>
+      </div>
+
+      <% if session[:user_id] %>
+
+      <div id="<%= modal_id %>_body" class="modal-body">
+        <div class="row">
+          <div class="col-md-offset-2">
+            <%= render 'shared/share_form' %>
+          </div>
+        </div>
+
+      </div>
+
+      <% else %>
+
+      <div class="vigme-button-div col-md-offset-2">
+        <a href="/auth/facebook">
+        <button type="button" class="vigme-button btn btn-primary">Sign Up to Share your Style!</button>
+        </a>
+      </div>
+
+      <% end %>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -320,6 +320,12 @@ PER_USER_SIMILAR = 4
     activity.save
   end
 
+  def displayUrlForm
+    respond_to do |format|
+      format.html
+      format.js { render 'url_form' }
+    end
+  end
   
   def saveProduct
     image_index = params[:index]

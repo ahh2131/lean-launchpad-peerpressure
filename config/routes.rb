@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   post 'products/new' => 'products#findImages'
   get 'product/add' => 'products#saveProduct', as: 'save_product'
   post 'product/share' => 'products#share', as: 'share_product'
+  post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'
+  post 'list/new' => 'list#displayListForm', as: 'list_form'
+  post 'list/create' => 'list#create', as: 'list_create'
+
 
   get 'rankings' => 'ranking#index', as: 'ranking'
 

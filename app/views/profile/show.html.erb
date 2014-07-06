@@ -1,31 +1,31 @@
 <div class="vigme-profile-header row">
-	<div class="col-md-offset-1 col-md-10">
+	<div class="col-md-offset-1 col-md-10 col-sm-10">
 <div><h3><%= @user_info.name %></h3></div>
 <% if @user_info.image %>
 <div class="no-padding row vigme-profile-image">
-	<div class="no-padding col-md-2">
+	<div class="no-padding col-md-2 col-sm-2">
 		<%= image_tag @user_info.image + "?type=large" %>
 	</div>
 	   <div class="vigme-profile-header-container">
-		<div class="col-md-4">
+		<div class="col-md-4 col-sm-4">
 			About Me</br>
 			<div>Description of stuff blah blah blah about me etc etc  </div>
 		</div>
-		<div class="col-md-1">
+		<div class="col-md-1 col-sm-2">
 			Followers
 			<h2><%= @followers %></h2>
 		</div>
-		<div class="col-md-1">
+		<div class="col-md-1 col-sm-2">
 			Following
 			<h2><%= @following %></h2>
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-2 col-sm-2">
 			<a style="text-align:center;">Vigor</a>
 			<div class="row">
 				<div class="vigme-vigor-profile-header col-md-6 no-padding">
 	<%= render 'shared/vigor', rank: "gold" %>
 				</div>
-				<div class="col-md-6 no-padding">
+				<div class="col-md-6 no-padding col-sm-6">
 					<% @vigor_array.each do |vigor| %>
 					<%= render 'shared/vigor', rank: "bronze" %>
 					<% end %>
@@ -49,18 +49,17 @@
 
 <div class="vigme-saved-products row">
 
-<div id="product-list" class="col-md-offset-1 col-xs-offset-1 col-sm-offset-1 col-md-5">
+<div id="product-list" class="vigme-shared-product-list col-md-offset-1 col-xs-offset-1 col-sm-offset-1 col-md-5">
 	<div class="row">
-	<a class="col-md-offset-1 col-md-10 col-sm-offset-1 col-xs-offset-1"><h3>Saved Products </h3> </a>
+	<a class="col-md-offset-1 col-md-10 col-sm-offset-1 col-xs-offset-1"><h3>Shared Products </h3> </a>
 </div>
-<%= render 'shared/product_list_profile', products: @saved_products %>
+<%= render 'shared/product_list_profile', products: @shared_products %>
 </div>
 
-<div class="col-md-5">
+<div class="col-md-offset-1 col-md-5">
 	<div class="row">
 	<a class="col-md-offset-1 col-md-10"><h3>Added Products </h3> </a>
 </div>
-	<%= render 'shared/product_list_profile', products: @added_products %>
 
 	</div>
 </div>

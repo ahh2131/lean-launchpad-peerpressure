@@ -1,3 +1,13 @@
+<div class="vigme-social-header row">
+	<div class="col-md-offset-1 col-md-8">
+		<a href="<%= ranking_path %>">
+		<button class="vigme-social-header-button btn btn-primary btn-sm">
+  		Discover Trendsetters
+  		 </button>
+		</a>
+	</div>
+</div>
+
 <div class="no-margin row col-md-offset-1">
 <% @social_feed_profiles.zip(@products_for_each_user).each do |profile, products| %>
 <div class="vigme-social-feed-item col-md-5 col-sm-5">

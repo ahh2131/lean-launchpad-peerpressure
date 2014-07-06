@@ -12,8 +12,9 @@ class ProfileController < ApplicationController
    	  end
 	  @user_info = User.find(@user_id)
 
-	  @saved_products = userSavedProducts(@user_id)
-	  @added_products = userAddedProducts(@user_id)
+#	  @saved_products = userSavedProducts(@user_id)
+	#  @added_products = userAddedProducts(@user_id)
+	  @shared_products = userSharedProducts(@user_id)
 
 	  @following = Activity.where(:fromUser => @user_id, :activity_type => "follow").count
 	  @followers = Activity.where(:toUser => @user_id, :activity_type =>"follow").count
@@ -34,6 +35,12 @@ class ProfileController < ApplicationController
           format.js
         end
 
+	end
+	# all user saved or added
+	def userSharedProducts(user_id)
+		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id).limit(100).pluck(:product)
+		@products = Product.where(:id => product_ids)
+		return @products
 	end
 
 	def userSavedProducts(user_id)
