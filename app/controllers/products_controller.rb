@@ -141,6 +141,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   # document this, super important
+  # comment update, SUPER important stuff here
   def socialFeed
     @follower_id_array = Activity.where(:fromUser => session[:user_id])
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
@@ -161,9 +162,11 @@ USER_PER_PAGE_SOCIAL = 10
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
       end
-      @products_for_each_user << products
+      if products.count >= PRODUCTS_PER_USER
+        @products_for_each_user << products
+      end
       user = User.where(:id => follower_id).first
-      if !user.nil?
+      if !user.nil? && products.count >= PRODUCTS_PER_USER
         @social_feed_profiles << user
       end
 
@@ -180,7 +183,7 @@ USER_PER_PAGE_SOCIAL = 10
  end
 
  def resetProductOffset
-  if session[:more].to_i == 0
+  if params[:more].to_i == 0
     session[:productOffset] = 0
   end
  end
