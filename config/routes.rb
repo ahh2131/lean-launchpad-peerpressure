@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'
   post 'list/new' => 'list#displayListForm', as: 'list_form'
   post 'list/create' => 'list#create', as: 'list_create'
+  post 'list/addProduct' => 'list#addProductToList', as: 'list_add_product'
 
 
   get 'rankings' => 'ranking#index', as: 'ranking'

@@ -8,12 +8,10 @@
 	</div>
 </div>
 
-<div class="no-margin row col-md-offset-1">
-<% @social_feed_profiles.zip(@products_for_each_user).each do |profile, products| %>
-<div class="vigme-social-feed-item col-md-5 col-sm-5">
-	<a href="/profile/<%= profile.id %>">
-<%= render 'shared/product_list_social', products: products, profile: profile %>
-</a>
+<div id="product-list" class="no-margin row col-md-offset-1">
+
+<%= render 'social_feed', products_for_each_user: @products_for_each_user, social_feed_profiles: @social_feed_profiles %>
+
+
 </div>
-<% end %>
-</div>
+<a style="display: none"><%= button_to 'More', {:controller => "products", :action => "socialFeed", :more => 1}, id: 'more_products', :method => :get, remote: true %></a>

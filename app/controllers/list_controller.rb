@@ -16,12 +16,36 @@ class ListController < ApplicationController
   	activity = Activity.new
   	activity.fromUser = session[:user_id]
   	activity.activity_type = "list"
-  	activity.product = list.id
+  	activity.list_id = list.id
   	activity.save
   	respond_to do |format|
   		format.html
   		format.js { render "create" }
   	end
+  end
+
+  def addProductToList
+    if params[:list_id].to_i == 0
+    else
+      if productNotInList(params[:list_id], params[:product_id], session[:user_id]) == 1
+        activity = Activity.new
+        activity.list_id = params[:list_id]
+        activity.product = params[:product_id]
+        activity.fromUser = session[:user_id]
+        activity.activity_type = "add_to_list"
+        activity.save
+      end
+    end
+    redirect_to product_path(params[:product_id])
+  end
+
+  def productNotInList(list_id, product_id, user_id)
+    activity = Activity.where(:list_id => list_id, :product => product_id, :fromUser => user_id).first
+    if activity.nil?
+      return 1
+    else
+      return 0
+    end
   end
 
 end

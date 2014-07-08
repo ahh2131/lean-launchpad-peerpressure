@@ -8,8 +8,8 @@ layout 'application'
 
 PRODUCTS_PER_USER = 6
 MINIMUM_DIMENSION = 250
-PER_USER_SIMILAR = 4
-
+PER_USER_SIMILAR = 10
+USER_PER_PAGE_SOCIAL = 10
   def test
   end
   # GET /products
@@ -50,8 +50,13 @@ PER_USER_SIMILAR = 4
       activity.activity_type = "save"
       activity.save
     end
+    @product_id = params[:product]
+    @lists = List.where(:user_id => session[:user_id]).limit(10)
 
-    redirect_to profile_path
+    respond_to do |format|
+      format.html
+      format.js { render "share" }
+    end
   end
 
   def productAlreadyShared
@@ -111,13 +116,10 @@ PER_USER_SIMILAR = 4
   end
 
   # use this to get a list of user ids that have recent activity, from any list of user id's
-  def getRecentActivityIdArrayFromIdArray(id_array)
-    @follower_id_array = Activity.where(:fromUser => session[:user_id])
-    .where(:activity_type => "follow").distinct(:toUser).limit(10).pluck(:toUser)
-    # get user ids from activities
-    # then use this array of user ids and get products from each
+  def getRecentActivityIdArrayFromIdArray(id_array, multiplier, limit)
+
     @activity_array_unprocessed = Activity.order("MAX(created_at) DESC").select(:fromUser, :created_at).where(:fromUser => id_array)
-    .where(:activity_type => ["add", "share"]).group(:fromUser)
+    .where(:activity_type => ["add", "share"]).group(:fromUser).offset(multiplier*limit).limit(limit)
     @recent_activity_id_array = []
     @activity_array_unprocessed.each do |activity|
       @recent_activity_id_array << activity.fromUser
@@ -141,15 +143,20 @@ PER_USER_SIMILAR = 4
   # document this, super important
   def socialFeed
     @follower_id_array = Activity.where(:fromUser => session[:user_id])
-    .where(:activity_type => "follow").distinct(:toUser).limit(10).pluck(:toUser)
+    .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
     # get user ids from activities
     # then use this array of user ids and get products from each
-    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array)
-
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array, getOffsetMultiplier, USER_PER_PAGE_SOCIAL)
+    resetProductOffset
+    if @recent_activity_id_array[0].nil?
+      session[:more] = 0
+      session[:productOffset] = session[:productOffset].to_i + PRODUCTS_PER_USER
+      @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array, 0, USER_PER_PAGE_SOCIAL)
+    end
     @products_for_each_user = []
     @social_feed_profiles = []
     @recent_activity_id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").limit(PRODUCTS_PER_USER).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").offset(session[:productOffset]).limit(PRODUCTS_PER_USER).pluck(:product)
       products = []
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
@@ -161,8 +168,21 @@ PER_USER_SIMILAR = 4
       end
 
     end
-      p @social_feed_profiles
 
+    #### use session[:more] and create a few different lists of products that "fill in"
+    #### for users who dont have any more recent products (maybe sponsored, celebrity profiles)
+
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+ end
+
+ def resetProductOffset
+  if session[:more].to_i == 0
+    session[:productOffset] = 0
+  end
  end
 
   # GET /products/1
@@ -184,10 +204,8 @@ PER_USER_SIMILAR = 4
     @other_products_from_user = findOtherProductsFromUser
 
     users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
-    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products)
-
-    multiplier = getOffsetMultiplier
-    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, PER_USER_SIMILAR*multiplier)
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, getOffsetMultiplier, 5)
+    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, 0)
     p params[:more]
     respond_to do |format|
       format.html { render "show" }

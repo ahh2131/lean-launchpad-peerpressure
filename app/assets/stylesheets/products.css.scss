@@ -1,6 +1,7 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
 .vigme-social-header-button {
   border-radius: 0px;
   background-color: rgb(126, 193, 214);
@@ -40,9 +41,9 @@
   margin-left: 0px;
   margin-right: 0px;
   border-style: solid;
-  border-color: rgb(240, 238, 238);
+  border-color: #eff0f2;
   border-width: 6px;
-  background-color: rgb(240, 238, 238);
+  background-color: #eff0f2;
   margin-top: 5px;
 }
 .vigme-product-social {
@@ -56,13 +57,13 @@
 .vigme-social-feed {
   border-style: solid;
   border-width: 5px;
-  border-color: rgb(240, 238, 238);
+  border-color: #eff0f2;
   margin-top: 5px;
   margin-right: 5px;
-  background-color: rgb(240, 238, 238);
+  background-color: #eff0f2;
 }
 .vigme-social-product-group {
-  background-color: rgb(240, 238, 238);
+  background-color: #eff0f2;
   padding-top:5px;
   margin-bottom: 30px;
   text-align: center;

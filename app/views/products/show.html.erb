@@ -41,7 +41,7 @@
 <button type="button" class="vigme-button btn btn-primary">Buy</button>
 </a>
 
-<%= button_to 'Save', {controller: 'products', action: 'share', :product => @product.id}, :method => :post, :class => 'vigme-button btn btn-primary' %>
+<%= button_to 'Save', {controller: 'products', action: 'share', :product => @product.id}, :method => :post, :class => 'vigme-button btn btn-primary', :remote => true, 'data-toggle' => 'modal', 'data-target' => '#list_modal' %>
 
 <% else %>
 <div class="vigme-button-div col-md-4">

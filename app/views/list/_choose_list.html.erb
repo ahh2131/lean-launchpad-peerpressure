@@ -1,0 +1,15 @@
+        <div class="row">
+          <div class="col-md-offset-2">
+            <h3 class="vigme-header-3">Add to an Outfit? </h3>
+            <div id="list_buttons">
+            	<% lists.each do |list| %>
+            	<div class="row">
+            		<div class="col-md-4">
+            		<%= button_to truncate(list.title, :length => 14), {controller: 'list', action: 'addProductToList', :list_id => list.id, :product_id => product_id}, :method => :post, :class => 'vigme-list-button vigme-rankings-button btn btn-info' %>
+            		</div>
+            	<% end %>
+            	<%= button_to "None", {controller: 'list', action: 'addProductToList', :list_id => 0, :product_id => product_id}, :method => :post, :class => 'vigme-rankings-button btn btn-info' %>
+            	</div>
+            </div>
+          </div>
+        </div>

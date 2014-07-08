@@ -1,10 +1,30 @@
 // Place all the styles related to the Profile controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-list-product-group {
+  background-color: #eff0f2;
+  padding-top:5px;
+  margin-bottom: 30px;
+  text-align: center;
+  border-radius: 5px;
+}
+.vigme-list-profile-row {
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-style: solid;
+  border-color: #eff0f2;
+  border-width: 6px;
+  background-color: #eff0f2;
+  margin-top: 0px;
+  border-radius: 4px;
+  text-align: center;
+}
 .vigme-shared-product-list {
 	background-color: #eff0f2;
 	border-radius: 4px;
 	text-align: center;
+	margin-bottom: 30px;
 }
 .vigme-profile-header-container {
 	margin-top: 2%;

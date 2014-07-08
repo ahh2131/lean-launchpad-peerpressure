@@ -49,18 +49,19 @@
 
 <div class="vigme-saved-products row">
 
-<div id="product-list" class="vigme-shared-product-list col-md-offset-1 col-xs-offset-1 col-sm-offset-1 col-md-5">
+<div id="product-list" class="vigme-shared-product-list col-md-offset-1 col-xs-offset-0 col-sm-offset-0 col-md-5">
 	<div class="row">
-	<a class="col-md-offset-1 col-md-10 col-sm-offset-1 col-xs-offset-1"><h3>Shared Products </h3> </a>
+	<a class="col-md-offset-1 col-md-10 col-sm-offset-0 col-xs-offset-0"><h3 class="vigme-header-3">Shared Products </h3> </a>
 </div>
 <%= render 'shared/product_list_profile', products: @shared_products %>
 </div>
 
-<div class="col-md-offset-1 col-md-5">
-	<div class="row">
-	<a class="col-md-offset-1 col-md-10"><h3>Added Products </h3> </a>
-</div>
+<div class="col-md-offset-1 col-md-4 no-padding">
+<% @lists.zip(@products_for_each_list).each do |list, products| %>
 
+	<%= render 'shared/product_list_lists', products: products, list: list %>
+
+<% end %>
 	</div>
 </div>
 

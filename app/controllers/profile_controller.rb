@@ -22,6 +22,19 @@ class ProfileController < ApplicationController
 	  @vigor = Activity.where(:toUser => @user_id, :activity_type => "seen").count
 	  @vigor_array = Array.new(@vigor)
 
+	  @lists = List.where(:user_id => @user_id).order("created_at desc").limit(5)
+	  @products_for_each_list = []
+	  @lists.each do |list|
+	  	product_ids = Activity.where(:list_id => list.id, :activity_type => "add_to_list", :fromUser => @user_id)
+	  	.order("created_at desc").limit(4).pluck(:product)
+	  	products = []
+	  	product_ids.each do |product_id|
+	  		product = Product.find(product_id)
+	  		products << product
+	  	end
+	  	@products_for_each_list << products
+	  end
+
 	end
 
 	def follow

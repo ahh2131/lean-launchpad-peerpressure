@@ -9,21 +9,21 @@
 
 # user 15 adds a bunch of products
 30.times do |i|
-  Activity.create(fromUser: 15, activity_type: "save", product: "#{(i*3)+1}")
+  Activity.create(fromUser: 15, activity_type: "save", product: "#{(i*4)+10000}")
 end
 
 # user 18 adds a bunch of products 
 30.times do |i|
-  Activity.create(fromUser: 18, activity_type: "save", product: "#{(i*3)+300}")
+  Activity.create(fromUser: 18, activity_type: "save", product: "#{(i*5)+20000}")
 end
 
 
 # user 16 adds a bunch of products 
 30.times do |i|
-  Activity.create(fromUser: 16, activity_type: "save", product: "#{(i*3)+31}")
+  Activity.create(fromUser: 16, activity_type: "save", product: "#{(i*3)+6000}")
 end
 
 #user 23 add a bunch oof products
 30.times do |i|
-  Activity.create(fromUser: 23, activity_type: "save", product: "#{(i*3)+100}")
+  Activity.create(fromUser: 23, activity_type: "save", product: "#{(i*6)+2000}")
 end
