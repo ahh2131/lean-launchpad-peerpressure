@@ -1,6 +1,6 @@
 
 <% products.each do |product| %>
-<div class="portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
   <a href="/products/<%= product["id"] || product.id %>">
                 <div class="portfolio-wrapper center-cropped" style="background-image: url('<%= product["image"] || product.image_s3_url %>');">
                 </div> </a>

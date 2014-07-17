@@ -1,15 +1,14 @@
 <div class="vigme-profile-header row">
 	<div class="col-md-offset-1 col-md-10 col-sm-10">
-<div><h3><%= @user_info.name %></h3></div>
 <% if @user_info.image %>
 <div class="no-padding row vigme-profile-image">
 	<div class="no-padding col-md-2 col-sm-2">
 		<%= image_tag @user_info.image + "?type=large" %>
 	</div>
 	   <div class="vigme-profile-header-container">
-		<div class="col-md-4 col-sm-4">
-			About Me</br>
-			<div>Description of stuff blah blah blah about me etc etc  </div>
+		<div class="vigme-profile-name-column col-md-4 col-sm-4">
+			<div><h3><%= @user_info.name %></h3></div>
+
 		</div>
 		<div class="col-md-1 col-sm-2">
 			Followers
@@ -33,6 +32,7 @@
 				
 			</div>
 		</div>
+
 		<div class="vigme-profile-header-button col-md-2">
 			<div id="follow-button" class="vigme-follow-button">
 				<%= render 'profile/follow_button', user_info: @user_info, :unfollow => @unfollow %>
@@ -42,6 +42,7 @@
 
 </div>
 <% end %>
+<%= link_to 'Vig It', easymarklet_js('bookmarklet/fvb_bare_bookmarklet.js') %>
 
 </div>
 

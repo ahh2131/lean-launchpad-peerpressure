@@ -4,14 +4,19 @@ Rails.application.routes.draw do
   resources :products
   root 'products#index'
   get 'social' => 'products#socialFeed', as: 'social_feed'
+  get 'moreSocial' => 'products#moreSocialFeed', as: 'more_social_feed'
+
+
   get 'profile' => 'profile#show'
   get 'profile/:id' => 'profile#show'
   post 'profile/follow' => 'profile#follow', as: 'profile_follow'
 
   post 'products/new' => 'products#findImages'
+  get '/vigit' => 'products#findImages'
   get 'product/add' => 'products#saveProduct', as: 'save_product'
   post 'product/share' => 'products#share', as: 'share_product'
   post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'
+  get 'social/loaded' => 'products#socialFeedLoaded', as: 'social_feed_loaded'
   post 'list/new' => 'list#displayListForm', as: 'list_form'
   post 'list/create' => 'list#create', as: 'list_create'
   post 'list/addProduct' => 'list#addProductToList', as: 'list_add_product'

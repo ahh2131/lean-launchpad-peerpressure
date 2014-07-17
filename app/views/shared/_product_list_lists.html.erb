@@ -4,7 +4,7 @@
 </div>
 <div class="vigme-list-product-group">
 <% products.each do |product| %>
-<div class="portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
   <a href="/products/<%= product.id %>?from_user=<%= session[:user_id] %>">
                 <div class="portfolio-wrapper vigme-product-social" style="background-image: url('<%= product.image_s3_url %>');">
                 </div> </a>

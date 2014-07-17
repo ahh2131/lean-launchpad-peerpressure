@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'easymarklet'
+
 gem 'whenever'
 
 gem 'mechanize'

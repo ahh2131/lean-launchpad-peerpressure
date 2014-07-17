@@ -28,10 +28,11 @@ USER_PER_PAGE_SOCIAL = 10
         if params[:all].to_i == 1
           destroyOldFilters(@categories)
         end
-        url = addFiltersToUrl(url, @categories)
-        page = mechanizeUrl(url)
-        result = JSON.parse page.body
-        @products = result["products"]
+      #  url = addFiltersToUrl(url, @categories)
+       # page = mechanizeUrl(url)
+       # result = JSON.parse page.body
+        #@products = result["products"]
+        @products = Product.all.limit(50)
         #and send a message
         @not_signed_in = 1
       
@@ -124,6 +125,7 @@ USER_PER_PAGE_SOCIAL = 10
     @activity_array_unprocessed.each do |activity|
       @recent_activity_id_array << activity.fromUser
     end
+    p @recent_activity_id_array
     return @recent_activity_id_array
   end
 
@@ -140,24 +142,138 @@ USER_PER_PAGE_SOCIAL = 10
     return products
   end
 
-  # document this, super important
-  # comment update, SUPER important stuff here
+  def cycleRecentActivityIdArrayFromIdArray(id_array, limit)
+    session[:recent_activity_offset] ||= 0
+
+    @activity_array_unprocessed = Activity.order("MAX(created_at) DESC").select(:fromUser, :created_at).where(:fromUser => id_array)
+    .where(:activity_type => ["add", "share"]).group(:fromUser).offset(session[:recent_activity_offset].to_i*limit).limit(limit)
+    @recent_activity_id_array = []
+    @activity_array_unprocessed.each do |activity|
+      @recent_activity_id_array << activity.fromUser
+    end
+    session[:recent_activity_offset] = session[:recent_activity_offset].to_i + 1
+    if @recent_activity_id_array[0].nil?
+      cycled = 1
+      session[:recent_activity_offset] = 0
+      @recent_activity_id_array, unneeded = cycleRecentActivityIdArrayFromIdArray(id_array, limit)
+    else
+      cycled = 0
+    end
+    return @recent_activity_id_array, cycled
+
+  end
+
+  def getSocialFeedProfiles(recent_activity_id_array)
+    social_feed_profiles
+    @recent_activity_id_array.each do |follower_id|
+      user = User.where(:id => follower_id).first
+      if !user.nil? && products.count >= PRODUCTS_PER_USER
+        social_feed_profiles << user
+      end
+    end
+  end
+
+  # same as more social feed except makes product_offset 0
+
   def socialFeed
+
+    p "testing paams more"
+    p session[:product_offset]
+
     @follower_id_array = Activity.where(:fromUser => session[:user_id])
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
-    # get user ids from activities
-    # then use this array of user ids and get products from each
-    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array, getOffsetMultiplier, USER_PER_PAGE_SOCIAL)
-    resetProductOffset
-    if @recent_activity_id_array[0].nil?
-      session[:more] = 0
-      session[:productOffset] = session[:productOffset].to_i + PRODUCTS_PER_USER
-      @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array, 0, USER_PER_PAGE_SOCIAL)
+    @recent_activity_id_array, cycled = cycleRecentActivityIdArrayFromIdArray(@follower_id_array, USER_PER_PAGE_SOCIAL)
+    p @recent_activity_id_array
+    if cycled == 1
+      session[:product_offset] = session[:product_offset].to_i + 1
+      page = session[:product_offset].to_i
     end
     @products_for_each_user = []
     @social_feed_profiles = []
     @recent_activity_id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").offset(session[:productOffset]).limit(PRODUCTS_PER_USER).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).page(page).per(PRODUCTS_PER_USER).pluck(:product)
+      products = []
+      @product_ids.each do |product_id|
+        products << Product.where(:id => product_id).first
+      end
+      if products.count >= PRODUCTS_PER_USER
+        @products_for_each_user << products
+      end
+      user = User.where(:id => follower_id).first
+      if !user.nil? && products.count >= PRODUCTS_PER_USER
+        @social_feed_profiles << user
+      else
+      end
+    end
+    if @products_for_each_user[0].nil?
+      session[:product_offset] = 0
+    end
+  end
+
+  def moreSocialFeed
+
+
+    p "testing paams more"
+    p session[:product_offset]
+    @follower_id_array = Activity.where(:fromUser => session[:user_id])
+    .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
+    @recent_activity_id_array, cycled = cycleRecentActivityIdArrayFromIdArray(@follower_id_array, USER_PER_PAGE_SOCIAL)
+    p @recent_activity_id_array
+    if cycled == 1
+      session[:product_offset] = session[:product_offset].to_i + 1
+      page = session[:product_offset].to_i
+    end
+    @products_for_each_user = []
+    @social_feed_profiles = []
+    @recent_activity_id_array.each do |follower_id|
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).page(page).per(PRODUCTS_PER_USER).pluck(:product)
+      products = []
+      @product_ids.each do |product_id|
+        products << Product.where(:id => product_id).first
+      end
+      if products.count >= PRODUCTS_PER_USER
+        @products_for_each_user << products
+      end
+      user = User.where(:id => follower_id).first
+      if !user.nil? && products.count >= PRODUCTS_PER_USER
+        @social_feed_profiles << user
+      else
+      end
+    end
+
+  end
+
+  # document this, super important
+  # comment update, SUPER important stuff here
+  def ssocialFeed
+    if request.format.html? == true
+      session[:socialFeedLoaded] == 1
+    end
+
+    p session[:productOffset]
+          p "testestest"
+    p params[:more]
+
+
+    @follower_id_array = Activity.where(:fromUser => session[:user_id])
+    .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
+    # get user ids from activities
+    # then use this array of user ids and get products from each
+    resetProductOffset
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array, getOffsetMultiplier, USER_PER_PAGE_SOCIAL)
+    if @recent_activity_id_array[0].nil?
+      session[:more] = 0
+      session[:productOffset] = session[:productOffset].to_i + 1
+      p "testestest"
+      @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(@follower_id_array, 0, USER_PER_PAGE_SOCIAL)
+      session[:allFollowersSeen] = 1
+    elsif session[:allFollowersSeen] == 1
+      session[:productOffset] = session[:productOffset].to_i + 1
+    end
+    @products_for_each_user = []
+    @social_feed_profiles = []
+    @recent_activity_id_array.each do |follower_id|
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").offset(session[:productOffset].to_i*PRODUCTS_PER_USER).limit(PRODUCTS_PER_USER).pluck(:product)
       products = []
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
@@ -171,19 +287,20 @@ USER_PER_PAGE_SOCIAL = 10
       end
 
     end
+    # only first round of this controller has this as 1
+    session[:socialFeedLoaded] = 0
 
-    #### use session[:more] and create a few different lists of products that "fill in"
-    #### for users who dont have any more recent products (maybe sponsored, celebrity profiles)
+ end
 
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
+ def socialFeedLoaded
+  p "did this button work???"
+  session[:product_offsetss] = 0
+  render nothing: true
  end
 
  def resetProductOffset
-  if params[:more].to_i == 0
+  if session[:socialFeedLoaded].to_i == 1
+    session[:allFollowersSeen] = 0
     session[:productOffset] = 0
   end
  end
@@ -207,9 +324,16 @@ USER_PER_PAGE_SOCIAL = 10
     @other_products_from_user = findOtherProductsFromUser
 
     users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
-    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, getOffsetMultiplier, 5)
-    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, 0)
-    p params[:more]
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, 0, 5)
+    session[:similar_products_offset] ||= 0
+    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, session[:similar_products_offset])
+    if @similar_products[0].nil?
+      session[:similar_products_offset] = 0
+    else
+      session[:similar_products_offset] = session[:similar_products_offset].to_i + 1 
+    end
+    p "test"
+    p session[:similar_products_offset] 
     respond_to do |format|
       format.html { render "show" }
       format.js { render "index" }
@@ -217,7 +341,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def getOffsetMultiplier
-    if params[:more].to_i == 1
+    if session[:socialFeedLoaded].to_i == 0
       session[:more] = session[:more].to_i + 1
     else
       session[:more] = 0
@@ -277,21 +401,24 @@ USER_PER_PAGE_SOCIAL = 10
   # form calls this method to get images from url
   def findImages
     # use productExists(params[:link][:url]) == 1 when extractor_url is available
-
-      session[:product_link] = params[:link][:url]
+      if params[:url].nil?
+        session[:product_link] = params[:link][:url]
+      else
+        session[:product_link] = params[:url]
+      end
       itExists = doesProductExist(session[:product_link])
       if itExists != 0
         return render :js => "window.location = '/products/#{itExists.to_s}'"
     #    redirect_to :controller => 'products', :action => 'show', :id => itExists
       else
-        url = open(params[:link][:url])
+        url = open(session[:product_link])
         @image_array = []
         numberImagesHeader = numberOfHeaderImages(url)
         headerImage = 0
         # makes an array of image urls after the header ones
         Nokogiri::HTML(open(url)).xpath("//body//img/@src").each do |src|
           if headerImage >= numberImagesHeader
-            absolute_uri = URI.join(params[:link][:url], src ).to_s
+            absolute_uri = URI.join(session[:product_link], src ).to_s
             if imageSizeValid(absolute_uri) == 1
               @image_array << absolute_uri
             end

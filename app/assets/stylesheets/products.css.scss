@@ -2,6 +2,15 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.vigme-product-outline {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-color: #d4d4d4;
+  border-width: 1px;
+  border-radius: 2px;
+  border-style: solid;
+}
 .vigme-social-header-button {
   border-radius: 0px;
   background-color: rgb(126, 193, 214);
@@ -89,6 +98,7 @@ border-radius: 0px;
 	width: 200px;
 }
 .products-div {
+  text-align:center;
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: 5px;
