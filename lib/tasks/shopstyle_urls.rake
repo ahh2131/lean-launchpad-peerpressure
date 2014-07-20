@@ -2,7 +2,7 @@ namespace :shopstyle_urls do
   desc "gets product urls using shopstyle urls (important to make sure products in db are unique)"
   task get_product_urls: :environment do
 
-  	pageNumber = 1
+  	pageNumber = 3
   	agent = Mechanize.new
   	while pageNumber != 0
   		products = Product.where(:extractor_url => nil).page(pageNumber).per(1000)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706235131) do
+ActiveRecord::Schema.define(version: 20140720201554) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -249,6 +249,7 @@ ActiveRecord::Schema.define(version: 20140706235131) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image"
+    t.string   "email"
   end
 
 end

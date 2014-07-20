@@ -11,6 +11,11 @@
   border-radius: 2px;
   border-style: solid;
 }
+.vigme-product-outline:hover {
+  box-shadow: rgba(0,0,0,0.15) 0 0 14px;
+  transition: all 0.1s ease-in-out;
+} 
+
 .vigme-social-header-button {
   border-radius: 0px;
   background-color: rgb(126, 193, 214);
@@ -50,10 +55,14 @@
   margin-left: 0px;
   margin-right: 0px;
   border-style: solid;
-  border-color: #eff0f2;
-  border-width: 6px;
-  background-color: #eff0f2;
+  border-color: #d4d4d4;
+  border-width: 1px;
+  background-color: white;
   margin-top: 5px;
+}
+.vigme-social-profile-row:hover {
+  box-shadow: rgba(0,0,0,0.15) 0 0 14px;
+  transition: all 0.1s ease-in-out;
 }
 .vigme-product-social {
   z-index: 5;

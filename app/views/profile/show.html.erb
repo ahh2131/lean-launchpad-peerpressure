@@ -10,7 +10,7 @@
 			<div><h3><%= @user_info.name %></h3></div>
 
 		</div>
-		<div class="col-md-1 col-sm-2">
+		<div id="followers" class="col-md-1 col-sm-2">
 			Followers
 			<h2><%= @followers %></h2>
 		</div>
@@ -34,9 +34,7 @@
 		</div>
 
 		<div class="vigme-profile-header-button col-md-2">
-			<div id="follow-button" class="vigme-follow-button">
-				<%= render 'profile/follow_button', user_info: @user_info, :unfollow => @unfollow %>
-			</div>
+				<%= render 'profile/follow_button', user_info: @user_info, :unfollow => @followed %>
 		</div>
 	  </div>
 

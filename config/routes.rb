@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'profile' => 'profile#show'
   get 'profile/:id' => 'profile#show'
   post 'profile/follow' => 'profile#follow', as: 'profile_follow'
+  post 'profile/unfollow' => 'profile#unfollow', as: 'profile_unfollow'
 
   post 'products/new' => 'products#findImages'
   get '/vigit' => 'products#findImages'

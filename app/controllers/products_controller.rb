@@ -326,7 +326,7 @@ USER_PER_PAGE_SOCIAL = 10
     users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
     @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, 0, 5)
     session[:similar_products_offset] ||= 0
-    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, session[:similar_products_offset])
+    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, session[:similar_products_offset]*PER_USER_SIMILAR)
     if @similar_products[0].nil?
       session[:similar_products_offset] = 0
     else
@@ -436,7 +436,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def doesProductExist(url)
-    product = Product.where(:extractor_url => url).first
+    product = Product.where('extractor_url LIKE ?', url).first
     if product.nil?
       return 0
     else
