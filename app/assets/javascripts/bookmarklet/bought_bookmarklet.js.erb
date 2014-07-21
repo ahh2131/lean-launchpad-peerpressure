@@ -1,0 +1,14 @@
+(function(){
+
+  // Your simple bookmarklet code goes here.
+  // For instance
+  var url = encodeURIComponent(document.location);
+  var html=document.documentElement.innerHTML;
+  var found = html.search("complete")
+  console.log(found);
+  var full_host = "http://dev.vigme.com:3000"
+  document.location =  full_host + "/purchased?url=" + url + "?found=" + found
+
+  // alert('You just clicked the bought bookmarklet.');
+
+})();

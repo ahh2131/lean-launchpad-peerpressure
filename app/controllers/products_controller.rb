@@ -43,6 +43,32 @@ USER_PER_PAGE_SOCIAL = 10
     end
   end
 
+  # bookmarklet goes here, this activity will keep track of purchases and where commission goes
+  # only created a purchase if bookmarklet finds keywords and site is https
+  def purchased
+    if params[:most_recent_product_view].nil?
+      most_recent_product_view = session[:most_recent_product_view]
+    else
+      most_recent_product_view = params[:most_recent_product_view]
+    end
+
+    if params[:found] != "-1" && params[:url].to_s.include?("https")
+      activity = Activity.new
+      activity.activity_type = "purchase"
+      activity.purchase_url = params[:url]
+      activity.product = most_recent_product_view
+      activity.fromUser = session[:user_id]
+      to_user = Activity.where(:activity_type => "seen", :fromUser => session[:user_id])
+      .where(:product => most_recent_product_view).first
+      if !to_user.nil?
+        activity.toUser = to_user.toUser
+      end
+      activity.save
+    end
+    redirect_to product_path(most_recent_product_view)
+
+  end
+
   def share
     if productAlreadyShared == 0
       activity = Activity.new
@@ -308,18 +334,20 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products/1
   # GET /products/1.json
   def show
+    session[:most_recent_product_view] = params[:id]
     product_shared_by_ids = Activity.where(:activity_type => "save", :product => params[:id]).limit(10).pluck(:fromUser)
     @product_shared_by = User.find(product_shared_by_ids)
-    if !params[:from_user].nil? && params[:from_user].to_i != session[:user_id].to_i
-      if isProductSeenByUser == 0
-        activity = Activity.new 
-        activity.fromUser = session[:user_id]
-        activity.activity_type = "seen"
-        activity.product = params[:id]
-        activity.toUser = params[:from_user]
-        activity.save
+    if isProductSeenByUser == 0
+      activity = Activity.new 
+      activity.fromUser = session[:user_id]
+      activity.activity_type = "seen"
+      activity.product = params[:id]
+      if !params[:from_user].nil? && params[:from_user].to_i != session[:user_id].to_i
+       activity.toUser = params[:from_user]
       end
-    end  
+      activity.save
+    end
+    
 
     @other_products_from_user = findOtherProductsFromUser
 
@@ -361,7 +389,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def isProductSeenByUser
-    activity = Activity.where(:activity_type => "seen", :fromUser => session[:user_id], :toUser => params[:from_user], :product => params[:id]).first
+    activity = Activity.where(:activity_type => "seen", :fromUser => session[:user_id], :product => params[:id]).first
     if activity.nil?
       return 0
     else 

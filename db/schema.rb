@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721164815) do
+ActiveRecord::Schema.define(version: 20140721203805) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20140721164815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "list_id"
+    t.text     "purchase_url"
   end
 
   create_table "brands", force: true do |t|
