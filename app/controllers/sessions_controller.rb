@@ -4,8 +4,11 @@ class SessionsController < ApplicationController
     request.env['omniauth.auth'].info.image.slice! "?type=square"
     user.image = request.env['omniauth.auth'].info.image
     session[:user_id] = user.id
-    session[:user_image] = user.image
+    if user.avatar_file_size.nil?
+      user.avatar = User.process_uri(user.image + "?type=large")
+    end
     user.save
+    session[:user_image] = user.avatar.url
     redirect_to root_url
   end
 

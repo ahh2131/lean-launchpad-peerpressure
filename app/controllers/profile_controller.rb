@@ -40,6 +40,20 @@ class ProfileController < ApplicationController
 
 	end
 
+	def update
+		@user = User.find(session[:user_id])
+		if @user.update(user_params)
+			flash[:notice] = "Profile successfully updated"
+		else
+		end
+		session[:user_image] = @user.avatar.url
+		redirect_to profile_settings_path
+	end
+
+	def settings 
+		@user = User.find(session[:user_id])
+	end
+
 	def isUserFollowed(user_id)
 		activity = Activity.where(:fromUser => session[:user_id], :activity_type => "follow")
 		.where(:toUser => user_id).first
@@ -99,4 +113,11 @@ class ProfileController < ApplicationController
 		@products = Product.where(:id => product_ids)
 		return @products
 	end
+
+	private
+
+	  def user_params
+	    params.require(:user).permit(:name, :avatar, :gender, :email, :password, :picture)
+	  end
+
 end

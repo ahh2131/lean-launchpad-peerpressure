@@ -623,16 +623,7 @@ body {
 .star-rating input {
 	display: none;
 }
-label {
-	/*background-image: url('http://jsdev.brinkster.net/images/star-empty.png');*/
-	background-image: url('../images/star-empty-50.png');
-	background-repeat: no-repeat;
-	cursor: pointer;
-	float: right;
-	text-indent: -9999px;
-	width: 32px;
-	height: 32px;
-}
+
 .star-rating input:checked + label,
 .star-rating input:checked ~ label,
 /*works only for firefox, not chrome*/

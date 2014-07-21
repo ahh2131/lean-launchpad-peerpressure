@@ -6,11 +6,13 @@ Rails.application.routes.draw do
   get 'social' => 'products#socialFeed', as: 'social_feed'
   get 'moreSocial' => 'products#moreSocialFeed', as: 'more_social_feed'
 
+  patch 'users/update' => 'profile#update', as: 'user_path'
 
   get 'profile' => 'profile#show'
   get 'profile/:id' => 'profile#show'
   post 'profile/follow' => 'profile#follow', as: 'profile_follow'
   post 'profile/unfollow' => 'profile#unfollow', as: 'profile_unfollow'
+  get 'settings' => 'profile#settings', as: 'profile_settings'
 
   post 'products/new' => 'products#findImages'
   get '/vigit' => 'products#findImages'

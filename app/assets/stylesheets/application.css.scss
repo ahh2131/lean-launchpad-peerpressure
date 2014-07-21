@@ -1,4 +1,11 @@
  @import 'bootstrap';
+ .vigme-center-text {
+  text-align: center;
+ }
+ .vigme-header-avatar {
+    height: 50px;
+    max-width: 52px;
+ }
  .vigme-filter-background {
     background-color: #eff0f2;
     padding-top: 1px;

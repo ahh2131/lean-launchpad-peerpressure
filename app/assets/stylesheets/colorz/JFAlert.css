@@ -5,16 +5,7 @@
 	margin-top: 2%;
 }
 /* alert common styles */
-    div.alert{
-	border: 0;
-	width: auto;
-	font-family: 'overpassregular';
-	display: block;
-	position: relative;
-	padding: 12px 38px 14px 18px;
-	color: #ffffff;
-	font-size: 1em;
-}
+
 .alert a.close:hover { 
 	color: #fff !important;  
 }

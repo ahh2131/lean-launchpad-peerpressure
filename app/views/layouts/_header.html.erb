@@ -10,10 +10,11 @@
 <% if session[:user_id] != nil %>
     <div class="vigme-dropdown-positioning dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-        <a   class="vigme-header-profile">   <%= image_tag session[:user_image] %></a>
+        <a   class="vigme-header-profile">   <%= image_tag session[:user_image], class: "vigme-header-avatar" %></a>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation"><a role="menuitem" tabindex="-1" href="/profile/<%= session[:user_id] %>">Profile</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= profile_settings_path %>">Settings</a></li>
         
         <li role="presentation" class="divider"></li>
         <li role="presentation"><a role="menuitem" tabindex="-1" href="/signout">Log out</a></li>

@@ -3,7 +3,7 @@
 <% if @user_info.image %>
 <div class="no-padding row vigme-profile-image">
 	<div class="no-padding col-md-2 col-sm-2">
-		<%= image_tag @user_info.image + "?type=large" %>
+		<%= image_tag @user_info.avatar.url, :class => "vigme-profile-avatar" %>
 	</div>
 	   <div class="vigme-profile-header-container">
 		<div class="vigme-profile-name-column col-md-4 col-sm-4">
