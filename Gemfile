@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'thin'
+
 gem 'easymarklet'
 
 gem 'whenever'

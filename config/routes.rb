@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   post 'products/new' => 'products#findImages'
   get '/vigit' => 'products#findImages'
   get '/purchased' => 'products#purchased'
+  post '/purchase/receipt' => 'products#purchaseReceipt'
+
   get 'product/add' => 'products#saveProduct', as: 'save_product'
   post 'product/share' => 'products#share', as: 'share_product'
   post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'

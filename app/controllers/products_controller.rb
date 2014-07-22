@@ -6,6 +6,9 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 layout 'application'
 
+skip_before_filter :verify_authenticity_token
+
+
 PRODUCTS_PER_USER = 6
 MINIMUM_DIMENSION = 250
 PER_USER_SIMILAR = 10
@@ -83,6 +86,56 @@ USER_PER_PAGE_SOCIAL = 10
     respond_to do |format|
       format.html
       format.js { render "share" }
+    end
+  end
+
+  def purchaseReceipt
+    if params[:most_recent_product_view].nil?
+      most_recent_product_view = session[:most_recent_product_view]
+    else
+      most_recent_product_view = params[:most_recent_product_view]
+    end
+    if purchaseDoesNotExist(most_recent_product_view) == 1
+      activity = Activity.new
+      activity.activity_type = "purchase"
+      activity.purchase_url = params[:url]
+      activity.product = most_recent_product_view
+      activity.fromUser = session[:user_id]
+      to_user = Activity.where(:activity_type => "seen", :fromUser => session[:user_id])
+      .where(:product => most_recent_product_view).first
+      if !to_user.nil?
+        activity.toUser = to_user.toUser
+      end
+      if params[:found] != "-1" && params[:url].to_s.include?("https")
+        activity.confirmed = 1
+      else
+        activity.confirmed = -1
+      end
+      activity.save
+
+      #save html to a file with id of activity it is associated with
+      saveToFile(params[:html], activity.id)
+
+    end
+ 
+
+    redirect_to product_path(most_recent_product_view)
+  end
+
+  def saveToFile(html, activity_id)
+    path = "/log/receipts/" + activity_id.to_s + ".html"
+    File.open("/var/www/dev.vigme.com/" + path, "w+") do |f|
+      f.write(html)
+    end
+  end
+
+  def purchaseDoesNotExist(product_id)
+    activity = Activity.where(:activity_type => "purchase", :fromUser => session[:user_id])
+    .where(:product => product_id).first
+    if activity.nil?
+      return 1
+    else
+      return 0
     end
   end
 
