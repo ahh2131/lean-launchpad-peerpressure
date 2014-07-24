@@ -1,6 +1,10 @@
 // Place all the styles related to the Profile controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-social-profile-image {
+  height: 50px;
+  max-width: 80px;
+}
 .vigme-settings-button {
   border-radius: 0px;
   background-color: #7ec1d6;

@@ -139,6 +139,11 @@ USER_PER_PAGE_SOCIAL = 10
     end
   end
 
+  def buy
+    session[:most_recent_product_view] = params[:product]
+    redirect_to params[:product_url]
+  end
+
   def productAlreadyShared
     activity = Activity.where(:fromUser => session[:user_id], :product => params[:product], :activity_type => ["save", "add"]).first
     p activity
@@ -211,7 +216,7 @@ USER_PER_PAGE_SOCIAL = 10
   def getUniqueProductsFromUserArray(perUser, id_array, offset)
     products = []
     id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").limit(perUser).offset(offset).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).limit(perUser).offset(offset).pluck(:product)
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
       end
@@ -384,10 +389,12 @@ USER_PER_PAGE_SOCIAL = 10
   end
  end
 
+ def viglets
+ end
+
   # GET /products/1
   # GET /products/1.json
   def show
-    session[:most_recent_product_view] = params[:id]
     product_shared_by_ids = Activity.where(:activity_type => "save", :product => params[:id]).limit(10).pluck(:fromUser)
     @product_shared_by = User.find(product_shared_by_ids)
     if isProductSeenByUser == 0

@@ -1,6 +1,5 @@
 <div class="vigme-profile-header row">
 	<div class="col-md-offset-1 col-md-10 col-sm-10">
-<% if @user_info.image %>
 <div class="no-padding row vigme-profile-image">
 	<div class="no-padding col-md-2 col-sm-2">
 		<%= image_tag @user_info.avatar.url, :class => "vigme-profile-avatar" %>
@@ -39,7 +38,6 @@
 	  </div>
 
 </div>
-<% end %>
 <%= link_to 'Vig It', easymarklet_js('bookmarklet/fvb_bare_bookmarklet.js') %>
 <%= link_to 'Bought It', easymarklet_js('bookmarklet/bought_bookmarklet.js') %>
 

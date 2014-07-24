@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :activities
   resources :products
   root 'products#index'
-  get 'social' => 'products#socialFeed', as: 'social_feed'
+  get 'feed' => 'products#socialFeed', as: 'social_feed'
   get 'moreSocial' => 'products#moreSocialFeed', as: 'more_social_feed'
 
   patch 'users/update' => 'profile#update', as: 'user_path'
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   get 'product/add' => 'products#saveProduct', as: 'save_product'
   post 'product/share' => 'products#share', as: 'share_product'
+  post 'product/buy' => 'products#buy', as: 'buy_product'
   post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'
   get 'social/loaded' => 'products#socialFeedLoaded', as: 'social_feed_loaded'
   post 'list/new' => 'list#displayListForm', as: 'list_form'
@@ -33,6 +34,13 @@ Rails.application.routes.draw do
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]
+
+  # viglets woo
+  get 'viglets' => 'products#viglets', as: 'viglets'
+
+  # admin stuff
+  get 'admin' => 'admin#index', as: 'admin'
+  get 'admin/login' => 'admin#login', as: 'admin_login'
 
 #theme testing
   get 'test_module/colorz' => 'test_modules#colorz'
