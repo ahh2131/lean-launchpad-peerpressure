@@ -141,7 +141,7 @@ USER_PER_PAGE_SOCIAL = 10
 
   def buy
     session[:most_recent_product_view] = params[:product]
-    redirect_to params[:product_url]
+    render nothing: true
   end
 
   def productAlreadyShared
@@ -396,6 +396,7 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products/1.json
   def show
     product_shared_by_ids = Activity.where(:activity_type => "save", :product => params[:id]).limit(10).pluck(:fromUser)
+    product_shared_by_ids.delete(session[:user_id].to_s)
     @product_shared_by = User.find(product_shared_by_ids)
     if isProductSeenByUser == 0
       activity = Activity.new 
@@ -408,9 +409,9 @@ USER_PER_PAGE_SOCIAL = 10
       activity.save
     end
     
-
-    @other_products_from_user = findOtherProductsFromUser
-
+    @retailer = Retailers.find(@product.retailer_id)
+    @retailer_user = User.where(:retailer_id => @retailer.id).first
+    @other_products_from_retailer = findOtherProductsFromRetailer(@retailer)
     users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
     @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, 0, 5)
     session[:similar_products_offset] ||= 0
@@ -420,8 +421,6 @@ USER_PER_PAGE_SOCIAL = 10
     else
       session[:similar_products_offset] = session[:similar_products_offset].to_i + 1 
     end
-    p "test"
-    p session[:similar_products_offset] 
     respond_to do |format|
       format.html { render "show" }
       format.js { render "index" }
@@ -435,6 +434,12 @@ USER_PER_PAGE_SOCIAL = 10
       session[:more] = 0
     end
     return session[:more].to_i
+  end
+
+  def findOtherProductsFromRetailer(retailer)
+    other_products = Product.where(:retailer_id => retailer.id)
+    .where("image_s3_url IS NOT NULL")
+      .order("vigme_inserted desc").limit(6)
   end
 
   def findOtherProductsFromUser
@@ -534,18 +539,54 @@ USER_PER_PAGE_SOCIAL = 10
 
 
   def createProduct(image_url)
+    retailer_id = findOrCreateRetailer(session[:product_link])
     product = Product.new
+    product.retailer_id = retailer_id
     product.image_s3 = image_url
     product.buy_url = session[:product_link]
     product.extractor_url = session[:product_link]
     product.ftp_transfer_processed = 1
     product.ftp_transfer_datetime = Time.now
+    product.vigme_inserted = Time.now
     product.save
     product.image_s3_url = product.image_s3.url
     product.ftp_transfer_deleted_source = 1
     product.ftp_transfer_deleted_source_datetime = Time.now
     product.save
     return product
+  end
+
+  def findOrCreateRetailer(product_link)
+    new_link = stripProductLink(product_link)
+    retailer = Retailers.where('url LIKE ?', new_link).first
+    if retailer.nil?
+      retailer = Retailers.new
+      retailer.url = new_link
+      retailer.local_url = new_link
+      retailer.name = new_link
+      retailer.source = "vigme"
+      retailer.active = 0
+      retailer.save
+      createStoreAccount(retailer.id, retailer.name)
+    end
+    return retailer.id
+  end
+
+  def stripProductLink(product_link)
+    new_str = product_link.slice(0..(product_link.index('.com')))
+    new_str.slice! "www."
+    new_str.slice! "http://"
+    new_str.slice! "https://"
+    new_str = new_str + "com"
+    return new_str
+  end
+
+  def createStoreAccount(retailer_id, retailer_name)
+    user = User.new
+    user.retailer_id = retailer_id
+    user.user_type = 2
+    user.name = retailer_name
+    user.save
   end
 
   def createActivity(product_id)

@@ -1,4 +1,17 @@
  @import 'bootstrap';
+ .vigme-bottom-nav-header {
+  margin-top: 0px;
+ }
+ .vigme-bottom-nav {
+    width: 100%;
+    background-color: white;
+    line-height: 10px;
+    color: #fff;
+    border-top: 1px solid #adadad;
+  bottom: 0px;
+  position: fixed;
+  z-index: 100;
+ }
  .vigme-vertical-line {
   width: 1px;
   border-style: solid;
@@ -162,7 +175,6 @@ border-color: transparent transparent #fad749 transparent;
 }
 
  .vigme-header-profile {
- 	float: right;
  }
 .vigme-nav {
     width: 100%;

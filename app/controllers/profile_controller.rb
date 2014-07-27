@@ -38,6 +38,14 @@ class ProfileController < ApplicationController
 	  # 1 or 0 , depending on if user is a followed
 	  @followed = isUserFollowed(@user_id)
 
+	  if !@user_info.retailer_id.nil?
+	  	@store_products = Product.where(:retailer_id => @user_info.retailer_id)
+	  	.where("image_s3_url IS NOT NULL")
+      .order("vigme_inserted desc").limit(50)
+	  	return render 'store'
+	  end
+
+
 	end
 
 	def update

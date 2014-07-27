@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723212248) do
+ActiveRecord::Schema.define(version: 20140727135847) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(version: 20140723212248) do
     t.float   "shipping_price",                         default: 0.0, null: false
     t.string  "source",                      limit: 30,               null: false
     t.integer "active",                      limit: 1,  default: 1,   null: false
+    t.integer "claimed"
   end
 
   create_table "shopstyle_categories", id: false, force: true do |t|
@@ -258,6 +259,9 @@ ActiveRecord::Schema.define(version: 20140723212248) do
     t.datetime "avatar_updated_at"
     t.string   "gender"
     t.integer  "admin"
+    t.integer  "active"
+    t.integer  "retailer_id"
+    t.integer  "user_type"
   end
 
 end
