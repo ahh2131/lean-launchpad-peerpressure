@@ -8,6 +8,8 @@ config.paperclip_defaults = {
     :secret_access_key => 'DkwlPWkBTjHqgwG5aVS5VasdhVADmPyW2JlVM7zF'
   }
 }
+config.action_mailer.default_url_options = { host: 'vigme.com' }
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

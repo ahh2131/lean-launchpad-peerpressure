@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  def create
+"""  def create
     user = User.from_omniauth(env["omniauth.auth"])
     p request.env['omniauth.auth']
     request.env['omniauth.auth'].info.image.slice! "?type=square"
@@ -17,5 +17,5 @@ class SessionsController < ApplicationController
     session[:user_id] = nil
     session[:admin_id] = nil
     redirect_to root_url
-  end
+  end"""
 end

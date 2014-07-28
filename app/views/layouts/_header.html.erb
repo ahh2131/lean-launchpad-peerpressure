@@ -1,4 +1,4 @@
-<% if session[:user_id] || !@home_page %>
+<% if session[:user_id] || !@home_page || user_signed_in? %>
 <div class="vigme-nav">
 <h2 class="vigme-font vigme-logo-black col-xs-offset-1"><span class="demo-heading-note"></span><a style="text-decoration: none;"class="vigme-logo-text" href="<%= root_url %>">VigMe</a>
 
@@ -21,7 +21,7 @@
   </span>
 
   <span>
-<% if session[:user_id] != nil %>
+<% if user_signed_in? %>
           <a href="/profile/<%= session[:user_id] %>" class="vigme-header-profile"><%= image_tag session[:user_image], class: "vigme-header-avatar" %></a>
 
 <% end %>
@@ -55,8 +55,9 @@
             <img src="/assets/icons/svg/paper-bag.svg" alt="PaperBag" class="tile-image">
             <h3 class="tile-title">Discover.</h3>
             <p class="tile-content">Shop from over 10 million products, all catered to you.</p>
-            <a class="btn btn-primary btn-large btn-block" href="/auth/facebook">Sign Up!</a>
-          </div>
+              <button class="btn btn-primary btn-large btn-block" data-toggle="modal" data-target="#signup_modal">
+            Sign Up!
+              </button>          </div>
         </div>
 
         <div class="col-xs-12 col-md-3">
@@ -64,7 +65,9 @@
             <img src="/assets/icons/svg/chat.svg" alt="Chat" class="tile-image">
             <h3 class="tile-title">Trend.</h3>
             <p class="tile-content">Share your style with friends and follow celebrities and trendsetters.</p>
-            <a class="btn btn-primary btn-large btn-block" href="/auth/facebook">Sign Up!</a>
+
+            <%= button_to 'Sign Up!', {controller: 'users/sessions', action: 'new'}, :method => :get, :class => 'btn btn-primary btn-large btn-block', :remote => true, 'data-toggle' => 'modal', 'data-target' => '#signup_modal' %>
+         
           </div>
         </div>
 
@@ -73,8 +76,10 @@
             <img src="/assets/icons/svg/gift-box.svg" alt="gift" class="tile-image">
             <h3 class="tile-title">Earn.</h3>
             <p class="tile-content">Get paid for every sale you generate with your shares.</p>
-            <a class="btn btn-primary btn-large btn-block" href="/auth/facebook">Sign Up!</a>
-          </div>
+              <button class="btn btn-primary btn-large btn-block" data-toggle="modal" data-target="#signup_modal">
+            Sign Up!
+              </button>
+                        </div>
 
         </div>
       

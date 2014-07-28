@@ -6,6 +6,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 layout 'application'
 
+
 skip_before_filter :verify_authenticity_token
 
 
@@ -18,6 +19,8 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products
   # GET /products.json
   def index
+ 
+
         @user_id = session[:user_id]
         @home_page = 1
         @categories = Category.where(:parent => 1)

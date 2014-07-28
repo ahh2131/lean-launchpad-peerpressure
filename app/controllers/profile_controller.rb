@@ -8,7 +8,7 @@ class ProfileController < ApplicationController
 	  if params[:id]
 	  	@user_id = params[:id]
 	  else
-  		@user_id = session[:user_id]
+  		@user_id = current_user.id
    	  end
 	  @user_info = User.find(@user_id)
 
@@ -49,7 +49,7 @@ class ProfileController < ApplicationController
 	end
 
 	def update
-		@user = User.find(session[:user_id])
+		@user = current_user
 		if @user.update(user_params)
 			flash[:notice] = "Profile successfully updated"
 		else
@@ -59,11 +59,12 @@ class ProfileController < ApplicationController
 	end
 
 	def settings 
-		@user = User.find(session[:user_id])
+		@user = User.find(current_user.id)
+		@user = current_user
 	end
 
 	def isUserFollowed(user_id)
-		activity = Activity.where(:fromUser => session[:user_id], :activity_type => "follow")
+		activity = Activity.where(:fromUser => current_user.id, :activity_type => "follow")
 		.where(:toUser => user_id).first
 		if activity.nil?
 			return 0
@@ -74,7 +75,7 @@ class ProfileController < ApplicationController
 
 	def follow
 		activity = Activity.new
-		activity.fromUser = session[:user_id]
+		activity.fromUser = current_user.id
 		activity.toUser = params[:user_to_follow]
 		activity.activity_type = "follow"
 		activity.save
@@ -90,7 +91,7 @@ class ProfileController < ApplicationController
 	end
 
 	def unfollow
-		activity = Activity.where(:fromUser => session[:user_id], :toUser => params[:user_to_unfollow])
+		activity = Activity.where(:fromUser => current_user.id, :toUser => params[:user_to_unfollow])
 		.where(:activity_type => "follow").first
 		activity.destroy
 
