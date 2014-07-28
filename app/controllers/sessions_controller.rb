@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   def create
     user = User.from_omniauth(env["omniauth.auth"])
+    p request.env['omniauth.auth']
     request.env['omniauth.auth'].info.image.slice! "?type=square"
     user.image = request.env['omniauth.auth'].info.image
     session[:user_id] = user.id

@@ -1,4 +1,30 @@
  @import 'bootstrap';
+ .footer-container ul.left {
+ float: left;
+ }
+ .footer-container .vigme-footer-title {
+ font: bold 12px helvetica;
+ color: #cecece;
+ margin-bottom: 0px;
+ margin-right: 158px;
+ }
+ .footer-container .footer-follow {
+ margin-left: 40px;
+ margin-bottom: 40px;
+ width: 100px;
+ }
+ .footer-container .footer-about {
+ margin-left: 40px;
+ margin-bottom: 40px;
+ width: 200px;
+ }
+ .vigme-footer-container {
+ height: 185px;
+ border-top: 1px solid #dedede;
+ margin-top: 40px;
+ padding-top: 10px;
+ background-color: #fff;
+ }
  .vigme-bottom-nav-header {
   margin-top: 0px;
  }

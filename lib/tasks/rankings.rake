@@ -1,7 +1,7 @@
 namespace :rankings do
   desc "updates rankings for the vig leagues"
   task update: :environment do
-  	User.find_each do |user|
+  	User.where("retailer_id IS NULL").find_each do |user|
   		updateAllTimeRankings(user.id)
   		updateThisWeekRankings(user.id)
   	end

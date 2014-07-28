@@ -16,6 +16,7 @@
 <%= render 'shared/share_modal', modal_id: "share_modal"%>
 <%= render 'shared/list_modal', modal_id: "list_modal"%>
 
+
 <!--<div id="user-widget">
   <% if current_user %>
     Welcome <strong><%= current_user.name %></strong>!
@@ -26,6 +27,11 @@
 </div> -->
 <!--<%= render "layouts/sidebar" %> -->
 <%= yield %>
+
+<%= render "layouts/footer" %>
+<%= render 'shared/share_modal', modal_id: "share_modal"%>
+<%= render 'shared/list_modal', modal_id: "list_modal"%>
+<%= render 'shared/signup_modal', modal_id: "signup_modal"%>
 
 </body>
 </html>
