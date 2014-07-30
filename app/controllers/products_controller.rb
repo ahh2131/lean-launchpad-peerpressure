@@ -19,29 +19,35 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products
   # GET /products.json
   def index
- 
 
-        @user_id = session[:user_id]
-        @home_page = 1
-        @categories = Category.where(:parent => 1)
-        url ="http://labs.vigme.com/interface/interface_products.php?type=popular"
-        if params[:more].to_i == 1
-          more = "&clear=0"
-        else
-          more = "&clear=1"
-        end
-        url = url + more
-        if params[:all].to_i == 1
-          destroyOldFilters(@categories)
-        end
-      #  url = addFiltersToUrl(url, @categories)
-       # page = mechanizeUrl(url)
-       # result = JSON.parse page.body
-        #@products = result["products"]
-        @products = Product.all.limit(50)
-        #and send a message
-        @not_signed_in = 1
-      
+    if user_signed_in?
+      if current_user.signup_process == 0
+        return redirect_to signup_step_one_path
+      end
+    end
+    if user_signed_in?
+      @user_id = current_user.id
+    end
+    @home_page = 1
+    @categories = Category.where(:parent => 1)
+    url ="http://labs.vigme.com/interface/interface_products.php?type=popular"
+    if params[:more].to_i == 1
+      more = "&clear=0"
+    else
+      more = "&clear=1"
+    end
+    url = url + more
+    if params[:all].to_i == 1
+      destroyOldFilters(@categories)
+    end
+  #  url = addFiltersToUrl(url, @categories)
+   # page = mechanizeUrl(url)
+   # result = JSON.parse page.body
+    #@products = result["products"]
+    @products = Product.all.limit(50)
+    #and send a message
+    @not_signed_in = 1
+  
 
     respond_to do |format|
       format.html
@@ -63,8 +69,8 @@ USER_PER_PAGE_SOCIAL = 10
       activity.activity_type = "purchase"
       activity.purchase_url = params[:url]
       activity.product = most_recent_product_view
-      activity.fromUser = session[:user_id]
-      to_user = Activity.where(:activity_type => "seen", :fromUser => session[:user_id])
+      activity.fromUser = current_user.id
+      to_user = Activity.where(:activity_type => "seen", :fromUser => current_user.id)
       .where(:product => most_recent_product_view).first
       if !to_user.nil?
         activity.toUser = to_user.toUser
@@ -78,13 +84,13 @@ USER_PER_PAGE_SOCIAL = 10
   def share
     if productAlreadyShared == 0
       activity = Activity.new
-      activity.fromUser = session[:user_id]
+      activity.fromUser = current_user.id
       activity.product = params[:product]
       activity.activity_type = "save"
       activity.save
     end
     @product_id = params[:product]
-    @lists = List.where(:user_id => session[:user_id]).limit(10)
+    @lists = List.where(:user_id => current_user.id).limit(10)
 
     respond_to do |format|
       format.html
@@ -103,8 +109,8 @@ USER_PER_PAGE_SOCIAL = 10
       activity.activity_type = "purchase"
       activity.purchase_url = params[:url]
       activity.product = most_recent_product_view
-      activity.fromUser = session[:user_id]
-      to_user = Activity.where(:activity_type => "seen", :fromUser => session[:user_id])
+      activity.fromUser = current_user.id
+      to_user = Activity.where(:activity_type => "seen", :fromUser => current_user.id)
       .where(:product => most_recent_product_view).first
       if !to_user.nil?
         activity.toUser = to_user.toUser
@@ -133,7 +139,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def purchaseDoesNotExist(product_id)
-    activity = Activity.where(:activity_type => "purchase", :fromUser => session[:user_id])
+    activity = Activity.where(:activity_type => "purchase", :fromUser => current_user.id)
     .where(:product => product_id).first
     if activity.nil?
       return 1
@@ -148,7 +154,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def productAlreadyShared
-    activity = Activity.where(:fromUser => session[:user_id], :product => params[:product], :activity_type => ["save", "add"]).first
+    activity = Activity.where(:fromUser => current_user.id, :product => params[:product], :activity_type => ["save", "add"]).first
     p activity
     if activity.nil?
       return 0
@@ -267,7 +273,7 @@ USER_PER_PAGE_SOCIAL = 10
     p "testing paams more"
     p session[:product_offset]
 
-    @follower_id_array = Activity.where(:fromUser => session[:user_id])
+    @follower_id_array = Activity.where(:fromUser => current_user.id)
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
     @recent_activity_id_array, cycled = cycleRecentActivityIdArrayFromIdArray(@follower_id_array, USER_PER_PAGE_SOCIAL)
     p @recent_activity_id_array
@@ -302,7 +308,7 @@ USER_PER_PAGE_SOCIAL = 10
 
     p "testing paams more"
     p session[:product_offset]
-    @follower_id_array = Activity.where(:fromUser => session[:user_id])
+    @follower_id_array = Activity.where(:fromUser => current_user.id)
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
     @recent_activity_id_array, cycled = cycleRecentActivityIdArrayFromIdArray(@follower_id_array, USER_PER_PAGE_SOCIAL)
     p @recent_activity_id_array
@@ -342,7 +348,7 @@ USER_PER_PAGE_SOCIAL = 10
     p params[:more]
 
 
-    @follower_id_array = Activity.where(:fromUser => session[:user_id])
+    @follower_id_array = Activity.where(:fromUser => current_user.id)
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
     # get user ids from activities
     # then use this array of user ids and get products from each
@@ -399,14 +405,14 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products/1.json
   def show
     product_shared_by_ids = Activity.where(:activity_type => "save", :product => params[:id]).limit(10).pluck(:fromUser)
-    product_shared_by_ids.delete(session[:user_id].to_s)
+    product_shared_by_ids.delete(current_user.id.to_s)
     @product_shared_by = User.find(product_shared_by_ids)
     if isProductSeenByUser == 0
       activity = Activity.new 
-      activity.fromUser = session[:user_id]
+      activity.fromUser = current_user.id
       activity.activity_type = "seen"
       activity.product = params[:id]
-      if !params[:from_user].nil? && params[:from_user].to_i != session[:user_id].to_i
+      if !params[:from_user].nil? && params[:from_user].to_i != current_user.id.to_i
        activity.toUser = params[:from_user]
       end
       activity.save
@@ -457,7 +463,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def isProductSeenByUser
-    activity = Activity.where(:activity_type => "seen", :fromUser => session[:user_id], :product => params[:id]).first
+    activity = Activity.where(:activity_type => "seen", :fromUser => current_user.id, :product => params[:id]).first
     if activity.nil?
       return 0
     else 
@@ -594,7 +600,7 @@ USER_PER_PAGE_SOCIAL = 10
 
   def createActivity(product_id)
     activity = Activity.new
-    activity.fromUser = session[:user_id]
+    activity.fromUser = current_user.id
     activity.product = product_id
     activity.activity_type = "add"
     activity.save

@@ -11,7 +11,7 @@ class ListController < ApplicationController
   def create
   	list = List.new
   	list.title = params[:list][:title]
-  	list.user_id = session[:user_id]
+  	list.user_id = current_user.id
   	list.save
   	activity = Activity.new
   	activity.fromUser = session[:user_id]
@@ -27,11 +27,11 @@ class ListController < ApplicationController
   def addProductToList
     if params[:list_id].to_i == 0
     else
-      if productNotInList(params[:list_id], params[:product_id], session[:user_id]) == 1
+      if productNotInList(params[:list_id], params[:product_id], current_user.id) == 1
         activity = Activity.new
         activity.list_id = params[:list_id]
         activity.product = params[:product_id]
-        activity.fromUser = session[:user_id]
+        activity.fromUser = current_user.id
         activity.activity_type = "add_to_list"
         activity.save
       end

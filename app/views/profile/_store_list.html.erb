@@ -1,0 +1,6 @@
+<% social_feed_profiles.zip(products_for_each_user).each do |profile, products| %>
+<div class="vigme-social-feed-item col-md-5 col-sm-5">
+<%= render 'shared/product_list_signup_stores', products: products, profile: profile %>
+
+</div>
+<% end %>

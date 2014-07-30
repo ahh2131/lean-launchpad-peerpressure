@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727135847) do
+ActiveRecord::Schema.define(version: 20140729211658) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -210,12 +210,12 @@ ActiveRecord::Schema.define(version: 20140727135847) do
   end
 
   create_table "retailers", force: true do |t|
-    t.integer "local_id",                                             null: false
+    t.integer "local_id",                               default: 0,   null: false
     t.text    "name",                                                 null: false
     t.text    "url",                                                  null: false
     t.text    "local_url",                                            null: false
     t.integer "shipping_free",               limit: 1,  default: 0,   null: false
-    t.integer "shipping_free_minimum_price",                          null: false
+    t.integer "shipping_free_minimum_price",            default: 0,   null: false
     t.float   "shipping_price",                         default: 0.0, null: false
     t.string  "source",                      limit: 30,               null: false
     t.integer "active",                      limit: 1,  default: 1,   null: false
@@ -262,6 +262,17 @@ ActiveRecord::Schema.define(version: 20140727135847) do
     t.integer  "active"
     t.integer  "retailer_id"
     t.integer  "user_type"
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.integer  "signup_process",         default: 0
+    t.string   "preference"
   end
 
 end

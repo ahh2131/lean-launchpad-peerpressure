@@ -19,8 +19,12 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :output, "/log/cron/rankings.log"
-
+set :output, "/var/www/dev.vigme.com/log/cron/rankings.log"
 every 1.day, :at => '4:30 am' do
 	rake "rankings:update"
+end
+
+set :output, "/var/www/dev.vigme.com/log/cron/shopstyle_urls.log"
+every 1.day, :at => '2:30 am' do
+	rake "shopstyle_urls:get_product_urls"
 end

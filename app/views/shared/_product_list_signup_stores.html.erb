@@ -1,0 +1,19 @@
+
+<div class="vigme-social-profile-row row"> 
+		<%= image_tag profile.avatar.url, class: "vigme-social-profile-image" %>
+
+	<a class="vigme-social-name"><%= profile.name %></a>
+
+	<%= render 'profile/follow_button_small', user_info: profile, :unfollow => 0 %>
+</div>
+<div class="vigme-social-product-group">
+<% products.each do |product| %>
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  
+                <div class="portfolio-wrapper vigme-product-social" style="background-image: url('<%= product.image_s3_url %>');">
+                </div> 
+              </div> 
+  <% end %>
+</div>
+
+	

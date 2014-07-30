@@ -48,7 +48,15 @@ Rails.application.routes.draw do
   get 'admin' => 'admin#index', as: 'admin'
   get 'admin/login' => 'admin#login', as: 'admin_login'
 
-#theme testing
+  #signup process
+  get 'step1' => 'profile#step_one', as: 'signup_step_one'
+  patch 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete_patch'
+  get 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete'
+  get 'step2' => 'profile#step_two', as: 'signup_step_two'
+
+
+
+  #theme testing
   get 'test_module/colorz' => 'test_modules#colorz'
   get 'test_module/escape' => 'test_modules#escape'
   get 'test_module/flat' => 'test_modules#flat'

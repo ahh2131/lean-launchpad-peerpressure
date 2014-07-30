@@ -1,2 +1,2 @@
-$('#follow-button').replaceWith('<%= escape_javascript(render "follow_button", user_info: @user_info, :unfollow => 0) %>');
+$('#follow-button-<%= @user_info.id %>').replaceWith('<%= escape_javascript(render "follow_button" + @style, user_info: @user_info, :unfollow => 0) %>');
 $('#followers').replaceWith('<%= escape_javascript(render "followers", followers: @followers) %>');

@@ -7,7 +7,7 @@
         <h4 class="modal-title" id="myModalLabel">Share Your Style!</h4>
       </div>
 
-      <% if session[:user_id] %>
+      <% if user_signed_in? %>
 
       <div id="<%= modal_id %>_body" class="modal-body">
 

@@ -1,5 +1,28 @@
 class ProfileController < ApplicationController
 
+	# sign up process
+	def step_one
+		@user = current_user
+		@products = Product.all.limit(14)
+
+	end
+
+	def step_one_complete
+		@user = current_user
+		@user.update(user_params)
+		redirect_to signup_step_two_path
+	end
+
+	def step_two
+		#get list of stores for following
+		@store_profiles = User.where(:user_type => 2).limit(6)
+		@products_for_each_store = []
+		@store_profiles.each do |store|
+			products = Product.where(:retailer_id => store.retailer_id).limit(6)
+			@products_for_each_store << products
+		end
+	end
+
 	def index
 	end
 	
@@ -82,8 +105,11 @@ class ProfileController < ApplicationController
 
 		@user_info = User.find(params[:user_to_follow])
 		@followers = Activity.where(:toUser => params[:user_to_follow], :activity_type =>"follow").count
-
-
+		if params[:style]
+			@style = "_" + params[:style]
+		else
+			@style=""
+		end
 		respond_to do |format|
  	      format.html
           format.js
@@ -97,8 +123,11 @@ class ProfileController < ApplicationController
 
 		@user_info = User.find(params[:user_to_unfollow])
 		@followers = Activity.where(:toUser => params[:user_to_unfollow], :activity_type =>"follow").count
-
-
+		if params[:style]
+			@style = "_" + params[:style]
+		else
+			@style=""
+		end
 		respond_to do |format|
  	      format.html
           format.js
@@ -126,7 +155,7 @@ class ProfileController < ApplicationController
 	private
 
 	  def user_params
-	    params.require(:user).permit(:name, :avatar, :gender, :email, :password, :picture)
+	    params.require(:user).permit(:preference, :name, :avatar, :gender, :email, :password, :picture)
 	  end
 
 end

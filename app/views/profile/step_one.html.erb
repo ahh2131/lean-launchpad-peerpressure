@@ -1,0 +1,40 @@
+<!--  background content here -->
+
+
+
+<div id="vigme-hider"></div>
+<div id="vigme-popup_box">
+
+	<div class="row">
+		<div class="col-offset-0">
+			<h3 class="vigme-center-text vigme-header-3">What kind of products do you want to see on your Vigme feed?</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 col-md-offset-2">
+			<%= form_for @user, url: {action: "step_one_complete"} do |f| %>
+
+			   <div class="vigme-field-div">
+
+			    <%= f.label :preference %>:<a>   </a>
+			    <%= label :preference_f, 'Female' %>
+			    <%= f.radio_button :preference, 'F', class: "vigme-settings-field" %>
+			    <%= label :preference_m, 'Male' %>
+			    <%= f.radio_button :preference, 'M', class: "vigme-settings-field" %>
+			    </div>
+			  <div class="vigme-center-text vigme-field-div">
+			  <%= f.submit "Next", class: "vigme-settings-button" %>
+			</div>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="vigme-step-1-product-div col-md-12 col-md-offset-0">
+			<%= render 'shared/product_list_mini', products: @products %>
+		</div>
+	</div>
+
+</div>    
+<div id="vigme-content">
+</div>

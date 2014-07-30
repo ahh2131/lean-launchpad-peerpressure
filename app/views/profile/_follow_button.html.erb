@@ -1,12 +1,12 @@
-<div id="follow-button" class="vigme-follow-button">
+<div id="follow-button-<%= user_info.id %>" class="vigme-follow-button">
 
 <% if current_user.id.to_i != user_info.id.to_i %>
 
 	<% if unfollow == 1 %>
-		<%= button_to 'Unfollow', {controller: 'profile', action: 'unfollow', :user_to_unfollow => user_info.id}, :method => :post, :remote => true, :class => 'vigme-button btn btn-primary' %>
+		<%= button_to 'Unfollow', {controller: 'profile', action: 'unfollow', :user_to_unfollow => user_info.id}, :method => :post, :remote => true, :class => "vigme-button btn btn-primary" %>
 
 	<% else %>
-		<%= button_to 'Follow', {controller: 'profile', action: 'follow', :user_to_follow => user_info.id}, :method => :post, :remote => true, :class => 'vigme-button btn btn-primary' %>
+		<%= button_to 'Follow', {controller: 'profile', action: 'follow', :user_to_follow => user_info.id}, :method => :post, :remote => true, :class => "vigme-button btn btn-primary" %>
 	<% end %>
 <% end %>
 
