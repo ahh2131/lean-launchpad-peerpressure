@@ -71,6 +71,9 @@ GEM
       multipart-post (>= 1.2, < 3)
     fastimage (1.6.3)
       addressable (~> 2.3, >= 2.3.5)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     hashie (2.1.1)
     hike (1.2.3)
     http-cookie (1.0.2)
@@ -216,6 +219,7 @@ DEPENDENCIES
   devise
   easymarklet
   fastimage
+  figaro
   jbuilder (~> 2.0)
   jquery-rails
   kaminari

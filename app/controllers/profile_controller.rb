@@ -2,25 +2,78 @@ class ProfileController < ApplicationController
 
 	# sign up process
 	def step_one
+		if current_user.signup_process != 0
+			return redirect_to root_url
+		end
 		@user = current_user
 		@products = Product.all.limit(14)
-
 	end
 
 	def step_one_complete
+
 		@user = current_user
+		params[:user][:signup_process] = 1
+		p params
 		@user.update(user_params)
 		redirect_to signup_step_two_path
 	end
 
+	layout "signup"
 	def step_two
-		#get list of stores for following
-		@store_profiles = User.where(:user_type => 2).limit(6)
-		@products_for_each_store = []
-		@store_profiles.each do |store|
-			products = Product.where(:retailer_id => store.retailer_id).limit(6)
-			@products_for_each_store << products
+		if current_user.signup_process != 1
+			return redirect_to root_url
 		end
+		#get list of stores for following
+		@store_list = User.where(:user_type => 2).limit(100)
+		@products_for_each_store = []
+		@store_profiles = []
+		@store_list.each do |store|
+			products = Product.where(:retailer_id => store.retailer_id).limit(6)
+			if products.count >= 6
+				@products_for_each_store << products
+				@store_profiles << store
+			end
+		end
+	end
+
+	def step_two_complete
+		current_user.signup_process = 2
+		current_user.save
+		redirect_to signup_step_three_path
+	end
+
+	layout "signup"
+	def step_three
+		if current_user.signup_process != 2
+			return redirect_to root_url
+		end
+		@user_list = User.where("retailer_id IS NULL").limit(100)
+		@products_for_each_user = []
+		@user_profiles = []
+		@user_list.each do |user|
+			products = getProductsForUser(user.id)
+			if products.count >= 6
+				@products_for_each_user << products
+				@user_profiles << user
+			end
+		end
+
+	end
+
+	def getProductsForUser(id)
+		product_ids = Activity.where(:fromUser => id)
+		.where(:activity_type => ["save", "add"])
+		.order("created_at desc").limit(6).pluck(:product)
+
+		products = Product.find(product_ids)
+		p products
+		return products
+	end
+
+	def step_three_complete
+		current_user.signup_process = 3
+		current_user.save
+		redirect_to root_url
 	end
 
 	def index
@@ -155,7 +208,7 @@ class ProfileController < ApplicationController
 	private
 
 	  def user_params
-	    params.require(:user).permit(:preference, :name, :avatar, :gender, :email, :password, :picture)
+	    params.require(:user).permit(:signup_process, :preference, :name, :avatar, :gender, :email, :password, :picture)
 	  end
 
 end

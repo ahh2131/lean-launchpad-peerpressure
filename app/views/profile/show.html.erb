@@ -32,9 +32,16 @@
 			</div>
 		</div>
 
+		<% if @user_info.id == current_user.id %>
+			<div class="vigme-profile-header-button-2 col-md-2">
+					<%= button_to 'Settings', {controller: 'profile', action: 'settings'}, :method => :get, :class => "vigme-button btn btn-primary" %>
+					<%= button_to 'Sign Out', {controller: 'devise/sessions', action: 'destroy'}, :method => :get, :class => "vigme-button btn btn-primary" %>
+			</div>
+		<% else %>
 		<div class="vigme-profile-header-button col-md-2">
 				<%= render 'profile/follow_button', user_info: @user_info, :unfollow => @followed %>
 		</div>
+		<% end %>
 	  </div>
 
 </div>

@@ -1,12 +1,22 @@
 // Place all the styles related to the Profile controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-profile-header-button-2 {
+  margin-top: 0%;
+}
+.vigme-signup-footer {
+  position: fixed;
+  bottom: 134px;
+  right: 182px;
+  z-index: 10;
+}
 .vigme-signup-follow-button {
   float: right;
   margin-top: -37px;
   margin-right: 13px;
   height: 27px;
   border-radius: 0px;
+  padding-top:3px;
 }
 .vigme-store-follow-button {
   float: right;

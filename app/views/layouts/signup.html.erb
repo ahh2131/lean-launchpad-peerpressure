@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vigme</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+  <%= csrf_meta_tags %>
+</head>
+
+<body style="overflow:hidden">
+<header >
+<%= render "layouts/header" %>
+</header>
+<p class="notice"><%= notice %></p>
+   <p class="alert"><%= alert %></p>
+
+
+
+<!--<div id="user-widget">
+  <% if current_user %>
+    Welcome <strong><%= current_user.name %></strong>!
+    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+  <% else %>
+    <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
+  <% end %>
+</div> -->
+<!--<%= render "layouts/sidebar" %> -->
+<%= yield %>
+<%= render "layouts/footer" %>
+<%= render 'shared/share_modal', modal_id: "share_modal"%>
+<%= render 'shared/list_modal', modal_id: "list_modal"%>
+<%= render 'shared/signup_modal', modal_id: "signup_modal"%>
+
+</body>
+</html>

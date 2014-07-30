@@ -22,7 +22,12 @@ USER_PER_PAGE_SOCIAL = 10
 
     if user_signed_in?
       if current_user.signup_process == 0
+        UserMailer.welcome_email(current_user).deliver
         return redirect_to signup_step_one_path
+      elsif current_user.signup_process == 1
+        return redirect_to signup_step_two_path
+      elsif current_user.signup_process == 2
+        return redirect_to signup_step_three_path
       end
     end
     if user_signed_in?

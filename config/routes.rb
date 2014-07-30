@@ -53,6 +53,9 @@ Rails.application.routes.draw do
   patch 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete_patch'
   get 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete'
   get 'step2' => 'profile#step_two', as: 'signup_step_two'
+  post 'step2complete' => 'profile#step_two_complete', as: 'signup_step_two_complete'
+  get 'step3' => 'profile#step_three', as: 'signup_step_three'
+  post 'step3complete' => 'profile#step_three_complete', as: 'signup_step_three_complete'
 
 
 

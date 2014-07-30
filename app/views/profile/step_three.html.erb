@@ -1,0 +1,19 @@
+
+<div id="vigme-hider"></div>
+<div id="vigme-popup_box">
+	<div class="row vigme-signup-footer">
+		<%= button_to 'Next', {controller: 'profile', action: 'step_three_complete'}, class: "vigme-button btn btn-primary" %>
+	</div>
+	<div class="row">
+		<div class="col-offset-0">
+			<h1 class="vigme-center-text vigme-header">Follow people to help us build your feed.</h1>
+		</div>
+	</div>
+	<div class="row">
+		<%= render 'profile/store_list', products_for_each_user: @products_for_each_user, social_feed_profiles: @user_profiles %>
+	</div>
+
+
+</div>    
+<div id="vigme-content">
+</div>
