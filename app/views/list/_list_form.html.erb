@@ -1,6 +1,6 @@
 <div id="share_modal_body" class="row">
 	<div class="col-md-offset-1">
-		<h3 class="vigme-header-3">Name of Outfit</h3>
+		<h3 class="vigme-header-3"></h3>
 		<%= form_for @list, remote: true, url: list_create_path do |f| %>
 			<%= @list.errors.full_messages.first if @list.errors.any? %>
 
@@ -10,7 +10,7 @@
 		  </p>
 		 
 		  <p>
-		    <%= f.submit 'Create Outfit', :class => "btn btn-primary" %>
+		    <%= f.submit 'Create List', :class => "btn btn-primary" %>
 		  </p>
 		<% end %>
 	</div>

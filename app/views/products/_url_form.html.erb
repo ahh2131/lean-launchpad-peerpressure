@@ -5,7 +5,7 @@
 		<%= form_for :link, remote: true, url: products_new_path do |f| %>
 		  <p>
 		    <%= f.label :url %><br>
-		    <%= f.text_field :url, :class => "vigme-post-product-field" %>
+		    <%= f.text_field :url, :class => "vigme-post-product-field",  autofocus: true %>
 		  </p>
 		 
 		  <p>

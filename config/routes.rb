@@ -25,7 +25,9 @@ Rails.application.routes.draw do
   get '/purchased' => 'products#purchased'
   post '/purchase/receipt' => 'products#purchaseReceipt'
 
-  get 'product/add' => 'products#saveProduct', as: 'save_product'
+  get 'product/categorize' => 'products#categorizeProduct', as: 'categorize_product'
+  post 'product/add' => 'products#saveProduct', as: 'save_product'
+
   post 'product/share' => 'products#share', as: 'share_product'
   post 'product/buy' => 'products#buy', as: 'buy_product'
   post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'

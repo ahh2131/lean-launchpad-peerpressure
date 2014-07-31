@@ -523,8 +523,10 @@ USER_PER_PAGE_SOCIAL = 10
         numberImagesHeader = numberOfHeaderImages(url)
         headerImage = 0
         # makes an array of image urls after the header ones
+        price = cleanupPrice(Nokogiri::HTML(open(url)).xpath("//body//*[contains(text(),'#{'$'}')]")[0].inner_html)
+        session[:product_price] = price.to_i
         Nokogiri::HTML(open(url)).xpath("//body//img/@src").each do |src|
-          if headerImage >= numberImagesHeader
+          if headerImage >= numberImagesHeader && headerImage < numberImagesHeader + 8
             absolute_uri = URI.join(session[:product_link], src ).to_s
             if imageSizeValid(absolute_uri) == 1
               @image_array << absolute_uri
@@ -542,6 +544,13 @@ USER_PER_PAGE_SOCIAL = 10
       
   end
 
+  def cleanupPrice(price)
+    price.delete("\n")
+    price.delete("\t")
+    price.gsub(/\s+/, "")
+    price.delete("$")
+  end
+
   def doesProductExist(url)
     product = Product.where('extractor_url LIKE ?', url).first
     if product.nil?
@@ -552,16 +561,18 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
 
-  def createProduct(image_url)
-    retailer_id = findOrCreateRetailer(session[:product_link])
+  def createProduct(image_url, name, price, product_url)
+    retailer_id = findOrCreateRetailer(product_url)
     product = Product.new
     product.retailer_id = retailer_id
     product.image_s3 = image_url
-    product.buy_url = session[:product_link]
-    product.extractor_url = session[:product_link]
+    product.buy_url = product_url
+    product.name = name
+    product.extractor_url = product_url
     product.ftp_transfer_processed = 1
     product.ftp_transfer_datetime = Time.now
     product.vigme_inserted = Time.now
+    product.price = price
     product.save
     product.image_s3_url = product.image_s3.url
     product.ftp_transfer_deleted_source = 1
@@ -617,19 +628,47 @@ USER_PER_PAGE_SOCIAL = 10
       format.js { render 'url_form' }
     end
   end
-  
-  def saveProduct
+
+  def categorizeProduct
     image_index = params[:index]
     if image_index.to_i < session[:image_array].count && image_index.to_i >= 0
-      image_url = session[:image_array][image_index.to_i]
-      @product = createProduct(image_url)
-      createActivity(@product.id)
+      session[:product_image_url] = session[:image_array][image_index.to_i]
     else
       redirect_to root_url
     end
     session.delete(:image_array)
+
+    @product = Product.new
+    @product.price = session[:product_price]
+    @categories = Category.where(:parent => 1).all
+
+    respond_to do |format|
+      format.html 
+      format.js 
+    end
+  end
+  
+  def saveProduct
+    # make categories and 
+    @product = createProduct(session[:product_image_url], params[:product][:name], session[:product_price], session[:product_link])
+    createActivity(@product.id)
     session.delete(:product_link)
+    session.delete(:product_price)
+    session.delete(:product_image_url)
+    createProductCategories(@product.id)
     redirect_to :controller => 'products', :action => 'show', :id => @product.id
+  end
+
+  def createProductCategories(product_id)
+    categories = Category.where(:parent => 1).all
+    categories.each do |category|
+      if params[category.name.gsub(/\s+/, "").to_sym].to_i == 1
+        product_category = CategoryProduct.new
+        product_category.product = product_id
+        product_category.category = category.id
+        product_category.save
+      end
+    end
   end
 
   # GET /products/1/edit

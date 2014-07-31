@@ -1,10 +1,10 @@
 
 <div id="share_modal_body" class="row">
 		<div class="row col-md-offset-1 product-detail-padding">
-		<h1> Choose the best picture! </h1>
+		<h1 class="vigme-center-text"> Choose the best picture! </h1>
 
 		<% image_array.each_with_index do |image, index| %>
-		<%= link_to image_tag(image, :class => "add_product_image"), save_product_path(:index => index) %>
+		<%= link_to image_tag(image, :class => "add_product_image"), categorize_product_path(:index => index), :remote => true %>
 
 		  <% if index % 3 == 0  && index != 0 %>
 			</br>
