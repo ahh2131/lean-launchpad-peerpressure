@@ -14,4 +14,4 @@
 
 
 </div>
-<a style="display: none"><%= button_to 'More', {:controller => "products", :action => "moreSocialFeed", :more => 1}, id: 'more_products', :method => :get, remote: true %></a>
+<a id="more_products_wrap" style="display: none"><%= button_to 'More', {:controller => "products", :action => "socialFeed", :more => 1, :page => 2, :product_page => 2}, id: 'more_products', :method => :get, remote: true %></a>

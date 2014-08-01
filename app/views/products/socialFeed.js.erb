@@ -1,1 +1,2 @@
 $('#product-list').append('<%= escape_javascript(render "social_feed", products_for_each_user: @products_for_each_user, social_feed_profiles: @social_feed_profiles ) %>');
+$('#more_products_wrap').replaceWith('<%= escape_javascript(render "more_button_social", page: @page, product_page: @product_page ) %>');

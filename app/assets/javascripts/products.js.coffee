@@ -4,13 +4,13 @@
 
 $ ->
 	$(window).on 'scroll', ->
-		if $(window).scrollTop() > $(document).height() - $(window).height() - 100
+		if $(window).scrollTop() > $(document).height() - $(window).height() - 2000
 			$("#more_products").click()
 			$("#more_products").attr 'disabled', true
 
 			console.log("test")
 			delay = (ms, func) -> setTimeout func, ms
-			delay 500, -> $("#more_products").removeAttr 'disabled'
+			delay 1000, -> $("#more_products").removeAttr 'disabled'
 		return
 
 

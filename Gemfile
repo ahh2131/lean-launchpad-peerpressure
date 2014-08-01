@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+
 gem 'figaro'
 
 gem 'devise'
