@@ -9,15 +9,19 @@
 			<div><h3><%= @user_info.name %></h3></div>
 
 		</div>
-		<div id="followers" class="col-md-1 col-sm-2">
-			Followers
-			<h2><%= @followers %></h2>
-		</div>
-		<div class="col-md-1 col-sm-2">
-			Following
-			<h2><%= @following %></h2>
-		</div>
-		<div class="col-md-2 col-sm-2">
+		<a href="<%= profile_followers_path(@user_info.id) %>">
+			<div id="followers" class="col-md-1 col-sm-2">
+				Followers
+				<h2><%= @followers %></h2>
+			</div>
+		</a>
+		<a href="<%= profile_following_path(@user_info.id) %>">
+			<div class="col-md-1 col-sm-2">
+				Following
+				<h2><%= @following %></h2>
+			</div>
+		</a>
+<!--		<div class="col-md-2 col-sm-2">
 			<a style="text-align:center;">Vigor</a>
 			<div class="row">
 				<div class="vigme-vigor-profile-header col-md-6 no-padding">
@@ -30,17 +34,18 @@
 				</div>
 				
 			</div>
-		</div>
-
-		<% if @user_info.id == current_user.id %>
-			<div class="vigme-profile-header-button-2 col-md-2">
-					<%= button_to 'Settings', {controller: 'profile', action: 'settings'}, :method => :get, :class => "vigme-button btn btn-primary" %>
-					<%= button_to 'Sign Out', {controller: 'devise/sessions', action: 'destroy'}, :method => :get, :class => "vigme-button btn btn-primary" %>
+		</div> -->
+		<% if user_signed_in? %>
+			<% if @user_info.id == current_user.id %>
+				<div class="vigme-profile-header-button-2 col-md-2">
+						<%= button_to 'Settings', {controller: 'profile', action: 'settings'}, :method => :get, :class => "vigme-button btn btn-primary" %>
+						<%= button_to 'Sign Out', {controller: 'devise/sessions', action: 'destroy'}, :method => :get, :class => "vigme-button btn btn-primary" %>
+				</div>
+			<% else %>
+			<div class="vigme-profile-header-button col-md-2">
+					<%= render 'profile/follow_button', user_info: @user_info, :unfollow => @followed %>
 			</div>
-		<% else %>
-		<div class="vigme-profile-header-button col-md-2">
-				<%= render 'profile/follow_button', user_info: @user_info, :unfollow => @followed %>
-		</div>
+			<% end %>
 		<% end %>
 	  </div>
 
@@ -56,16 +61,14 @@
 
 <div id="product-list" class="vigme-shared-product-list col-md-offset-1 col-xs-offset-0 col-sm-offset-0 col-md-5">
 	<div class="row">
-	<a class="col-md-offset-1 col-md-10 col-sm-offset-0 col-xs-offset-0"><h3 class="vigme-header-3">Shared Products </h3> </a>
+	<a href="<%= profile_shared_products_path(@user_info.id) %>" class="col-md-offset-1 col-md-10 col-sm-offset-0 col-xs-offset-0"><h3 class="vigme-header-3">Shared Products </h3> </a>
 </div>
 <%= render 'shared/product_list_profile', products: @shared_products %>
 </div>
 
 <div class="col-md-offset-1 col-md-4 no-padding">
 <% @lists.zip(@products_for_each_list).each do |list, products| %>
-
 	<%= render 'shared/product_list_lists', products: products, list: list %>
-
 <% end %>
 	</div>
 </div>

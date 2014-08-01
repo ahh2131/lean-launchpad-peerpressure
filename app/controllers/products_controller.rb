@@ -14,8 +14,10 @@ PRODUCTS_PER_USER = 6
 MINIMUM_DIMENSION = 250
 PER_USER_SIMILAR = 10
 USER_PER_PAGE_SOCIAL = 10
+
   def test
   end
+
   # GET /products
   # GET /products.json
   def index
@@ -23,6 +25,8 @@ USER_PER_PAGE_SOCIAL = 10
     if user_signed_in?
       if current_user.signup_process == 0
         UserMailer.welcome_email(current_user).deliver
+        current_user.avatar = "http://s3-us-west-2.amazonaws.com/vigme/users/avatars/000/000/416/original/missing-profile.jpg?1406849266"
+        current_user.save
         return redirect_to signup_step_one_path
       elsif current_user.signup_process == 1
         return redirect_to signup_step_two_path
@@ -60,6 +64,47 @@ USER_PER_PAGE_SOCIAL = 10
     end
   end
 
+  def discover
+    user_ids = Ranking.where(:time_period => "this_week").order("score desc").page(params[:page]).pluck(:user_id)
+    user_profiles = User.where(:id => user_ids).all
+    @products_for_each_user = []
+    @discover_profiles = []
+    user_profiles.each do |profile|
+      products = profile.products.limit(6)
+      if products.count < 6
+        products = Product.where(:retailer_id => profile.id).limit(6)
+      end
+      if !(products.count < 6)
+       @products_for_each_user << products
+       @discover_profiles << profile
+      end
+    end
+
+    @arrayFollowers = arrayAlreadyFollowed(@discover_profiles)
+    p @arrayFollowers 
+    @page = params[:page].to_i + 1
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def arrayAlreadyFollowed(followers)
+    array = []
+    followers.each do |follower|
+      if user_signed_in?
+        activity = current_user.activities.where(:toUser => follower.id)
+        .where(:activity_type => "follow").first
+      end
+      if activity.nil?
+        array << 0
+      else
+        array << 1
+      end
+    end
+    return array
+  end
   # bookmarklet goes here, this activity will keep track of purchases and where commission goes
   # only created a purchase if bookmarklet finds keywords and site is https
   def purchased
@@ -73,7 +118,7 @@ USER_PER_PAGE_SOCIAL = 10
       activity = Activity.new
       activity.activity_type = "purchase"
       activity.purchase_url = params[:url]
-      activity.product = most_recent_product_view
+      activity.product_id = most_recent_product_view
       activity.fromUser = current_user.id
       to_user = Activity.where(:activity_type => "seen", :fromUser => current_user.id)
       .where(:product => most_recent_product_view).first
@@ -90,7 +135,7 @@ USER_PER_PAGE_SOCIAL = 10
     if productAlreadyShared == 0
       activity = Activity.new
       activity.fromUser = current_user.id
-      activity.product = params[:product]
+      activity.product_id = params[:product]
       activity.activity_type = "save"
       activity.save
     end
@@ -113,10 +158,10 @@ USER_PER_PAGE_SOCIAL = 10
       activity = Activity.new
       activity.activity_type = "purchase"
       activity.purchase_url = params[:url]
-      activity.product = most_recent_product_view
+      activity.product_id = most_recent_product_view
       activity.fromUser = current_user.id
       to_user = Activity.where(:activity_type => "seen", :fromUser => current_user.id)
-      .where(:product => most_recent_product_view).first
+      .where(:product_id => most_recent_product_view).first
       if !to_user.nil?
         activity.toUser = to_user.toUser
       end
@@ -145,7 +190,7 @@ USER_PER_PAGE_SOCIAL = 10
 
   def purchaseDoesNotExist(product_id)
     activity = Activity.where(:activity_type => "purchase", :fromUser => current_user.id)
-    .where(:product => product_id).first
+    .where(:product_id => product_id).first
     if activity.nil?
       return 1
     else
@@ -159,7 +204,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def productAlreadyShared
-    activity = Activity.where(:fromUser => current_user.id, :product => params[:product], :activity_type => ["save", "add"]).first
+    activity = Activity.where(:fromUser => current_user.id, :product_id => params[:product], :activity_type => ["save", "add"]).first
     p activity
     if activity.nil?
       return 0
@@ -230,7 +275,7 @@ USER_PER_PAGE_SOCIAL = 10
   def getUniqueProductsFromUserArray(perUser, id_array, offset)
     products = []
     id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).limit(perUser).offset(offset).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).limit(perUser).offset(offset).pluck(:product_id)
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
       end
@@ -244,13 +289,13 @@ USER_PER_PAGE_SOCIAL = 10
     session[:recent_activity_offset] ||= 0
 
     @activity_array_unprocessed = Activity.order("MAX(created_at) DESC").select(:fromUser, :created_at).where(:fromUser => id_array)
-    .where(:activity_type => ["add", "share"]).group(:fromUser).offset(session[:recent_activity_offset].to_i*limit).limit(limit)
+    .where(:activity_type => ["add", "save"]).group(:fromUser).offset(session[:recent_activity_offset].to_i*limit).limit(limit)
     @recent_activity_id_array = []
     @activity_array_unprocessed.each do |activity|
       @recent_activity_id_array << activity.fromUser
     end
     session[:recent_activity_offset] = session[:recent_activity_offset].to_i + 1
-    if @recent_activity_id_array[0].nil?
+    if @recent_activity_id_array.count == 0
       cycled = 1
       session[:recent_activity_offset] = 0
       @recent_activity_id_array, unneeded = cycleRecentActivityIdArrayFromIdArray(id_array, limit)
@@ -275,11 +320,9 @@ USER_PER_PAGE_SOCIAL = 10
 
   def socialFeed
 
-    p "testing paams more"
-    p session[:product_offset]
-
     @follower_id_array = Activity.where(:fromUser => current_user.id)
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
+
     @recent_activity_id_array, cycled = cycleRecentActivityIdArrayFromIdArray(@follower_id_array, USER_PER_PAGE_SOCIAL)
     p @recent_activity_id_array
     if cycled == 1
@@ -289,7 +332,7 @@ USER_PER_PAGE_SOCIAL = 10
     @products_for_each_user = []
     @social_feed_profiles = []
     @recent_activity_id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).page(page).per(PRODUCTS_PER_USER).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).page(page).per(PRODUCTS_PER_USER).pluck(:product_id)
       products = []
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
@@ -310,11 +353,9 @@ USER_PER_PAGE_SOCIAL = 10
 
   def moreSocialFeed
 
-
-    p "testing paams more"
-    p session[:product_offset]
     @follower_id_array = Activity.where(:fromUser => current_user.id)
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
+
     @recent_activity_id_array, cycled = cycleRecentActivityIdArrayFromIdArray(@follower_id_array, USER_PER_PAGE_SOCIAL)
     p @recent_activity_id_array
     if cycled == 1
@@ -324,7 +365,7 @@ USER_PER_PAGE_SOCIAL = 10
     @products_for_each_user = []
     @social_feed_profiles = []
     @recent_activity_id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).page(page).per(PRODUCTS_PER_USER).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).page(page).per(PRODUCTS_PER_USER).pluck(:product_id)
       products = []
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
@@ -337,6 +378,9 @@ USER_PER_PAGE_SOCIAL = 10
         @social_feed_profiles << user
       else
       end
+    end
+    if @products_for_each_user[0].nil?
+      session[:product_offset] = 0
     end
 
   end
@@ -371,7 +415,7 @@ USER_PER_PAGE_SOCIAL = 10
     @products_for_each_user = []
     @social_feed_profiles = []
     @recent_activity_id_array.each do |follower_id|
-      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").offset(session[:productOffset].to_i*PRODUCTS_PER_USER).limit(PRODUCTS_PER_USER).pluck(:product)
+      @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>"add").offset(session[:productOffset].to_i*PRODUCTS_PER_USER).limit(PRODUCTS_PER_USER).pluck(:product_id)
       products = []
       @product_ids.each do |product_id|
         products << Product.where(:id => product_id).first
@@ -409,23 +453,26 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products/1
   # GET /products/1.json
   def show
-    product_shared_by_ids = Activity.where(:activity_type => "save", :product => params[:id]).limit(10).pluck(:fromUser)
-    product_shared_by_ids.delete(current_user.id.to_s)
-    @product_shared_by = User.find(product_shared_by_ids)
-    if isProductSeenByUser == 0
-      activity = Activity.new 
-      activity.fromUser = current_user.id
-      activity.activity_type = "seen"
-      activity.product = params[:id]
-      if !params[:from_user].nil? && params[:from_user].to_i != current_user.id.to_i
-       activity.toUser = params[:from_user]
+    product_shared_by_ids = Activity.where(:activity_type => "save", :product_id => params[:id]).limit(10).pluck(:fromUser)
+    if user_signed_in?
+      product_shared_by_ids.delete(current_user.id.to_s)
+      if isProductSeenByUser == 0
+        activity = Activity.new 
+        activity.fromUser = current_user.id
+        activity.activity_type = "seen"
+        activity.product_id = params[:id]
+        if !params[:from_user].nil? && params[:from_user].to_i != current_user.id.to_i
+         activity.toUser = params[:from_user]
+        end
+        activity.save
       end
-      activity.save
     end
-    
-    @retailer = Retailers.find(@product.retailer_id)
-    @retailer_user = User.where(:retailer_id => @retailer.id).first
-    @other_products_from_retailer = findOtherProductsFromRetailer(@retailer)
+    @product_shared_by = User.where(:id => product_shared_by_ids).all
+    if @product.retailer_id != -1
+      @retailer = Retailers.find(@product.retailer_id)
+      @retailer_user = User.where(:retailer_id => @retailer.id).first
+      @other_products_from_retailer = findOtherProductsFromRetailer(@retailer)
+    end
     users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
     @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, 0, 5)
     session[:similar_products_offset] ||= 0
@@ -457,8 +504,8 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def findOtherProductsFromUser
-    original_user = Activity.where(:activity_type => ["save", "add"], :product => params[:id]).order("created_at asc").pluck(:fromUser).first
-    other_activity_from_user = Activity.where(:activity_type => ["add", "save"], :fromUser => original_user).limit(6).pluck(:product)
+    original_user = Activity.where(:activity_type => ["save", "add"], :product_id => params[:id]).order("created_at asc").pluck(:fromUser).first
+    other_activity_from_user = Activity.where(:activity_type => ["add", "save"], :fromUser => original_user).limit(6).pluck(:product_id)
     @other_products_from_user = Product.find(other_activity_from_user)
     @other_products_from_user.each_with_index  do |product, index|
       if product.id == params[:id].to_i
@@ -468,7 +515,7 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def isProductSeenByUser
-    activity = Activity.where(:activity_type => "seen", :fromUser => current_user.id, :product => params[:id]).first
+    activity = Activity.where(:activity_type => "seen", :fromUser => current_user.id, :product_id => params[:id]).first
     if activity.nil?
       return 0
     else 
@@ -526,7 +573,7 @@ USER_PER_PAGE_SOCIAL = 10
         price = cleanupPrice(Nokogiri::HTML(open(url)).xpath("//body//*[contains(text(),'#{'$'}')]")[0].inner_html)
         session[:product_price] = price.to_i
         Nokogiri::HTML(open(url)).xpath("//body//img/@src").each do |src|
-          if headerImage >= numberImagesHeader && headerImage < numberImagesHeader + 8
+          if headerImage >= numberImagesHeader
             absolute_uri = URI.join(session[:product_link], src ).to_s
             if imageSizeValid(absolute_uri) == 1
               @image_array << absolute_uri
@@ -617,7 +664,7 @@ USER_PER_PAGE_SOCIAL = 10
   def createActivity(product_id)
     activity = Activity.new
     activity.fromUser = current_user.id
-    activity.product = product_id
+    activity.product_id = product_id
     activity.activity_type = "add"
     activity.save
   end
@@ -664,8 +711,8 @@ USER_PER_PAGE_SOCIAL = 10
     categories.each do |category|
       if params[category.name.gsub(/\s+/, "").to_sym].to_i == 1
         product_category = CategoryProduct.new
-        product_category.product = product_id
-        product_category.category = category.id
+        product_category.product_id = product_id
+        product_category.category_id = category.id
         product_category.save
       end
     end

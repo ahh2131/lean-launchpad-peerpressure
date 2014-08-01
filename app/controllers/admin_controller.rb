@@ -1,18 +1,14 @@
 class AdminController < ApplicationController
 	def index
-		user = User.find(session[:user_id])
 
-		if user.admin != 1 || defined?(session[:admin_id]) == nil
+		if current_user.admin != 1 || defined?(session[:admin_id]) == nil
 			return redirect_to root_url
 		end
-		session[:admin_id] = session[:user_id]
+		session[:admin_id] = current_user.id
 	end
 
 	def login
-		session[:user_id] = params[:user_id]
-		user = User.find(session[:user_id])
-		session[:user_image] = user.avatar.url
-
+		current_user = User.find(params[:user_id])
 		redirect_to root_url
 	end
 

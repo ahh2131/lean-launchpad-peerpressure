@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
 
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
+  has_many :activities, :foreign_key => 'fromUser'
+  has_many :products, through: :activities
+  has_many :lists, through: :activities
+
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.email = auth.info.email

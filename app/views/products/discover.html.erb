@@ -1,0 +1,11 @@
+<div class="vigme-social-header row">
+
+</div>
+
+<div id="product-list" class="no-margin row col-md-offset-1">
+
+<%= render 'discover_feed', products_for_each_user: @products_for_each_user, discover_profiles: @discover_profiles, alreadyFollowed: @arrayFollowers %>
+
+
+</div>
+<a id="more_products_wrap" style="display: none"><%= button_to 'More', {:controller => "products", :action => "discover", :page => 2}, id: 'more_products', :method => :get, remote: true %></a>

@@ -1,0 +1,26 @@
+<div class="row col-md-offset-0 product-detail-padding vigme-center-text">
+<h1> Categorize your Product! </h1>
+
+<%= form_for @product, url: {action: "saveProduct"} do |f| %>
+ <div class="vigme-field-div">
+  <%= f.label :name, "Name:" %>
+  <%= f.text_field :name, :class => "vigme-settings-field", autofocus: true %>
+
+  <%= f.label :price, "Price ($) :" %>
+  <%= f.text_field :price, class: "vigme-settings-field", :size=>"3" %><br />
+</div>
+<div class="row">
+	<div class="col-md-10 vigme-center-text col-md-offset-1">
+		<% @categories.each do |category| %>
+		 <%= check_box_tag(category.name.gsub(/\s+/, "").to_sym) %>
+		 <%= label_tag(category.name.gsub(/\s+/, "").to_sym, category.name, class: "vigme-category-label") %>
+		<% end %>
+	</div>
+</div>
+
+  <div class="vigme-center-text vigme-field-div">
+  <%= f.submit "Add Product", class: "vigme-settings-button" %>
+</div>
+<% end %>
+
+</div>

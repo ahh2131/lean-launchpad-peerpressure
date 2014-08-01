@@ -30,17 +30,20 @@ class ListController < ApplicationController
       if productNotInList(params[:list_id], params[:product_id], current_user.id) == 1
         activity = Activity.new
         activity.list_id = params[:list_id]
-        activity.product = params[:product_id]
+        activity.product_id = params[:product_id]
         activity.fromUser = current_user.id
         activity.activity_type = "add_to_list"
         activity.save
       end
     end
-    redirect_to product_path(params[:product_id])
+    respond_to do |format|
+      format.html { redirect_to product_path(params[:product_id]) }
+      format.js
+    end
   end
 
   def productNotInList(list_id, product_id, user_id)
-    activity = Activity.where(:list_id => list_id, :product => product_id, :fromUser => user_id).first
+    activity = Activity.where(:list_id => list_id, :product_id => product_id, :fromUser => user_id).first
     if activity.nil?
       return 1
     else

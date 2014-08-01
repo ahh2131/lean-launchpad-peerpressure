@@ -1,4 +1,13 @@
  @import 'bootstrap';
+ .vigme-nav-menu {
+  float: right;
+ }
+ .vigme-nav-margin {
+  margin-top: 25px;
+ }
+ .vigme-height-fill{
+  height:100px;
+ }
  .vigme-category-label {
   margin-right: 30px;
  }
@@ -65,7 +74,7 @@
     border-color: #efefef;
  }
  .vigme-filter-background {
-    background-color: #eff0f2;
+    background-color: white;
     padding-top: 1px;
  }
  .vigme-dropdown-positioning{
@@ -242,6 +251,8 @@ border-color: transparent transparent #fad749 transparent;
 .vigme-logo-black {
   padding-top: 5px;
   color: black;
+  margin-top: 14px;
+  height: 62px;
 }
 .swatches {
 	padding-top: 30px;

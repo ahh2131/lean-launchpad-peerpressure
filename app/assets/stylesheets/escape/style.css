@@ -793,8 +793,8 @@ div.grids-1 {
 	margin-right:40px;
 }
 .contact-right{
-	float:right
-	width:60%;
+	float:right;
+	width: 60%;
 }
 .contact-left{
 	margin-top:30px;
@@ -1539,5 +1539,4 @@ div.span4 {
 		top: 100px;
 	}
 }
-/*****//end- Media Quries *****/
 

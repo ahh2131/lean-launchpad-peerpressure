@@ -1,0 +1,1 @@
+!function(){var o="http://dev.vigme.com:3000";document.location=o+"/vigit?url="+encodeURIComponent(document.location)}();

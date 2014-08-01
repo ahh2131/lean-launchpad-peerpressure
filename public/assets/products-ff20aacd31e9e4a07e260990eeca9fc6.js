@@ -1,0 +1,1 @@
+(function(){$(function(){return $(window).on("scroll",function(){var o;$(window).scrollTop()>$(document).height()-$(window).height()-100&&($("#more_products").click(),$("#more_products").attr("disabled",!0),console.log("test"),(o=function(o,t){return setTimeout(t,o)})(500,function(){return $("#more_products").removeAttr("disabled")}))})})}).call(this);

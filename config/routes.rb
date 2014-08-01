@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }, :skip => [:sessions]
   devise_scope :user do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-    get    '/login'   => 'users/sessions#new',     as: :new_user_session
+    get    '/login'   => 'devise/sessions#new',     as: :new_session
     post   '/login'   => 'devise/sessions#create',  as: :user_session
+    get '/sign_up' => 'users/registrations#new', as: :new_user_session
   end
   resources :test_modules
   resources :activities
@@ -12,12 +13,19 @@ Rails.application.routes.draw do
   get 'feed' => 'products#socialFeed', as: 'social_feed'
   get 'moreSocial' => 'products#moreSocialFeed', as: 'more_social_feed'
 
+  # nav bar
+  get 'discover' => 'products#discover', as: 'discover'
+
   patch 'users/update' => 'profile#update', as: 'user_path'
 
   get 'profile' => 'profile#show'
-  get 'profile/:id' => 'profile#show'
+  get 'profile/:id' => 'profile#show', as: 'profile_show'
   post 'profile/follow' => 'profile#follow', as: 'profile_follow'
   post 'profile/unfollow' => 'profile#unfollow', as: 'profile_unfollow'
+  get 'profile/:id/followers' => 'profile#followers', as: 'profile_followers'
+  get 'profile/:id/following' => 'profile#following', as: 'profile_following'
+  get 'profile/:id/shared' => 'profile#sharedProducts', as: 'profile_shared_products'
+  get 'list/:id' => 'profile#showList', as: 'profile_list'
   get 'settings' => 'profile#settings', as: 'profile_settings'
 
   post 'products/new' => 'products#findImages'

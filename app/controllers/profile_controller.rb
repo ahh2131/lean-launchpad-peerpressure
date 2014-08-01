@@ -1,4 +1,5 @@
 class ProfileController < ApplicationController
+	layout "signup", :only => [ :step_two, :step_three]
 
 	# sign up process
 	def step_one
@@ -18,7 +19,6 @@ class ProfileController < ApplicationController
 		redirect_to signup_step_two_path
 	end
 
-	layout "signup"
 	def step_two
 		if current_user.signup_process != 1
 			return redirect_to root_url
@@ -42,7 +42,6 @@ class ProfileController < ApplicationController
 		redirect_to signup_step_three_path
 	end
 
-	layout "signup"
 	def step_three
 		if current_user.signup_process != 2
 			return redirect_to root_url
@@ -63,7 +62,7 @@ class ProfileController < ApplicationController
 	def getProductsForUser(id)
 		product_ids = Activity.where(:fromUser => id)
 		.where(:activity_type => ["save", "add"])
-		.order("created_at desc").limit(6).pluck(:product)
+		.order("created_at desc").limit(6).pluck(:product_id)
 
 		products = Product.find(product_ids)
 		p products
@@ -88,8 +87,6 @@ class ProfileController < ApplicationController
    	  end
 	  @user_info = User.find(@user_id)
 
-#	  @saved_products = userSavedProducts(@user_id)
-	#  @added_products = userAddedProducts(@user_id)
 	  @shared_products = userSharedProducts(@user_id)
 
 	  @following = Activity.where(:fromUser => @user_id, :activity_type => "follow").count
@@ -98,22 +95,17 @@ class ProfileController < ApplicationController
 	  @vigor = Activity.where(:toUser => @user_id, :activity_type => "seen").count
 	  @vigor_array = Array.new(@vigor)
 
-	  @lists = List.where(:user_id => @user_id).order("created_at desc").limit(5)
+	  # much simplified with correct model relations (activity table is a join table)
+	  @lists = @user_info.lists.order("created_at desc").limit(5).uniq
 	  @products_for_each_list = []
 	  @lists.each do |list|
-	  	product_ids = Activity.where(:list_id => list.id, :activity_type => "add_to_list", :fromUser => @user_id)
-	  	.order("created_at desc").limit(4).pluck(:product)
-	  	products = []
-	  	product_ids.each do |product_id|
-	  		product = Product.find(product_id)
-	  		products << product
-	  	end
-	  	@products_for_each_list << products
+	  	@products_for_each_list << list.products.order("created_at desc").limit(6).uniq
 	  end
 
 	  # 1 or 0 , depending on if user is a followed
-	  @followed = isUserFollowed(@user_id)
-
+	  if user_signed_in?
+	 	 @followed = isUserFollowed(@user_id)
+	  end
 	  if !@user_info.retailer_id.nil?
 	  	@store_products = Product.where(:retailer_id => @user_info.retailer_id)
 	  	.where("image_s3_url IS NOT NULL")
@@ -186,21 +178,71 @@ class ProfileController < ApplicationController
           format.js
         end
 	end
+
+	def followers
+		follower_ids = Activity.where(:toUser => params[:id])
+		.where(:activity_type => "follow").select(:fromUser).uniq.pluck(:fromUser)
+		@followers = User.where(:id => follower_ids).all
+		@title = "Followers"
+		@user = User.find(params[:id])
+		@alreadyFollowedArray = arrayAlreadyFollowed(@followers)
+	end
+
+	def following
+		follower_ids = Activity.where(:fromUser => params[:id])
+		.where(:activity_type => "follow").select(:toUser).uniq.pluck(:toUser)
+		@followers = User.where(:id => follower_ids).all
+		@title = "Following"
+		@alreadyFollowedArray = arrayAlreadyFollowed(@followers)
+		@user = User.find(params[:id])
+
+		render "followers"
+	end
+
+	def arrayAlreadyFollowed(followers)
+		array = []
+		followers.each do |follower|
+			if user_signed_in?
+				activity = current_user.activities.where(:toUser => follower.id)
+				.where(:activity_type => "follow").first
+			end
+			if activity.nil?
+				array << 0
+			else
+				array << 1
+			end
+		end
+		return array
+	end
+
+	def sharedProducts
+		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => params[:id]).limit(100).pluck(:product_id)
+		@products = Product.where(:id => product_ids)
+		@user_id = params[:id]
+		@user = User.find(params[:id])
+	end
+
+	def showList
+		@list = List.find(params[:id])
+		@products = @list.products
+		@user_id = @list.user_id
+		@user = User.find(@list.user_id)
+	end
 	# all user saved or added
 	def userSharedProducts(user_id)
-		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id).limit(100).pluck(:product)
+		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id).limit(100).pluck(:product_id)
 		@products = Product.where(:id => product_ids)
 		return @products
 	end
 
 	def userSavedProducts(user_id)
-		product_ids = Activity.where(:activity_type => "save", :fromUser => user_id).limit(100).pluck(:product)
+		product_ids = Activity.where(:activity_type => "save", :fromUser => user_id).limit(100).pluck(:product_id)
 		@products = Product.where(:id => product_ids)
 		return @products
 	end
 
 	def userAddedProducts(user_id)
-		product_ids = Activity.where(:activity_type => "add", :fromUser => user_id).limit(100).pluck(:product)
+		product_ids = Activity.where(:activity_type => "add", :fromUser => user_id).limit(100).pluck(:product_id)
 		@products = Product.where(:id => product_ids)
 		return @products
 	end

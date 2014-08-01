@@ -12,3 +12,10 @@ $ ->
 			delay = (ms, func) -> setTimeout func, ms
 			delay 500, -> $("#more_products").removeAttr 'disabled'
 		return
+
+
+$ ->
+	$("#vigme-list-form").on 'submit', ->
+		$("#close-list-modal").click()
+		console.log("test")
+

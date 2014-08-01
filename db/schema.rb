@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729211658) do
+ActiveRecord::Schema.define(version: 20140731230742) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
     t.string   "toUser"
     t.string   "activity_type"
-    t.string   "product"
+    t.string   "product_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "list_id"
@@ -48,12 +48,12 @@ ActiveRecord::Schema.define(version: 20140729211658) do
   add_index "categories", ["parent"], name: "parent", using: :btree
 
   create_table "category_product", id: false, force: true do |t|
-    t.integer "product",  null: false
-    t.integer "category", null: false
+    t.integer "product_id",  null: false
+    t.integer "category_id", null: false
   end
 
-  add_index "category_product", ["category"], name: "category", using: :btree
-  add_index "category_product", ["product"], name: "product", using: :btree
+  add_index "category_product", ["category_id"], name: "category", using: :btree
+  add_index "category_product", ["product_id"], name: "product", using: :btree
 
   create_table "category_shopstyle_category", id: false, force: true do |t|
     t.integer "category",                       null: false

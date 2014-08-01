@@ -1,6 +1,6 @@
 
 <div class="vigme-list-profile-row row"> 
-	<h3 class="vigme-header-3"><%= list.title %></h3>
+	<a href="<%= profile_list_path(list.id) %>"><h3 class="vigme-header-3"><%= list.title %></h3></a>
 </div>
 <div class="vigme-list-product-group">
 <% products.each do |product| %>

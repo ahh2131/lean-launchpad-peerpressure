@@ -1,0 +1,39 @@
+
+<div class="row vigme-followers-page">
+	<div class="col-md-offset-1">
+		<div class="row">
+			<div class="vigme-ranking-header">
+				<h3><%= @user.name %>'s <%= @title %></h3>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped table-hover">
+			<thead>
+				<tr>
+					<th> Profile </th>
+					<th> Name </th>
+					<th> Follow </th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<% @followers.zip(@alreadyFollowedArray).each do |follower, alreadyFollowed| %>
+					<tr>
+						<td><a href="<%= profile_show_path(follower.id) %>"><%= image_tag follower.avatar.url, class: "vigme-follower-image" %></a></td>
+						<td><%= follower.name %></td>
+						<td class="vigme-follow-button-row">
+							<% if user_signed_in? %>
+							<div class="vigme-follow-button-row">
+								<%= render 'profile/follow_button_small', user_info: follower, :unfollow => alreadyFollowed %>
+							</div>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+
+			</tbody>
+		</table>
+	</div>
+	<div class="vigme-height-fill">
+		</div>
+</div>
+
