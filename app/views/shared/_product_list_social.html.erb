@@ -6,11 +6,9 @@
 </div>
 <div class="vigme-social-product-group">
 <% products.each do |product| %>
-<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
-  <a href="/products/<%= product.id %>?from_user=<%= profile.id %>">
-                <div class="portfolio-wrapper vigme-product-social" style="background-image: url('<%= product.image_s3_url %>');">
-                </div> </a>
-              </div> 
+	<div class="vigme-product-outline-social"> 
+		<%= link_to image_tag( product["image"] || product.image_s3_url, :class=> "vigme-product-social"), {:controller => 'products', :action => "showProductModal", :id => (product["id"] || product.id) }, remote: :true, 'data-toggle' => 'modal', 'data-target' => '#product_detail_modal' %>
+	</div> 
   <% end %>
 </div>
 

@@ -5,7 +5,7 @@
             	<% lists.each do |list| %>
             	<div class="row">
             		<div class="col-md-4">
-            		<%= button_to truncate(list.title, :length => 14), {controller: 'list', action: 'addProductToList', :list_id => list.id, :product_id => product_id}, :method => :post, :class => 'vigme-list-button vigme-rankings-button btn btn-info', "id" => "vigme-list-form" %>
+            		<%= button_to truncate(list.title, :length => 14), {controller: 'list', action: 'addProductToList', :list_id => list.id, :product_id => product_id}, :form => { :id => "vigme-list-form" }, :remote => :true, :method => :post, :class => 'vigme-list-button vigme-rankings-button btn btn-info' %>
             		</div>
             	<% end %>
             	<%= button_to "None", {controller: 'list', action: 'addProductToList', :list_id => 0, :product_id => product_id}, :method => :post, :class => 'vigme-rankings-button btn btn-info' %>
@@ -13,3 +13,14 @@
             </div>
           </div>
         </div>
+
+        <script>
+
+
+        $(function() {
+          return $('form#vigme-list-form').submit(function() {
+            $("#close-list-modal").click();
+            return console.log("test");
+          });
+        });
+        </script>

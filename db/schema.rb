@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140801193433) do
+ActiveRecord::Schema.define(version: 20140805190957) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 20140801193433) do
     t.integer  "list_id"
     t.text     "purchase_url"
     t.integer  "confirmed"
+    t.string   "receipt_file_name"
+    t.string   "receipt_content_type"
+    t.integer  "receipt_file_size"
+    t.datetime "receipt_updated_at"
   end
 
   create_table "brands", force: true do |t|
@@ -74,6 +78,13 @@ ActiveRecord::Schema.define(version: 20140801193433) do
   end
 
   add_index "colors", ["id"], name: "id", using: :btree
+
+  create_table "keywords", force: true do |t|
+    t.string   "word"
+    t.integer  "retailer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "lists", force: true do |t|
     t.string   "title"

@@ -1,1 +1,6 @@
-$('#product-list').append('<%= escape_javascript(render "shared/product_list", products: @products || @similar_products) %>');
+
+<% if @modal == 1 %>
+	$('#product-list-modal').append('<%= escape_javascript(render "shared/product_list", products: @products || @similar_products) %>');
+<% else %>
+	$('#product-list').append('<%= escape_javascript(render "shared/product_list", products: @products || @similar_products) %>');
+<% end %>

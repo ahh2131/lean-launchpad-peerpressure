@@ -1,0 +1,365 @@
+<head>
+  <title>Vigme</title>
+  <link data-turbolinks-track="true" href="/assets/application.css?body=1" media="all" rel="stylesheet">
+  
+  <script data-turbolinks-track="true" src="/assets/jquery.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/jquery_ujs.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/jquery.sidr.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/turbolinks.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/activities.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/activity.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/admin.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/facebook.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/list.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/products.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/profile.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/ranking.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/sessions.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/test_modules.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/application.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/bootstrap-select.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/bootstrap-switch.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/bootstrap.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/flatui-checkbox.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/flatui-radio.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/html5shiv.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/icon-font-ie7.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery-1.10.2.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery-1.8.3.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery-2.0.3.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery-ui-1.10.3.custom.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery.placeholder.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery.tagsinput.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/jquery.ui.touch-punch.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/respond.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/flat-ui/typeahead.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/captionhover/modernizr.custom.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/captionhover/toucheffects.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/mosaic/mosaic.1.0.1.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/mosaic/mosaic.1.0.1.min.js?body=1"></script>
+<script data-turbolinks-track="true" src="/assets/application.js?body=1"></script>
+
+  <meta content="authenticity_token" name="csrf-param">
+<meta content="r8jhVIa7Ps7+5PgpsXMNjvS9iOAzJotmVJI8DasoBZM=" name="csrf-token">
+<style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f2f2f2;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3b5998;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{max-height:590px;min-height:590px;max-width:500px;min-width:500px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;left:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #29447e;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f2f2f2;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}
+.fb_connect_bar_container div,.fb_connect_bar_container span,.fb_connect_bar_container a,.fb_connect_bar_container img,.fb_connect_bar_container strong{background:none;border-spacing:0;border:0;direction:ltr;font-style:normal;font-variant:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal;vertical-align:baseline}.fb_connect_bar_container{position:fixed;left:0 !important;right:0 !important;height:42px !important;padding:0 25px !important;margin:0 !important;vertical-align:middle !important;border-bottom:1px solid #333 !important;background:#3b5998 !important;z-index:99999999 !important;overflow:hidden !important}.fb_connect_bar_container_ie6{position:absolute;top:expression(document.compatMode=="CSS1Compat"? document.documentElement.scrollTop+"px":body.scrollTop+"px")}.fb_connect_bar{position:relative;margin:auto;height:100%;width:100%;padding:6px 0 0 0 !important;background:none;color:#fff !important;font-family:"lucida grande", tahoma, verdana, arial, sans-serif !important;font-size:13px !important;font-style:normal !important;font-variant:normal !important;font-weight:normal !important;letter-spacing:normal !important;line-height:1 !important;text-decoration:none !important;text-indent:0 !important;text-shadow:none !important;text-transform:none !important;white-space:normal !important;word-spacing:normal !important}.fb_connect_bar a:hover{color:#fff}.fb_connect_bar .fb_profile img{height:30px;width:30px;vertical-align:middle;margin:0 6px 5px 0}.fb_connect_bar div a,.fb_connect_bar span,.fb_connect_bar span a{color:#bac6da;font-size:11px;text-decoration:none}.fb_connect_bar .fb_buttons{float:right;margin-top:7px}
+.fbpluginrecommendationsbarleft,.fbpluginrecommendationsbarright{position:fixed !important;bottom:0;z-index:999}.fbpluginrecommendationsbarleft{left:10px}.fbpluginrecommendationsbarright{right:10px}</style></head>
+
+<body class="modal-open">
+<header>
+<div class="vigme-nav">
+<div class="row vigme-font vigme-logo-black col-xs-offset-1"><span class="demo-heading-note"></span>
+<div class="col-md-2">
+ <a style="text-decoration: none;" class="vigme-logo-text" href="http://dev.vigme.com:3000/"> <h4>VigMe</h4></a>
+</div>
+<div class="col-md-2 vigme-nav-margin">
+  <a style="text-decoration: none;" class="vigme-nav-text col-md-offset-3 vigme-logo-text" href="/discover">Discover</a>
+</div>
+
+<div class="col-md-2 vigme-nav-margin vigme-nav-menu">
+  <a style="text-decoration: none;" class="vigme-nav-text col-md-offset-3 vigme-logo-text" href="http://dev.vigme.com:3000/">Menu</a>
+</div>
+
+</div>
+</div>
+
+
+<div class="vigme-bottom-nav">
+<h2 class="vigme-bottom-nav-header vigme-font col-xs-offset-1"><span class="demo-heading-note"></span>
+  <a style="text-decoration: none;" class="vigme-nav-text col-md-offset-1 vigme-logo-text" href="/feed">Feed</a>
+
+  <a style="text-decoration: none;" class="vigme-nav-text col-md-offset-0 vigme-logo-text" href="http://dev.vigme.com:3000/">Browse</a>
+  <span class="col-md-offset-7">
+    <button class="vigme-post-button btn btn-primary btn-lg" data-toggle="modal" data-target="#share_modal">
+  Share
+    </button>
+  </span>
+
+  <span>
+          <a href="/profile/" class="vigme-header-profile"><img alt="Picture" class="vigme-header-avatar" src="http://s3-us-west-2.amazonaws.com/vigme/users/avatars/000/000/001/original/picture.jpg?1406477529"></a>
+
+
+  </span>
+
+
+
+
+</h2>
+</div>
+
+
+
+</header>
+<p class="notice"></p>
+
+
+
+<!--<div id="user-widget">
+    Welcome <strong>Andy Hadjigeorgiou</strong>!
+    <a href="/signout" id="sign_out">Sign out</a>
+</div> -->
+<!--<div class="col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Overview</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+
+</div> -->
+<p id="notice"></p>
+
+<div class="row">
+
+	<div class="col-md-offset-2 col-md-8 vigme-line"></div>
+</div>
+
+<div class="row">
+	<div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-2">
+	<p>
+	 </p><h3 class="vigme-header-2">rag &amp; bone/JEAN Crop Skinny Jeans (Barnet)</h3>
+	<p></p>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-4 col-md-offset-2 col-xs-offset-1 col-sm-offset-1 product-detail-padding">
+
+ <img src="http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/053/original/593053.jpg?1404103168" class="img-thumbnail">
+</div>
+<div class="vigme-button-div col-md-4 col-md-offset-0 col-xs-offset-1 col-sm-offset-1">
+
+<form action="/product/buy?product=593053" class="button_to" data-remote="true" method="post"><div><input class="vigme-button btn btn-primary" data-target="#buy_modal" data-toggle="modal" type="submit" value="Buy"><input name="authenticity_token" type="hidden" value="r8jhVIa7Ps7+5PgpsXMNjvS9iOAzJotmVJI8DasoBZM="></div></form>
+
+<form action="/product/share?product=593053" class="button_to" data-remote="true" method="post"><div><input class="vigme-button btn btn-primary" data-target="#list_modal" data-toggle="modal" type="submit" value="Save"><input name="authenticity_token" type="hidden" value="r8jhVIa7Ps7+5PgpsXMNjvS9iOAzJotmVJI8DasoBZM="></div></form>
+
+<div class="row">
+	<div class="col-md-10">
+		<h3 class="vigme-header-3">
+			Other products from <a href="/profile/46">Nordstrom</a>
+		</h3>
+	</div>
+</div>
+<div class="vigme-similar-products col-md-12">
+	
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  <a href="/products/593053?from_user=">
+                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/053/original/593053.jpg?1404103168');">
+                </div> </a>
+              </div> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  <a href="/products/593055?from_user=">
+                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/055/original/593055.jpg?1404103169');">
+                </div> </a>
+              </div> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  <a href="/products/593060?from_user=">
+                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/060/original/593060.jpg?1404103170');">
+                </div> </a>
+              </div> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  <a href="/products/593061?from_user=">
+                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/061/original/593061.jpg?1404103170');">
+                </div> </a>
+              </div> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  <a href="/products/593062?from_user=">
+                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/062/original/593062.jpg?1404103170');">
+                </div> </a>
+              </div> 
+<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
+  <a href="/products/593063?from_user=">
+                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('http://s3-us-west-2.amazonaws.com/vigme/products/image_s3s/000/593/063/original/593063.jpg?1404103171');">
+                </div> </a>
+              </div> 
+
+</div>
+</div>
+
+</div>
+
+<div class="col-md-offset-2 col-md-8 vigme-line"></div>
+
+
+<div class="modal fade in" id="buy_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+  <div id="buy-modal-dialog" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+      </div>
+
+
+      <div id="buy_modal_body" class="modal-body">
+      	<iframe id="product-iframe" name="buy_box" src="http://www.shopstyle.com/action/apiVisitRetailer?id=450919801&amp;pid=uid2576-25109024-58" frameborder="0" style="width:100%;height:100%"></iframe>
+
+      </div>
+<div class="modal-footer">
+
+      <a href="javascript:(function(){var script=document.createElement('SCRIPT');script.src='http://dev.vigme.com:3000/assets/bookmarklet/insite_bought_bookmarklet.js';document.body.appendChild(script);})()">Bought It!</a>
+</div>
+    </div>
+  </div>
+</div>
+
+<div class="vigme-footer-container">
+<div class="container-fluid">
+
+<div class="footer-about pull-left">
+<div class="vigme-footer-title">ABOUT VIGME</div>
+<ul class="left">
+<li><a href="/about">About</a></li>
+<li><a href="/about/press">Press</a></li>
+<li><a href="">iOS</a></li>
+<li><a href="">Android</a></li>
+</ul>
+<ul class="right">
+<li><a href="/about/terms">Terms</a></li>
+<li><a href="/about/privacy">Privacy</a></li>
+<li><a href="">Help</a></li>
+<li><a href="">hello@vigme.com</a></li>
+</ul>
+</div>
+<div class="footer-browse pull-left">
+<div class="vigme-footer-title">BROWSE</div>
+<ul class="left">
+<li><a href="/stores">Top Stores</a></li>
+<li><a href="/top/people">Top People</a></li>
+<li><a href="/about/stores">For Stores</a></li>
+</ul>
+<ul class="right">
+<li><a href="/themes/design">Design</a></li>
+<li><a href="/themes/home">Home</a></li>
+<li><a href="/themes/indie_etsy">Independent</a></li>
+<li><a href="/stores/popular">Store Directory</a></li>
+</ul>
+</div>
+<div class="footer-follow pull-left">
+<div class="vigme-footer-title">FOLLOW</div>
+<ul>
+<li><a href="">Blog</a></li>
+<li><a href="">Twitter</a></li>
+<li><a href="">Facebook</a></li>
+<li><a href="">Instagram</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="share_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Share Your Style!</h4>
+      </div>
+
+
+      <div id="share_modal_body" class="modal-body">
+        <div class="row">
+          <div class="col-md-offset-2">
+            <div class="col-md-5">
+<form action="/product/begin" class="button_to" data-remote="true" method="post"><div><input class="vigme-rankings-button btn btn-info" type="submit" value="Post Product"><input name="authenticity_token" type="hidden" value="r8jhVIa7Ps7+5PgpsXMNjvS9iOAzJotmVJI8DasoBZM="></div></form>
+</div>
+<div class="col-md-5">
+<form action="/list/new" class="button_to" data-remote="true" method="post"><div><input class="vigme-rankings-button btn btn-info" type="submit" value="Create List"><input name="authenticity_token" type="hidden" value="r8jhVIa7Ps7+5PgpsXMNjvS9iOAzJotmVJI8DasoBZM="></div></form>
+</div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-md-offset-0">
+            <h3 class="vigme-center-text vigme-header-3">Want to post products faster?</h3>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-offset-0 vigme-center-text">
+            <h3 class="vigme-center-text vigme-header-3"> Drag this button to your browser's Bookmark bar!</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-offset-0 vigme-center-text vigme-vigit-modal">
+            <a class="vigme-bookmarklet" href="javascript:(function(){var script=document.createElement('SCRIPT');script.src='http://dev.vigme.com:3000/assets/bookmarklet/fvb_bare_bookmarklet.js';document.body.appendChild(script);})()">+Vig It</a>
+          </div>
+        </div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="list_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Share Your Style!</h4>
+      </div>
+
+
+      <div id="list_modal_body" class="modal-body">
+
+      </div>
+
+
+
+      <div class="modal-footer">
+        <button id="close-list-modal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signup_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog vigme-signup-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Sign up for Vigme!</h4>
+      </div>
+
+      <div id="signup_modal_body" class="modal-body">
+
+
+
+
+      </div>
+
+
+      <div class="vigme-center-text vigme-button-div col-md-offset-0">
+        <a class="vigme-button btn btn-primary" href="/users/auth/facebook">Sign Up With Facebook</a>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal-backdrop fade in"></div><script src="http://dev.vigme.com:3000/assets/bookmarklet/bought_bookmarklet.js"></script></body>

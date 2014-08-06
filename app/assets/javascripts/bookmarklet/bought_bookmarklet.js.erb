@@ -34,7 +34,7 @@ function post(path, params, method) {
   if (found == -1 || found2 == -1) {
   	purchased = -1
   }
-  post('https://dev.vigme.com:3001/purchase/receipt', {html: html, found: purchased, url: url});
+  post('http://dev.vigme.com:3000/purchase/receipt', {html: html, found: purchased, url: url});
 
   // alert('You just clicked the bought bookmarklet.');
 

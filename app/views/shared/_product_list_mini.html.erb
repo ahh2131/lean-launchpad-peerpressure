@@ -1,8 +1,8 @@
 
 <% products.each do |product| %>
-<div class="vigme-product-outline portfolio logo1 mix_all" data-cat="logo" style="display: inline-block; opacity: 1;"> 
-  <a href="/products/<%= product["id"] || product.id %>?from_user=<%= @user_id %>">
-                <div class="portfolio-wrapper vigme-products-mini" style="background-image: url('<%= product["image"] || product.image_s3_url %>');">
-                </div> </a>
-              </div> 
-  <% end %>
+	<div class="vigme-product-outline-mini"> 
+		<%= link_to image_tag( product["image"] || product.image_s3_url, :class=> "vigme-products-mini"), {:controller => 'products', :action => "showProductModal", :id => (product["id"] || product.id) }, remote: :true, 'data-toggle' => 'modal', 'data-target' => '#product_detail_modal' %>
+	</div> 
+<% end %>
+
+	

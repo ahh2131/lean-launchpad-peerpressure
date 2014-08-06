@@ -1,5 +1,6 @@
 <div class="row">
   <div class="col-md-offset-1">
+  	<a href="<%= purchase_confirmation_path %>">Confirm Purchases (<%= @count %>)</a>
 
     <h3 class="vigme-header-3">Log in as user (id)</h3>
 
@@ -8,6 +9,7 @@
       <%= text_field_tag(:user_id) %>
       <%= submit_tag("Login as User") %>
     <% end %>
+
 
   </div>
 </div>

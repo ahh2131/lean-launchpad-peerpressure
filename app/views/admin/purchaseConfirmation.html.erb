@@ -1,0 +1,67 @@
+<% if @purchase.nil? %>
+<div class="row">
+	<h3 class="vigme-center-text">No pending confirmations </h4>
+
+
+</div>
+
+<% else %>
+
+<div class="row">
+	<h3 class="vigme-center-text">Is this a valid purchase? (<%= @count %> left) </h4>
+	<div class="col-md-offset-2 col-md-8">
+		<iframe class="vigme-admin-iframe" src="<%= @purchase.receipt.url %>"></iframe>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-md-offset-2 col-md-5">
+		<%= form_tag "/admin/confirm", method: "post" do %>
+
+		<div class="vigme-field-div">
+
+		 <%= label_tag :option %>:<a>   </a>
+		 <%= label :option_y, 'Yes' %>
+		 <%= radio_button_tag :option, '1', class: "vigme-settings-field" %>
+		 <%= label :option_n, 'No' %>
+		 <%= radio_button_tag :option, '0', class: "vigme-settings-field" %>
+		 <%= label :option_m, 'Wrong Product' %>
+		 <%= radio_button_tag :option, '-1', class: "vigme-settings-field" %><br />
+		 </div>
+		 <div class="vigme-line"></div>
+		<div class="vigme-field-div">
+		  <%= label :keyword_1, "Keyword" %>:
+		  <%= text_area_tag :keyword_1, "", class: "vigme-settings-field" %><br />
+		</div>
+		<div class="vigme-field-div">
+		  <%= label :keyword_2, "Keyword 2" %>:
+		  <%= text_area_tag :keyword_2, "", class: "vigme-settings-field" %><br />
+		</div>
+		<div class="vigme-field-div">
+		  <%= label :keyword_3, "Keyword 3" %>:
+		  <%= text_area_tag :keyword_3, "", class: "vigme-settings-field" %><br />
+		</div>
+		<div class="vigme-field-div">
+		  <%= label :keyword_4, "Keyword 4" %>:
+		  <%= text_area_tag :keyword_4, "", class: "vigme-settings-field" %><br />
+		</div>
+		<div class="vigme-field-div">
+		  <%= label :keyword_5, "Keyword 5" %>:
+		  <%= text_area_tag :keyword_5, "" , class: "vigme-settings-field" %><br />
+		</div>
+		  <div class="vigme-center-text vigme-field-div">
+		  <%= submit_tag "Confirm", class: "vigme-settings-button" %>
+		</div>
+
+		<% end %>
+
+	</div>
+
+	<div class="col-md-3 col-md-offset-2 vigme-products"><%= image_tag @product.image_s3_url %></div>
+
+</div>
+
+<% end %>
+
+

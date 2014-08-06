@@ -2,17 +2,45 @@
 
 <div class="row">
 	<div class="col-md-offset-1">
-		<%= form_for :link, remote: true, url: products_new_path do |f| %>
+		<%= form_for :link, :html => {:id => "add_product_form"}, remote: true, url: products_new_path do |f| %>
 		  <p>
 		    <%= f.label :url %><br>
 		    <%= f.text_field :url, :class => "vigme-post-product-field",  autofocus: true %>
 		  </p>
 		 
 		  <p>
+
 		    <%= f.submit 'Add Product', :class => "btn btn-primary" %>
 		  </p>
 		<% end %>
 	</div>
+
+	<div class="col-md-offset-5" style="display:none" id="circularG">
+	<div id="circularG_1" class="circularG">
+	</div>
+	<div id="circularG_2" class="circularG">
+	</div>
+	<div id="circularG_3" class="circularG">
+	</div>
+	<div id="circularG_4" class="circularG">
+	</div>
+	<div id="circularG_5" class="circularG">
+	</div>
+	<div id="circularG_6" class="circularG">
+	</div>
+	<div id="circularG_7" class="circularG">
+	</div>
+	<div id="circularG_8" class="circularG">
+	</div>
+	</div>
 </div>
 
 </div>
+
+<script>
+$(function() {
+  return $('form#add_product_form').submit(function() {
+    $("#circularG").show();
+  });
+});
+</script>

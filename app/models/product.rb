@@ -1,6 +1,6 @@
 require "open-uri"
 class Product < ActiveRecord::Base
-	has_many :category_product, :foreign_key => 'product'
+	has_many :category_product, :foreign_key => 'product_id'
 	has_many :categories, through: :category_product
 	has_many :activities
 	has_many :users, through: :activities

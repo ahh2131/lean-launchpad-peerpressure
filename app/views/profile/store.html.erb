@@ -36,11 +36,17 @@
 
 	</div>
 
+	<div class="row">
+		<div class="col-md-offset-1">
+			<%= render "shared/filters_profile" %>
+		</div>
+	</div>
+
 <div class="vigme-saved-products row">
 
 <div id="product-list" class="vigme-shared-product-list col-md-offset-1 col-xs-offset-0 col-sm-offset-0 col-md-5">
 	<div class="row">
-	<a class="col-md-offset-1 col-md-10 col-sm-offset-0 col-xs-offset-0"><h3 class="vigme-header-3">Products </h3> </a>
+	<a href="<%= profile_shared_products_path(@user_info.id) %>" class="col-md-offset-1 col-md-10 col-sm-offset-0 col-xs-offset-0"><h3 class="vigme-header-3">Products </h3> </a>
 </div>
 <%= render 'shared/product_list_profile', products: @store_products %>
 </div>

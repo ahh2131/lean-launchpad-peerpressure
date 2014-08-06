@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
   get 'product/categorize' => 'products#categorizeProduct', as: 'categorize_product'
   post 'product/add' => 'products#saveProduct', as: 'save_product'
-
+  get 'product/showProduct' => 'products#showProductModal', as: 'show_product_modal'
   post 'product/share' => 'products#share', as: 'share_product'
   post 'product/buy' => 'products#buy', as: 'buy_product'
   post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'
@@ -57,7 +57,9 @@ Rails.application.routes.draw do
   # admin stuff
   get 'admin' => 'admin#index', as: 'admin'
   get 'admin/login' => 'admin#login', as: 'admin_login'
-
+  get 'admin/purchases' => 'admin#purchaseConfirmation', as: 'purchase_confirmation'
+  get 'receipt/:id' => 'admin#receipt', as: 'receipt'
+  post 'admin/confirm' => 'admin#confirmed', as: "confirm_purchase"
   #signup process
   get 'step1' => 'profile#step_one', as: 'signup_step_one'
   patch 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete_patch'

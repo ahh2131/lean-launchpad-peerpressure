@@ -1,6 +1,21 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-product-outline-mini {
+  width: 150px;
+  text-align: center;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-color: #d4d4d4;
+  border-width: 1px;
+  border-radius: 2px;
+  border-style: solid;
+}
+.vigme-product-image {
+  height: 250px;
+}
 #buy-modal-dialog {
   width: 83%;
 }
@@ -30,6 +45,20 @@ text-align: center;
 }
 
 .vigme-product-outline {
+  text-align: center;
+  display: inline-block;
+  width: 250px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border-color: #d4d4d4;
+  border-width: 1px;
+  border-radius: 2px;
+  border-style: solid;
+}
+.vigme-product-outline-social {
+  display: inline-block;
+  width: 164px;
   margin-right: 10px;
   margin-bottom: 10px;
   background-color: white;
@@ -42,7 +71,10 @@ text-align: center;
   box-shadow: rgba(0,0,0,0.15) 0 0 14px;
   transition: all 0.1s ease-in-out;
 } 
-
+.vigme-product-outline-social:hover {
+  box-shadow: rgba(0,0,0,0.15) 0 0 14px;
+  transition: all 0.1s ease-in-out;
+} 
 .vigme-social-header-button {
   border-radius: 0px;
   background-color: rgb(126, 193, 214);
@@ -54,12 +86,7 @@ text-align: center;
   margin-bottom: 1%;
 }
 .vigme-products-mini {
-    z-index: 5;
-   background-size: contain;
-    width: 100px;  
     height: 150px; 
-    background-position: center center;
-    background-repeat: no-repeat;
 }
 .vigme-product-header {
     margin-top: 1%;
@@ -92,12 +119,7 @@ text-align: center;
   transition: all 0.1s ease-in-out;
 }
 .vigme-product-social {
-  z-index: 5;
-  background-size: contain;
-  width: 154px;  
   height: 154px; 
-  background-position: center center;
-  background-repeat: no-repeat;
 }
 .vigme-social-feed {
   border-style: solid;

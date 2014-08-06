@@ -101,10 +101,13 @@
 
 
       <div id="buy_modal_body" class="modal-body">
-      	<iframe name="buy_box" src="<%= @product.buy_url %>" frameborder="0" style="width:100%;height:100%"></iframe>
+      	<iframe id="product-iframe" name="buy_box" src="<%= @product.buy_url %>" frameborder="0" style="width:100%;height:100%"></iframe>
 
       </div>
+<div class="modal-footer">
 
+      <%= link_to 'Bought It!', easymarklet_js('bookmarklet/insite_bought_bookmarklet.js') %>
+</div>
     </div>
   </div>
 </div>

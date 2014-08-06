@@ -107,9 +107,19 @@ class ProfileController < ApplicationController
 	 	 @followed = isUserFollowed(@user_id)
 	  end
 	  if !@user_info.retailer_id.nil?
-	  	@store_products = Product.where(:retailer_id => @user_info.retailer_id)
-	  	.where("image_s3_url IS NOT NULL")
-      .order("vigme_inserted desc").limit(50)
+	  	@categories = Category.where(:parent => 1)
+
+	  	@categories.each do |category|
+	  	  if params[category.name.gsub(/\s+/, "").to_sym].to_i == 1
+	  	  	@store_products = category.products.where(:retailer_id => @user_info.retailer_id)
+	  	  	.where("image_s3_url IS NOT NULL").order("vigme_inserted desc").limit(50)
+	  	  end
+	  	end
+	  	if @store_products.nil?
+		  	@store_products = Product.where(:retailer_id => @user_info.retailer_id)
+		  	.where("image_s3_url IS NOT NULL")
+	      .order("vigme_inserted desc").limit(50)
+	 	end
 	  	return render 'store'
 	  end
 
@@ -215,11 +225,21 @@ class ProfileController < ApplicationController
 		return array
 	end
 
+	def profileProductsByCategory
+
+	end
+
 	def sharedProducts
-		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => params[:id]).limit(100).pluck(:product_id)
-		@products = Product.where(:id => product_ids)
-		@user_id = params[:id]
 		@user = User.find(params[:id])
+		@user_id = params[:id]
+
+		if @user.retailer_id.nil?
+			product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => params[:id]).limit(100).pluck(:product_id)
+			@products = Product.where(:id => product_ids)
+		else
+			@products = Product.where(:retailer_id => @user.retailer_id).limit(100)
+		end
+
 	end
 
 	def showList
@@ -230,8 +250,9 @@ class ProfileController < ApplicationController
 	end
 	# all user saved or added
 	def userSharedProducts(user_id)
-		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id).limit(100).pluck(:product_id)
-		@products = Product.where(:id => product_ids)
+		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id)
+		.order("created_at desc").limit(100).pluck(:product_id)
+		@products = Product.where(:id => product_ids).order("ftp_transfer_datetime desc")
 		return @products
 	end
 

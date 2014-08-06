@@ -72,7 +72,7 @@ USER_PER_PAGE_SOCIAL = 10
     user_profiles.each do |profile|
       products = profile.products.limit(6)
       if products.count < 6
-        products = Product.where(:retailer_id => profile.id).limit(6)
+        products = Product.where(:retailer_id => profile.retailer_id).limit(6)
       end
       if !(products.count < 6)
        @products_for_each_user << products
@@ -126,8 +126,9 @@ USER_PER_PAGE_SOCIAL = 10
       end
       activity.save
     end
-    redirect_to product_path(most_recent_product_view)
 
+
+    redirect_to product_path(most_recent_product_view)
   end
 
   def share
@@ -164,27 +165,56 @@ USER_PER_PAGE_SOCIAL = 10
       if !to_user.nil?
         activity.toUser = to_user.toUser
       end
-      if params[:found] != "-1" && params[:url].to_s.include?("https")
-        activity.confirmed = 1
-      else
-        activity.confirmed = -1
-      end
+
+      activity.confirmed = confirmPurchase(most_recent_product_view, params[:html])
       activity.save
-
-      #save html to a file with id of activity it is associated with
-      saveToFile(params[:html], activity.id)
-
+      path = saveToFile(params[:html], activity.id)
+      activity.receipt = open(path)
+      activity.save
+      File.delete(path) if File.exist?(path)
     end
  
 
     redirect_to product_path(most_recent_product_view)
   end
 
-  def saveToFile(html, activity_id)
-    path = "/log/receipts/" + activity_id.to_s + ".html"
-    File.open("/var/www/dev.vigme.com/" + path, "w+") do |f|
-      f.write(html)
+  def confirmPurchase(product_id, html)
+    retailer_id = Product.where(:id => product_id).pluck(:retailer_id)
+    if retailer_id.nil?
+      return 0
+    else
+      keywords = Keyword.where(:retailer_id => retailer_id).all.pluck(:word)
+      leeway = 1
+      matches = 0
+      if keywords.count > 0
+        keywords.each do |keyword|
+          if html.include?(keyword)
+            matches = matches + 1
+          end
+        end
+      else
+        return -1
+      end
+      if matches >= (keywords.count - leeway)
+        return 1
+      elsif matches != 0
+        return -1
+      else
+        return 0
+      end
     end
+  end
+
+  def saveToFile(html, activity_id)
+    doc = Nokogiri.HTML(html)                            # Parse the document
+
+    doc.css('script').remove                             # Remove <script>…</script>
+    doc.xpath("//@*[starts-with(name(),'on')]").remove   # Remove on____ attributes
+    path = "/log/receipts/" + activity_id.to_s + ".html"
+    File.open("/var/www/#{request.host}" + path, "w+") do |f|
+      f.write(doc)
+    end
+    return "/var/www/#{request.host}" + path
   end
 
   def purchaseDoesNotExist(product_id)
@@ -235,8 +265,6 @@ USER_PER_PAGE_SOCIAL = 10
 
   def addFiltersToUrl(url, categories)
     categories.each do |category|
-      p category.name.gsub(/\s+/, "").to_sym
-      p params[category.name.gsub(/\s+/, "").to_sym].to_i
       if params[category.name.gsub(/\s+/, "").to_sym].to_i == 1
         destroyOldFilters(categories)
         session[category.name.gsub(/\s+/, "").to_sym] = category.id.to_s
@@ -276,10 +304,14 @@ USER_PER_PAGE_SOCIAL = 10
     id_array.each do |follower_id|
       @product_ids = Activity.order(created_at: :desc).where(:fromUser => follower_id, :activity_type =>["add", "save"]).limit(perUser).offset(offset).pluck(:product_id)
       @product_ids.each do |product_id|
-        products << Product.where(:id => product_id).first
+        product = Product.where(:id => product_id).first
+        if !product.nil?
+          products << product
+        end
       end
     end
     # go through products and weed out ones that are the same
+
     products = products.uniq{|product| product.id}
     return products
   end
@@ -358,6 +390,11 @@ USER_PER_PAGE_SOCIAL = 10
   # GET /products/1
   # GET /products/1.json
   def show
+    if !params[:modal].nil?
+      @modal = 1
+    else
+      @modal = 0
+    end
     product_shared_by_ids = Activity.where(:activity_type => "save", :product_id => params[:id]).limit(10).pluck(:fromUser)
     if user_signed_in?
       product_shared_by_ids.delete(current_user.id.to_s)
@@ -390,6 +427,45 @@ USER_PER_PAGE_SOCIAL = 10
     respond_to do |format|
       format.html { render "show" }
       format.js { render "index" }
+    end 
+  end
+
+  def showProductModal
+    if @product.nil?
+      @product = Product.find(params[:id])
+    end
+    product_shared_by_ids = Activity.where(:activity_type => "save", :product_id => params[:id]).limit(10).pluck(:fromUser)
+    if user_signed_in?
+      product_shared_by_ids.delete(current_user.id.to_s)
+      if isProductSeenByUser == 0
+        activity = Activity.new 
+        activity.fromUser = current_user.id
+        activity.activity_type = "seen"
+        activity.product_id = params[:id]
+        if !params[:from_user].nil? && params[:from_user].to_i != current_user.id.to_i
+         activity.toUser = params[:from_user]
+        end
+        activity.save
+      end
+    end
+    @product_shared_by = User.where(:id => product_shared_by_ids).all
+    if @product.retailer_id != -1
+      @retailer = Retailers.find(@product.retailer_id)
+      @retailer_user = User.where(:retailer_id => @retailer.id).first
+      @other_products_from_retailer = findOtherProductsFromRetailer(@retailer)
+    end
+    users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
+    @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, 0, 5)
+    session[:similar_products_offset] ||= 0
+    @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, session[:similar_products_offset]*PER_USER_SIMILAR)
+    if @similar_products[0].nil?
+      session[:similar_products_offset] = 0
+    else
+      session[:similar_products_offset] = session[:similar_products_offset].to_i + 1 
+    end
+    respond_to do |format|
+      format.html { render "show" }
+      format.js { render "show" }
     end 
   end
 
@@ -571,6 +647,8 @@ USER_PER_PAGE_SOCIAL = 10
     user.retailer_id = retailer_id
     user.user_type = 2
     user.name = retailer_name
+    user.email = "holder@store.com"
+    user.password = retailer_name + retailer_id.to_s
     user.save
   end
 
