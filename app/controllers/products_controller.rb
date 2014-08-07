@@ -463,10 +463,28 @@ USER_PER_PAGE_SOCIAL = 10
     else
       session[:similar_products_offset] = session[:similar_products_offset].to_i + 1 
     end
+
+    @original_poster = findOriginalPoster(@product.id)
+
     respond_to do |format|
       format.html { render "show" }
       format.js { render "show" }
     end 
+  end
+
+  def findOriginalPoster(product_id)
+    poster_activity = Activity.where(:product_id => product_id).order("created_at asc")
+    .where(:activity_type => ["save", "add"]).first
+    if !poster_activity.nil?
+      poster = User.where(:id => poster_activity.fromUser).first
+    end
+    if poster.nil?
+      retailer_product = Product.where(:id => product_id).first
+      poster = User.where(:retailer_id => retailer_product.retailer_id).first
+    end
+    return poster
+
+
   end
 
   def getOffsetMultiplier

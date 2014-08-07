@@ -1,4 +1,24 @@
  @import 'bootstrap';
+ .vigme-header-5 {
+ margin-top: 0px;
+ font-size: 18px;
+ font-weight: 300;
+ }
+ .vigme-modal-content {
+ border-radius: 0px;
+ border-color: white;
+ }
+ .modal-backdrop {
+ background-color: white;
+ }
+ .modal-backdrop.in {
+   opacity: 0.9;
+   }
+ .vigme-header-4 {
+  margin-top: 0px;
+  font-size: 18px;
+
+ }
  #list_modal {
   z-index: 5000;
  }

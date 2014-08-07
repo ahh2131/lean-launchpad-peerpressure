@@ -1,6 +1,84 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.vigme-product-detail-header-poster {
+  max-height: 81px;
+}
+.vigme-product-detail-outline {
+  text-align: center;
+  border-style: solid;
+  border-color: #efefef;
+  border-width: 1px;
+  margin-left: 18px;
+}
+.vigme-product-detail-image {
+  padding: 4px;
+  line-height: 1.72222;
+  background-color: #ffffff;
+  border: 0px solid #bdc3c7;
+  border-radius: 0px;
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+.vigme-product-detail-save {
+  background-color: rgb(59, 125, 197);
+}
+.vigme-product-detail-price {
+  line-height: 50px;
+  font-size: 42px;
+}
+.vigme-overlay-price-text {
+  font-size: 22px;
+  line-height: 55px;
+}
+.vigme-save-button-overlay {
+  min-width: 86px;
+  height: 56px;
+  font-size: 27px;
+  margin-bottom: 10px;
+  border-radius: 0px;
+}
+.vigme-price-overlay {
+height: 57px;
+width: 86px;
+background-color: rgb(221, 140, 36);
+margin-left: 163px;
+margin-top: -66px;
+
+}
+.vigme-button-overlay {
+  height: 43px;
+  width: 78px;
+  margin-top: 120px;
+  margin-left: 18px;
+  background-color: black;
+}
+.vigme-button-overlay-main {
+  height: 43px;
+  width: 78px;
+  margin-top: 120px;
+  background-color: black;
+}
+.vigme-product-outline:hover .vigme-product-overlay {
+  display: block;
+} 
+.vigme-product-overlay {
+  display: inline-block;
+  position: absolute;
+  background-color: black;
+  opacity: .7;
+  left: 0px;
+  color:white;
+  display: none;
+}
+.vigme-product-overlay-main {
+  font-size: 16px;
+  height: 57px;
+  width: 248px;
+}
 .vigme-product-outline-mini {
   width: 150px;
   text-align: center;
@@ -45,6 +123,7 @@ text-align: center;
 }
 
 .vigme-product-outline {
+  position:relative;
   text-align: center;
   display: inline-block;
   width: 250px;
@@ -157,6 +236,7 @@ border-radius: 0px;
 	width: 200px;
 }
 .products-div {
+  position: relative;
   text-align:center;
 	margin-left: auto;
 	margin-right: auto;
@@ -179,10 +259,6 @@ border-radius: 0px;
     background-position: center center;
     background-repeat: no-repeat;
 }​
-.product-detail-padding {
-	padding-top: 60px;
-  margin-bottom: 10px;
-}
 .grow {
   display: inline-block;
   -webkit-transition-duration: 0.3s;
