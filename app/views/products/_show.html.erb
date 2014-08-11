@@ -6,7 +6,7 @@
 
 <div class="vigme-product-header row">
 	<div class="col-md-1 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
-		<% if !@original_poster.avatar.url.nil? %>
+		<% if @original_poster.avatar.exists? %>
 		<a href="<%= profile_path(@original_poster.id) %>"><%= image_tag @original_poster.avatar.url, :class => "vigme-product-detail-header-poster" %>
 		</a>
 		<% end %>
@@ -53,7 +53,18 @@
 <div class="vigme-product-detail-outline col-md-5 col-xs-offset-0 col-sm-offset-0">
 
  <img src="<%= @product.image_s3_url || "http://www.vigme.com/photos/" + @product.image_folder.to_s + "/" + @product.id.to_s %>" class="vigme-product-detail-image" >
+ <div class="row">
+
+ 	<a href="//www.pinterest.com/pin/create/button/?url=http://vigme.com&media=<%= @product.image_s3_url %>&description=<%= @product.name %>" data-pin-do="buttonPin" data-pin-config="beside"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+ 	<!-- Please call pinit.js only once per page -->
+ 	<script type="text/javascript" async src="http://assets.pinterest.com/js/pinit.js"></script>
+
+ 	 <iframe allowtransparency="true" frameborder="0" scrolling="no"
+ 	         src="https://platform.twitter.com/widgets/tweet_button.html?url=http://www.vigme.com/product/<%= @product.id %>"
+ 	         style="width:130px; height:20px;"></iframe>
+ </div>
 </div>
+
 <% if user_signed_in? %>
 <div class="vigme-button-div col-md-6 col-md-offset-0 col-xs-offset-1 col-sm-offset-1">
 	<div class="row">
@@ -121,10 +132,10 @@
       </div>
 
 
-      <div id="buy_modal_body" class="modal-body">
+    <!--  <div id="buy_modal_body" class="modal-body">
       	<iframe id="product-iframe" name="buy_box" src="<%= @product.buy_url %>" frameborder="0" style="width:100%;height:100%"></iframe>
 
-      </div>
+      </div> -->
 <div class="modal-footer">
 
       <%= link_to 'Bought It!', easymarklet_js('bookmarklet/insite_bought_bookmarklet.js') %>
@@ -133,4 +144,5 @@
   </div>
 </div>
 
+</div>
 </div>

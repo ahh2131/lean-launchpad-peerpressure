@@ -1,8 +1,8 @@
 
 <% products.each do |product| %>
 	<div class="vigme-product-outline"> 
-		<div class="vigme-product-overlay-main vigme-product-overlay"><%= truncate(product["name"], :length => 60) || truncate(product.name, :length => 60) %>
-		
+		<div class="vigme-product-overlay-main vigme-product-overlay">
+			<%= truncate(product["name"], :length => 60) || truncate(product.name, :length => 60) %>
 			<div class="vigme-button-overlay-main">
 				<%= button_to 'Save', {controller: 'products', action: 'share', :product => product["id"] || product.id}, :method => :post, :class => 'vigme-save-button-overlay btn btn-primary', :remote => true, 'data-toggle' => 'modal', 'data-target' => '#list_modal' %>
 			<div class="vigme-price-overlay">
@@ -13,6 +13,8 @@
 		</div>
 		<%= link_to image_tag( product["image"] || product.image_s3_url, :class=> "vigme-product-image"), {:controller => 'products', :action => "showProductModal", :id => (product["id"] || product.id) }, remote: :true, 'data-toggle' => 'modal', 'data-target' => '#product_detail_modal' %>
 	</div> 
+
+
 <% end %>
 
 	

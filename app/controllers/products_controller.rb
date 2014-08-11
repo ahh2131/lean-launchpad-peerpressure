@@ -6,7 +6,6 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 layout 'application'
 
-
 skip_before_filter :verify_authenticity_token
 
 
@@ -350,7 +349,6 @@ USER_PER_PAGE_SOCIAL = 10
   # same as more social feed except makes product_offset 0
 
   def socialFeed
-
     @follower_id_array = Activity.where(:fromUser => current_user.id)
     .where(:activity_type => "follow").distinct(:toUser).pluck(:toUser)
 
@@ -358,7 +356,7 @@ USER_PER_PAGE_SOCIAL = 10
     if cycled == 1
       @product_page = params[:product_page].to_i + 1
     else
-      @product_page = params[:product_page]
+      @product_page = params[:product_page].to_i
     end
     @products_for_each_user = []
     @social_feed_profiles = []
@@ -431,17 +429,20 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def showProductModal
-    if @product.nil?
-      @product = Product.find(params[:id])
+    if !params[:offset].nil?
+      session[:similar_products_offset] = params[:offset].to_i
     end
-    product_shared_by_ids = Activity.where(:activity_type => "save", :product_id => params[:id]).limit(10).pluck(:fromUser)
+    if @product.nil?
+      @product = Product.find(params[:id] || params[:product_id])
+    end
+    product_shared_by_ids = Activity.where(:activity_type => "save", :product_id => @product.id).limit(10).pluck(:fromUser)
     if user_signed_in?
       product_shared_by_ids.delete(current_user.id.to_s)
       if isProductSeenByUser == 0
         activity = Activity.new 
         activity.fromUser = current_user.id
         activity.activity_type = "seen"
-        activity.product_id = params[:id]
+        activity.product_id = @product.id
         if !params[:from_user].nil? && params[:from_user].to_i != current_user.id.to_i
          activity.toUser = params[:from_user]
         end
@@ -454,7 +455,7 @@ USER_PER_PAGE_SOCIAL = 10
       @retailer_user = User.where(:retailer_id => @retailer.id).first
       @other_products_from_retailer = findOtherProductsFromRetailer(@retailer)
     end
-    users_who_shared_products = Activity.where(:product => params[:id], :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
+    users_who_shared_products = Activity.where(:product => @product.id, :activity_type => ["share", "add"]).limit(10).pluck(:fromUser)
     @recent_activity_id_array = getRecentActivityIdArrayFromIdArray(users_who_shared_products, 0, 5)
     session[:similar_products_offset] ||= 0
     @similar_products = getUniqueProductsFromUserArray(PER_USER_SIMILAR, @recent_activity_id_array, session[:similar_products_offset]*PER_USER_SIMILAR)
@@ -469,6 +470,7 @@ USER_PER_PAGE_SOCIAL = 10
     respond_to do |format|
       format.html { render "show" }
       format.js { render "show" }
+      format.json
     end 
   end
 

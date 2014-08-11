@@ -69,7 +69,11 @@ Rails.application.routes.draw do
   get 'step3' => 'profile#step_three', as: 'signup_step_three'
   post 'step3complete' => 'profile#step_three_complete', as: 'signup_step_three_complete'
 
-
+  #api
+  get "api/:user_email/:user_token/product/:product_id/:offset" => 'products#showProductModal',
+   as: 'api_show_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  get "api/:user_email/:user_token/feed/:page/:product_page" => 'products#socialFeed',
+   as: 'api_social_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
 
   #theme testing
   get 'test_module/colorz' => 'test_modules#colorz'

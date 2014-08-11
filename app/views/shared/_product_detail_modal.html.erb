@@ -13,3 +13,25 @@
     </div>
   </div>
 </div>
+<script>
+$(function() {
+  return $('#product_detail_modal').on('scroll', function() {
+    var delay;
+    console.log($('#product_detail_modal').scrollTop());
+    console.log($('#product_detail_modal_dialog').height() - 2500);
+    if ($('#product_detail_modal').scrollTop() > $('#product_detail_modal_dialog').height() - 2500) {
+      $("#more_products_modal").click();
+      $("#more_products_modal").attr('disabled', true);
+      console.log("test");
+      delay = function(ms, func) {
+        return setTimeout(func, ms);
+      };
+      delay(1000, function() {
+        return $("#more_products_modal").removeAttr('disabled');
+      });
+      console.log("testafter");
+    }
+  });
+});
+
+</script>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140805190957) do
+ActiveRecord::Schema.define(version: 20140811161127) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -294,6 +294,9 @@ ActiveRecord::Schema.define(version: 20140805190957) do
     t.string   "last_sign_in_ip"
     t.integer  "signup_process",         default: 0
     t.string   "preference"
+    t.string   "authentication_token"
   end
+
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
 
 end

@@ -10,10 +10,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<%= render 'profile/store_list', products_for_each_user: @products_for_each_store, social_feed_profiles: @store_profiles %>
+		<%= render 'products/discover_feed', products_for_each_user: @products_for_each_store, discover_profiles: @store_profiles, alreadyFollowed: 0 %>
 	</div>
-
-
 </div>    
 <div id="vigme-content">
 </div>

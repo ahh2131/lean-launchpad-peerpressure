@@ -10,7 +10,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<%= render 'profile/store_list', products_for_each_user: @products_for_each_user, social_feed_profiles: @user_profiles %>
+		<%= render 'products/discover_feed', products_for_each_user: @products_for_each_user, discover_profiles: @user_profiles, alreadyFollowed: 0 %>
 	</div>
 
 
