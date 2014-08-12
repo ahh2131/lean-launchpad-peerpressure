@@ -1,6 +1,16 @@
 class ProfileController < ApplicationController
 	layout "signup", :only => [ :step_two, :step_three]
 
+	# api auth key
+	def getAuthenticationToken
+		potential_user = User.where(:email => params[:user_email]).first
+		if potential_user.valid_password?(params[:user_password])
+			@user = potential_user
+		end
+		respond_to do |format|
+			format.json
+		end
+	end
 	# sign up process
 	def step_one
 		if current_user.signup_process != 0

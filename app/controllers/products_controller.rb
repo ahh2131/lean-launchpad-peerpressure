@@ -81,10 +81,11 @@ USER_PER_PAGE_SOCIAL = 10
 
     @arrayFollowers = arrayAlreadyFollowed(@discover_profiles)
     @page = params[:page].to_i + 1
-
+    p @discover_profiles
     respond_to do |format|
       format.html
       format.js
+      format.json
     end
   end
 

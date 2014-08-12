@@ -74,7 +74,15 @@ Rails.application.routes.draw do
    as: 'api_show_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
   get "api/:user_email/:user_token/feed/:page/:product_page" => 'products#socialFeed',
    as: 'api_social_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-
+  get "api/:user_email/:user_token/discover/:page" => 'products#discover',
+    as: 'api_discover_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  get "api/:user_email/:user_token/profile/:id" => 'profile#show',
+      as: 'api_show_profile', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  post "api/signin" => "profile#getAuthenticationToken",
+      as: 'api_signin', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  #get "api/signin/:user_email/:user_password" => "profile#getAuthenticationToken",
+  #   as: 'api_signin_get', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+ 
   #theme testing
   get 'test_module/colorz' => 'test_modules#colorz'
   get 'test_module/escape' => 'test_modules#escape'
