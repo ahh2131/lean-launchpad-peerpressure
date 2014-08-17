@@ -11,6 +11,23 @@ class ProfileController < ApplicationController
 			format.json
 		end
 	end
+
+	# api sign up
+	def api_signup
+		user = User.new
+		user.email = params[:email]
+		user.password = params[:password]
+		user.name = params[:name]
+		user.gender = params[:gender] if !params[:gender].nil?
+		user.oauth_token = params[:oauth_token] if !params[:oauth_token].nil?
+		user.oauth_expires_at = params[:oauth_expires_at] if !params[:oauth_expires_at].nil?
+		user.avatar = params[:avatar] if !params[:avatar].nil?
+		user.save
+		@user = user
+		respond_to do |format|
+			format.json { render "getAuthenticationToken" }
+		end
+	end
 	# sign up process
 	def step_one
 		if current_user.signup_process != 0
@@ -162,11 +179,13 @@ class ProfileController < ApplicationController
 	end
 
 	def follow
-		activity = Activity.new
-		activity.fromUser = current_user.id
-		activity.toUser = params[:user_to_follow]
-		activity.activity_type = "follow"
-		activity.save
+		if userAlreadyFollowed == 0
+			activity = Activity.new
+			activity.fromUser = current_user.id
+			activity.toUser = params[:user_to_follow]
+			activity.activity_type = "follow"
+			activity.save
+		end
 
 		@user_info = User.find(params[:user_to_follow])
 		@followers = Activity.where(:toUser => params[:user_to_follow], :activity_type =>"follow").count
@@ -178,13 +197,25 @@ class ProfileController < ApplicationController
 		respond_to do |format|
  	      format.html
           format.js
+          format.json
         end
+	end
+
+	def userAlreadyFollowed
+		activity = Activity.where(:toUser => params[:user_to_follow], :activity_type => "follow", :fromUser => current_user.id).first
+		if activity.nil?
+			return 0
+		else
+			return 1
+		end
 	end
 
 	def unfollow
 		activity = Activity.where(:fromUser => current_user.id, :toUser => params[:user_to_unfollow])
 		.where(:activity_type => "follow").first
-		activity.destroy
+		if !activity.nil?
+			activity.destroy
+		end
 
 		@user_info = User.find(params[:user_to_unfollow])
 		@followers = Activity.where(:toUser => params[:user_to_unfollow], :activity_type =>"follow").count
@@ -196,6 +227,7 @@ class ProfileController < ApplicationController
 		respond_to do |format|
  	      format.html
           format.js
+          format.json { render "follow" }
         end
 	end
 
@@ -253,8 +285,13 @@ class ProfileController < ApplicationController
 	end
 
 	def showList
+		page = params[:page] if !params[:page].nil?
 		@list = List.find(params[:id])
-		@products = @list.products
+		if !page.nil?
+			@products = @list.products.page(page).per(25)
+		else
+			@products = @list.products
+		end
 		@user_id = @list.user_id
 		@user = User.find(@list.user_id)
 	end

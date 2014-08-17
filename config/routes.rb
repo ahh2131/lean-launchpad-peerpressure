@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   get 'step3' => 'profile#step_three', as: 'signup_step_three'
   post 'step3complete' => 'profile#step_three_complete', as: 'signup_step_three_complete'
 
-  #api
+  # api v1
   get "api/:user_email/:user_token/product/:product_id/:offset" => 'products#showProductModal',
    as: 'api_show_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
   get "api/:user_email/:user_token/feed/:page/:product_page" => 'products#socialFeed',
@@ -80,8 +80,30 @@ Rails.application.routes.draw do
       as: 'api_show_profile', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
   post "api/signin" => "profile#getAuthenticationToken",
       as: 'api_signin', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  #get "api/signin/:user_email/:user_password" => "profile#getAuthenticationToken",
-  #   as: 'api_signin_get', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  post "api/signup" => "profile#api_signup",
+    as: 'api_signup', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
+  
+  # api v1 - add a product flow
+  post "api/findImages" => "products#findImages",
+    as: 'api_find_images', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  post "api/categories" => "products#categorizeProduct",
+    as: 'api_categories', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  post "api/saveProduct" => "products#saveProduct",
+    as: 'api_save_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  
+  # api v1 - save product flow
+  get "api/:user_email/:user_token/share/:product_id" => "products#share", 
+    as: 'api_share_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  get "api/:user_email/:user_token/share/:product_id/:list_id" => "list#addProductToList", 
+    as: 'api_share_product_list', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+  get "api/:user_email/:user_token/list/:id/:page" => "profile#showList", 
+    as: 'api_list_products', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  # api v1 - un/follow
+  get "api/:user_email/:user_token/follow/:user_to_follow" => "profile#follow", 
+   as: 'api_follow', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  get "api/:user_email/:user_token/unfollow/:user_to_unfollow" => "profile#unfollow", 
+  as: 'api_unfollow', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
  
   #theme testing
   get 'test_module/colorz' => 'test_modules#colorz'

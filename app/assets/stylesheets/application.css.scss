@@ -1,4 +1,29 @@
  @import 'bootstrap';
+ img {
+max-width: 100%;
+}
+ .list {
+margin-top: 4%;
+}
+
+ .list li {
+display: inline-block;
+margin-left: 15px;
+}
+ .list li a {
+ display: block;
+ font-size: 1em;
+ padding: 10px 16px;
+ text-transform: uppercase;
+ background: #2DBD9B;
+ color: #ffffff;
+ -webkit-transition: all 0.3s ease-in-out;
+ -moz-transition: all 0.3s ease-in-out;
+ -o-transition: all 0.3s ease-in-out;
+ transition: all 0.3s ease-in-out;
+ border-radius: 2px;
+ -webkit-border-radius: 2px;
+ }
  .vigme-header-5 {
  margin-top: 0px;
  font-size: 18px;
@@ -102,6 +127,7 @@
  .vigme-filter-background {
     background-color: white;
     padding-top: 1px;
+    height: 138px;
  }
  .vigme-dropdown-positioning{
  margin-right: 126px;
@@ -177,8 +203,6 @@ body {
  }
  .vigme-line {
   height: 1px;
-  border-style: solid;
-  border-color: grey;
   background-color: rgb(240, 238, 238);
   margin-top: 1%;
   margin-bottom: 1%;

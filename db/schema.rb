@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811161127) do
+ActiveRecord::Schema.define(version: 20140815173145) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -62,6 +62,22 @@ ActiveRecord::Schema.define(version: 20140811161127) do
   create_table "category_shopstyle_category", id: false, force: true do |t|
     t.integer "category",                       null: false
     t.string  "shopstyle_category", limit: 250, null: false
+  end
+
+  create_table "celebrities", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "celebrity_type"
+  end
+
+  create_table "celebrity_products", force: true do |t|
+    t.text     "url"
+    t.string   "source_url"
+    t.integer  "celebrity_id"
+    t.integer  "product_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "color_palette", id: false, force: true do |t|

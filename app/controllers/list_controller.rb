@@ -27,18 +27,22 @@ class ListController < ApplicationController
   def addProductToList
     if params[:list_id].to_i == 0
     else
-      if productNotInList(params[:list_id], params[:product_id], current_user.id) == 1
+      if productNotInList(params[:list_id], params[:product_id], current_user.id) == 1 && isUserList(params[:list_id]) == 1
+        @success = 1
         activity = Activity.new
         activity.list_id = params[:list_id]
         activity.product_id = params[:product_id]
         activity.fromUser = current_user.id
         activity.activity_type = "add_to_list"
         activity.save
+      else
+        @success = 0
       end
     end
     respond_to do |format|
       format.html { redirect_to product_path(params[:product_id]) }
       format.js
+      format.json
     end
   end
 
@@ -48,6 +52,15 @@ class ListController < ApplicationController
       return 1
     else
       return 0
+    end
+  end
+
+  def isUserList(list_id)
+    list = List.where(:user_id => current_user.id, :id => list_id).first
+    if list.nil?
+      return 0
+    else
+      return 1
     end
   end
 

@@ -132,6 +132,9 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def share
+    if !params[:product_id].nil?
+      params[:product] = params[:product_id]
+    end
     if productAlreadyShared == 0
       activity = Activity.new
       activity.fromUser = current_user.id
@@ -145,6 +148,7 @@ USER_PER_PAGE_SOCIAL = 10
     respond_to do |format|
       format.html
       format.js { render "share" }
+      format.json
     end
   end
 
@@ -467,6 +471,7 @@ USER_PER_PAGE_SOCIAL = 10
     end
 
     @original_poster = findOriginalPoster(@product.id)
+    session[:most_recent_product_view] = @product.id
 
     respond_to do |format|
       format.html { render "show" }
@@ -563,8 +568,14 @@ USER_PER_PAGE_SOCIAL = 10
         session[:product_link] = params[:url]
       end
       itExists = doesProductExist(session[:product_link])
+      # it exists and not a json request
       if itExists != 0
-        return render :js => "window.location = '/products/#{itExists.to_s}'"
+        if params[:url].nil?
+          return render :js => "window.location = '/products/#{itExists.to_s}'"
+        else
+          @exists = itExists
+          return render "findImages"
+        end
     #    redirect_to :controller => 'products', :action => 'show', :id => itExists
       else
         url = open(session[:product_link])
@@ -573,15 +584,22 @@ USER_PER_PAGE_SOCIAL = 10
         headerImage = 0
         # makes an array of image urls after the header ones
         test = Nokogiri::HTML(open(url))
+        check = 0
         test.traverse{ |x|
             if x.text? and not x.text =~ /^\s*$/
                 puts x.text
-                if x.text.include? "$"
+                if x.text.include? "$" || check == 1
                   session[:product_price] = x.text
+                end
+                price = x.text.tr('$', '')
+                if price == '' && x.text.include?("$")
+                  check = 1
+                else
+                  check = 0
                 end
             end
         }
-        session[:product_price] = cleanupPrice(session[:product_price]).to_i
+        session[:product_price] = cleanupPrice(session[:product_price].to_s).to_i
         Nokogiri::HTML(open(url)).xpath("//body//img/@src").each do |src|
           if headerImage >= numberImagesHeader && headerImage < (numberImagesHeader + 25)
             absolute_uri = URI.join(session[:product_link], src ).to_s
@@ -597,6 +615,7 @@ USER_PER_PAGE_SOCIAL = 10
       respond_to do |format|
         format.html 
         format.js 
+        format.json
       end
       
   end
@@ -689,33 +708,69 @@ USER_PER_PAGE_SOCIAL = 10
   end
 
   def categorizeProduct
-    image_index = params[:index]
-    if image_index.to_i < session[:image_array].count && image_index.to_i >= 0
+    if !params[:index].nil?
+     image_index = params[:index]
+    else
+     image_index = 1
+     end
+    if !session[:image_array].nil? && image_index.to_i < session[:image_array].count && image_index.to_i >= 0
       session[:product_image_url] = session[:image_array][image_index.to_i]
+    elsif !params[:image_url].nil?
+      session[:product_image_url] = params[:image_url]
     else
       redirect_to root_url
     end
-    session.delete(:image_array)
-
+    if !params[:price].nil?
+      session[:product_price] = params[:price]
+    end
+    if !session[:image_array].nil?
+      session.delete(:image_array)
+    end
     @product = Product.new
-    @product.price = session[:product_price]
+    if !session[:product_price].nil?
+      @product.price = session[:product_price]
+    end
     @categories = Category.where(:parent => 1).all
 
     respond_to do |format|
       format.html 
       format.js 
+      format.json
     end
   end
   
   def saveProduct
+    if !params[:name].nil?
+      name = params[:name]
+    elsif !params[:product][:name].nil?
+      name = params[:name]
+    end
+
+    if !params[:image_url].nil?
+      session[:product_image_url] = params[:image_url]
+    end
+
+    if !params[:price].nil?
+      session[:product_price] = params[:price]
+    end
+
+    if !params[:product_link].nil?
+      session[:product_link] = params[:product_link]
+    end
+
     # make categories and 
-    @product = createProduct(session[:product_image_url], params[:product][:name], session[:product_price], session[:product_link])
+    @product = createProduct(session[:product_image_url], name, session[:product_price], session[:product_link])
     createActivity(@product.id)
-    session.delete(:product_link)
-    session.delete(:product_price)
-    session.delete(:product_image_url)
+
+    session.delete(:product_link) if !session[:product_link].nil?
+    session.delete(:product_price) if !session[:product_price].nil?
+    session.delete(:product_image_url) if !session[:product_image_url].nil?
+
     createProductCategories(@product.id)
-    redirect_to :controller => 'products', :action => 'show', :id => @product.id
+    respond_to do |format|
+      format.html { redirect_to :controller => 'products', :action => 'show', :id => @product.id }
+      format.json
+    end
   end
 
   def createProductCategories(product_id)
