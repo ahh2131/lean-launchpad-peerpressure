@@ -18,4 +18,3 @@
 //= require_tree ./flat-ui
 //= require_tree ./captionhover
 //= require_tree ./mosaic
-//= require_tree ./colorz
