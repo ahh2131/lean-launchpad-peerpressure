@@ -40,9 +40,7 @@ String.prototype.repeat = function(num) {
     $("[data-toggle=tooltip]").tooltip("show");
 
     // Tags Input
-    $(".tagsinput").tagsInput();
-
-    // jQuery UI Sliders
+        // jQuery UI Sliders
     var $slider = $("#slider");
     if ($slider.length) {
       $slider.slider({
@@ -65,10 +63,7 @@ String.prototype.repeat = function(num) {
       }).addSliderSegments($verticalSlider.slider("option").max, "vertical");
     }
 
-    // Placeholders for input/textarea
-    $(":text, textarea").placeholder();
-
-    // Focus state for append/prepend inputs
+     // Focus state for append/prepend inputs
     $('.input-group').on('focus', '.form-control', function () {
       $(this).closest('.input-group, .form-group').addClass('focus');
     }).on('blur', '.form-control', function () {

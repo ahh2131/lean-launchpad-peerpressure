@@ -1,5 +1,21 @@
 source 'https://rubygems.org'
 
+group :development, :test do
+ gem 'rspec-rails'
+ gem 'factory_girl_rails'
+end 
+
+group :test do
+ gem 'faker'
+ gem 'capybara'
+ gem 'capybara-webkit'
+ gem 'poltergeist'
+ gem 'cucumber-rails', :require => false
+ gem 'guard-rspec' 
+ gem 'launchy' 
+ gem 'selenium-webdriver'
+end
+
 gem 'simple_token_authentication'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
@@ -29,7 +45,7 @@ gem 'barista'
 gem 'omniauth'
 gem 'omniauth-facebook', '1.4.0'
 
-gem 'paperclip'
+gem 'paperclip', '~> 4.1.1'
 gem 'aws-sdk'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0'
