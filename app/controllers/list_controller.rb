@@ -14,7 +14,7 @@ class ListController < ApplicationController
   	list.user_id = current_user.id
   	list.save
   	activity = Activity.new
-  	activity.fromUser = session[:user_id]
+  	activity.fromUser = current_user.id
   	activity.activity_type = "list"
   	activity.list_id = list.id
   	activity.save

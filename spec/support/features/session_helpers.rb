@@ -24,6 +24,7 @@ module Features
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
       click_button 'Sign in'
+      p current_url
       return user
     end
 end

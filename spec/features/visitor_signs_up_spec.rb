@@ -12,4 +12,9 @@ feature 'Visitor signs in/up' do
 		sign_up_with('test@columbia.edu', 'thisisatest', 'notatestoh')
 		expect(page).to have_content('Sign in')
 	end
+
+	scenario 'with valid email and password, is not a new member' do
+		sign_in_post_process
+		expect(page).to have_content('Signed in')
+	end
 end
