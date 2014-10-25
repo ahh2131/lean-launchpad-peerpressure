@@ -1,0 +1,45 @@
+"tory-burch-simone-cardigan"
+"forever-21-long-line-cardigan"
+"ella-moss-minka-jacket"
+"forever-21-zigzag-cutout-tank"
+"forever-21-cropped-mickey-mouse-sweatshirt"
+"under-armour-womens-heatgear-sonic-all-in-one-capri"
+"versace-laced-sheath-dress"
+"topshop-bright-blue-aline-skirt"
+"amanda-uprichard-silk-maxi-dress"
+"h-and-m-skirt-with-suspenders"
+"young-and-reckless-elegant-womens-tank"
+"qmack-sweater-long-sleeve-aztec-stripe-cardigan"
+"doors-black-t-shirt"
+"victorias-secret-beach-sexy-r-the-liya-push-up-halter-top"
+"topshop-fitted-denim-shirt"
+"american-college-baseball-jacket"
+"matthew-williamson-spring-2010-rtw-stone-cropped-pleat-back-leather-jacket"
+"lucca-couture-monica-bustier-dress"
+"topshop-moto-cut-off-shorts"
+"forever-21-peacock-print-maxi-dress"
+"vera-wang-tulip-chantilly-lace-overlay-dress"
+"rachel-zoe-trish-coat"
+"j-mendel-faille-dress"
+"french-connection-fcuk-alicia-lace-flare-dress"
+"mossimo-supply-co-juniors-cami-w-shelf-bra"
+"matthew-williamson-wool-blend-dress"
+"vince-camuto-tiered-pleat-shell-top"
+"tory-burch-hayley-jacket"
+"10-crosby-by-derek-lam-silk-colorblock-sweater"
+"tory-burch-simone-cardigan"
+"forever-21-long-line-cardigan"
+"tory-burch-simone-cardigan"
+"forever-21-long-line-cardigan"
+rake aborted!
+OpenURI::HTTPError: 429 Too Many Requests
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:105:in `getImageUrl'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:90:in `getProduct'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:69:in `block in getProducts'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:54:in `each'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:54:in `getProducts'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:33:in `block (3 levels) in <top (required)>'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:8:in `each'
+/var/www/dev.vigme.com/lib/tasks/kimono.rake:8:in `block (2 levels) in <top (required)>'
+Tasks: TOP => kimono:coolspotters
+(See full trace by running task with --trace)

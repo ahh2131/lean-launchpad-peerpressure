@@ -297,10 +297,17 @@ class ProfileController < ApplicationController
 	end
 	# all user saved or added
 	def userSharedProducts(user_id)
-		product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id)
-		.order("created_at desc").limit(100).pluck(:product_id)
-		@products = Product.where(:id => product_ids).order("ftp_transfer_datetime desc")
-		return @products
+                user = User.find(user_id)
+		p user
+                if user.user_type == 3
+                  celeb = Celebrity.where(user_id: user_id).first
+                  product_ids = CelebrityProduct.where(celebrity_id: celeb.id).order("created_at desc").limit(100).pluck(:product_id)
+		  p product_ids
+	 	else
+		  product_ids = Activity.where(:activity_type => ["save","add"], :fromUser => user_id).order("created_at desc").limit(100).pluck(:product_id)
+		end
+               @products = Product.where(:id => product_ids).order("ftp_transfer_datetime desc")
+               return @products
 	end
 
 	def userSavedProducts(user_id)
