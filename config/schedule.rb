@@ -28,3 +28,8 @@ set :output, "/var/www/dev.vigme.com/log/cron/kimono.log"
 every 1.day, :at => '3:30 am' do
         rake "kimono:coolspotters"
 end
+
+set :output, "/var/www/dev.vigme.com/log/cron/update_products.log"
+every 1.day, :at => '5:00 am' do
+        rake "update:celebrity_products"
+end

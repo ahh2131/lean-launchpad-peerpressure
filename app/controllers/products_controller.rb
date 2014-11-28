@@ -62,26 +62,32 @@ USER_PER_PAGE_SOCIAL = 10
       format.js
     end
   end
-
+ 
+  def product_feed
+    @products = Product.page(params[:page])
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  
   def discover
-    user_ids = Ranking.where(:time_period => "this_week").order("score desc").page(params[:page]).pluck(:user_id)
+    user_ids = Ranking.where(:time_period => "this_week").order("score desc").page(params[:page]).per(10).pluck(:user_id)
     user_profiles = User.where(:id => user_ids).all
     @products_for_each_user = []
     @discover_profiles = []
     user_profiles.each do |profile|
-      products = profile.products.limit(6)
+      products = profile.products.where("image_s3_url IS NOT NULL").limit(6)
       if products.count < 6
-        products = Product.where(:retailer_id => profile.retailer_id).limit(6)
+        products = Product.where(:retailer_id => profile.retailer_id).where("image_s3_url IS NOT NULL").limit(6)
       end
       if !(products.count < 6)
        @products_for_each_user << products
        @discover_profiles << profile
       end
     end
-
     @arrayFollowers = arrayAlreadyFollowed(@discover_profiles)
     @page = params[:page].to_i + 1
-    p @discover_profiles
     respond_to do |format|
       format.html
       format.js
@@ -507,12 +513,12 @@ USER_PER_PAGE_SOCIAL = 10
   def findOtherProductsFromRetailer(retailer)
     other_products = Product.where(:retailer_id => retailer.id)
     .where("image_s3_url IS NOT NULL")
-      .order("vigme_inserted desc").limit(6)
+      .order("vigme_inserted desc").limit(20)
   end
 
   def findOtherProductsFromUser
     original_user = Activity.where(:activity_type => ["save", "add"], :product_id => params[:id]).order("created_at asc").pluck(:fromUser).first
-    other_activity_from_user = Activity.where(:activity_type => ["add", "save"], :fromUser => original_user).limit(6).pluck(:product_id)
+    other_activity_from_user = Activity.where(:activity_type => ["add", "save"], :fromUser => original_user).limit(20).pluck(:product_id)
     @other_products_from_user = Product.find(other_activity_from_user)
     @other_products_from_user.each_with_index  do |product, index|
       if product.id == params[:id].to_i

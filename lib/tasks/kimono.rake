@@ -1,10 +1,12 @@
 namespace :kimono do
   desc "collects new coolspotter actresses and products"
   task coolspotters: :environment do
-	response = open('https://www.kimonolabs.com/api/8rhuxszw?apikey=S3E94UjxZhfTbA8BvFcycIcpeWMRwwit')  	
+     celeb_types = ["actresses", "models"]
+     for role in celeb_types
+	response = open('https://www.kimonolabs.com/api/8rhuxszw?apikey=S3E94UjxZhfTbA8BvFcycIcpeWMRwwit&kimpath2=' + role)  	
 	actresses = JSON(response.read)
 	actresses = actresses["results"]["collection1"]
-	splitter = "actresses/"
+	splitter = role + "/"
 	for actress in actresses
           
 	  # if name is not in celebrities, add it
@@ -13,7 +15,11 @@ namespace :kimono do
           if check.nil?
             celebrity = Celebrity.new
             celebrity.name = actress["name"]["text"]
-            celebrity.celebrity_type = "actress"
+            if role == "actresses"
+             celebrity.celebrity_type = "actress"
+            elsif role == "models"
+             celebrity.celebrity_type = "model"
+            end
             user = User.new
             user.name = actress["name"]["text"]
             user.email = url_name + "@vigme.com"
@@ -51,6 +57,7 @@ namespace :kimono do
 
 	  # associate products with 
 	end
+    end
   end
 
   def getCelebImageUrl(url_name)

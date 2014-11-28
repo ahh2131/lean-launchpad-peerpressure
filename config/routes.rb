@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   post 'list/new' => 'list#displayListForm', as: 'list_form'
   post 'list/create' => 'list#create', as: 'list_create'
   post 'list/addProduct' => 'list#addProductToList', as: 'list_add_product'
+  get 'addProduct' => 'list#addProductToList', as: 'add_product'
+
 
 
   get 'rankings' => 'ranking#index', as: 'ranking'
@@ -74,6 +76,10 @@ Rails.application.routes.draw do
    as: 'api_show_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
   get "api/:user_email/:user_token/feed/:page/:product_page" => 'products#socialFeed',
    as: 'api_social_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+  get "api/:user_email/:user_token/product_feed/:page" => 'products#product_feed',
+   as: 'api_product_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+ 
   get "api/:user_email/:user_token/discover/:page" => 'products#discover',
     as: 'api_discover_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
   get "api/:user_email/:user_token/profile/:id" => 'profile#show',
@@ -99,7 +105,12 @@ Rails.application.routes.draw do
 
   get "api/:user_email/:user_token/list/:id/:page" => "profile#showList", 
     as: 'api_list_products', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  # api v1 - un/follow
+  
+   # share product 
+  get 'api/:user_email/:user_token/product/share' => 'products#share', as: 'get_share_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+
+ # api v1 - un/follow
   get "api/:user_email/:user_token/follow/:user_to_follow" => "profile#follow", 
    as: 'api_follow', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
   get "api/:user_email/:user_token/unfollow/:user_to_unfollow" => "profile#unfollow", 

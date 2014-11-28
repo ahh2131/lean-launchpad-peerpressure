@@ -42,5 +42,5 @@ ArgumentError: Missing :action key on routes definition, please check your route
 /home/andy/.rvm/gems/ruby-2.1.2/gems/activesupport-4.1.0/lib/active_support/dependencies.rb:247:in `require'
 /home/andy/.rvm/gems/ruby-2.1.2/gems/railties-4.1.0/lib/rails/application.rb:264:in `require_environment!'
 /home/andy/.rvm/gems/ruby-2.1.2/gems/railties-4.1.0/lib/rails/application.rb:367:in `block in run_tasks_blocks'
-Tasks: TOP => rankings:update => environment
+Tasks: TOP => update:celebrity_products => environment
 (See full trace by running task with --trace)

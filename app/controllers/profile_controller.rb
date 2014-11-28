@@ -1,5 +1,6 @@
 class ProfileController < ApplicationController
 	layout "signup", :only => [ :step_two, :step_three]
+skip_before_filter  :verify_authenticity_token
 
 	# api auth key
 	def getAuthenticationToken
@@ -21,7 +22,14 @@ class ProfileController < ApplicationController
 		user.gender = params[:gender] if !params[:gender].nil?
 		user.oauth_token = params[:oauth_token] if !params[:oauth_token].nil?
 		user.oauth_expires_at = params[:oauth_expires_at] if !params[:oauth_expires_at].nil?
-		user.avatar = params[:avatar] if !params[:avatar].nil?
+		
+		if !params[:avatar].nil?
+                  url = params[:avatar]
+		  agent = Mechanize.new
+		  page = agent.get(url)
+		  redirect_url = page.uri.to_s
+		end
+		user.avatar = redirect_url
 		user.save
 		@user = user
 		respond_to do |format|
@@ -106,8 +114,9 @@ class ProfileController < ApplicationController
 	end
 	
 	def show
-	  
-	  if params[:id]
+	 
+           
+	  if params[:id] != "0"
 	  	@user_id = params[:id]
 	  else
   		@user_id = current_user.id
@@ -143,11 +152,11 @@ class ProfileController < ApplicationController
 	  	  end
 	  	end
 	  	if @store_products.nil?
-		  	@store_products = Product.where(:retailer_id => @user_info.retailer_id)
+		  	@shared_products = Product.where(:retailer_id => @user_info.retailer_id)
 		  	.where("image_s3_url IS NOT NULL")
 	      .order("vigme_inserted desc").limit(50)
 	 	end
-	  	return render 'store'
+	  	#return render 'store'
 	  end
 
 
