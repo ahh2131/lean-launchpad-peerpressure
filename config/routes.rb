@@ -70,6 +70,34 @@ Rails.application.routes.draw do
   post 'step2complete' => 'profile#step_two_complete', as: 'signup_step_two_complete'
   get 'step3' => 'profile#step_three', as: 'signup_step_three'
   post 'step3complete' => 'profile#step_three_complete', as: 'signup_step_three_complete'
+ 
+ # mrkt api
+ get "mrkt/:user_email/:user_token/getPosts" => 'posts#getPosts',
+   as: 'mrkt_get_posts', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+post "mrkt/createPost" => "posts#createPost",
+    as: 'mrkt_create_post', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ } 
+# bottom for testing purposes (get instead of post)
+ #get "mrkt/:user_email/:user_token/createPost" => 'posts#createPost',
+ #  as: 'mrkt_get_posts_get', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+post "mrkt/sendMessage" => "chats#sendMessage",
+    as: 'mrkt_send_message', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
+
+ get "mrkt/:user_email/:user_token/getChats" => 'chats#getChats',
+   as: 'mrkt_get_chats', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+post "mrkt/setLocation" => "profile#setLocation",
+    as: 'mrkt_set_location_post', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ , :latitude =>/[\w+\.-]+/,  :longitude => /[\w+\.-]+/}
+
+ get "mrkt/:user_email/:user_token/setLocation/:latitude/:longitude" => 'profile#setLocation',
+   as: 'mrkt_set_location', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+post "mrkt/likePost" => "posts#likePost",
+    as: 'mrkt_like_post', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
+
+post "mrkt/dislikePost" => "posts#dislikePost",
+    as: 'mrkt_dislike_post', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
 
   # api v1
   get "api/:user_email/:user_token/product/:product_id/:offset" => 'products#showProductModal',

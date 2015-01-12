@@ -17,6 +17,8 @@ group :test do
  gem 'selenium-webdriver'
 end
 
+gem 'geo-distance'
+
 gem 'simple_token_authentication'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'

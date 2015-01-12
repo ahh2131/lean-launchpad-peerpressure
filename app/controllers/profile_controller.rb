@@ -5,9 +5,11 @@ skip_before_filter  :verify_authenticity_token
 	# api auth key
 	def getAuthenticationToken
 		potential_user = User.where(:email => params[:user_email]).first
-		if potential_user.valid_password?(params[:user_password])
+		if params[:user_password] != nil && !potential_user.nil?
+                  if potential_user.valid_password?(params[:user_password])
 			@user = potential_user
-		end
+	          end
+                end
 		respond_to do |format|
 			format.json
 		end
@@ -44,6 +46,16 @@ skip_before_filter  :verify_authenticity_token
 		@user = current_user
 		@products = Product.all.limit(14)
 	end
+
+        def setLocation
+          user = current_user
+          user.latitude = params[:latitude].to_s
+          user.longitude = params[:longitude].to_s
+          user.save
+          respond_to do |format|
+            format.json
+          end
+        end
 
 	def step_one_complete
 

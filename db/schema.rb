@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141025192940) do
+ActiveRecord::Schema.define(version: 20141128220031) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -82,6 +82,15 @@ ActiveRecord::Schema.define(version: 20141025192940) do
     t.integer  "available",    default: -1
   end
 
+  create_table "chats", force: true do |t|
+    t.integer  "user_1"
+    t.integer  "user_2"
+    t.string   "post_id"
+    t.integer  "complete"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "color_palette", id: false, force: true do |t|
     t.integer "r",     null: false
     t.integer "g",     null: false
@@ -116,6 +125,28 @@ ActiveRecord::Schema.define(version: 20141025192940) do
     t.string   "action",      limit: 20,  null: false
     t.string   "description", limit: 250, null: false
     t.datetime "date",                    null: false
+  end
+
+  create_table "messages", force: true do |t|
+    t.integer  "chat_id"
+    t.integer  "from_user_id"
+    t.integer  "to_user_id"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "posts", force: true do |t|
+    t.text     "description"
+    t.decimal  "price",              precision: 10, scale: 0
+    t.integer  "user_id"
+    t.integer  "sold",                                        default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   create_table "price_log", id: false, force: true do |t|
@@ -209,7 +240,7 @@ ActiveRecord::Schema.define(version: 20141025192940) do
   add_index "products", ["ctr"], name: "ctr", using: :btree
   add_index "products", ["display_price"], name: "priceCZK", using: :btree
   add_index "products", ["display_price"], name: "priceCZK_2", using: :btree
-  add_index "products", ["extractor_url"], name: "crawlerUrl", length: {"extractor_url"=>333}, using: :btree
+  add_index "products", ["extractor_url"], name: "crawlerUrl", length: {"extractor_url"=>255}, using: :btree
   add_index "products", ["id", "image_pure_white", "show_product", "display_price"], name: "id+pureWhite+showProduct", unique: true, using: :btree
   add_index "products", ["image_hash"], name: "image_hash", using: :btree
   add_index "products", ["image_pure_white", "show_product", "in_sale"], name: "idx3", using: :btree
@@ -221,7 +252,7 @@ ActiveRecord::Schema.define(version: 20141025192940) do
   add_index "products", ["likes"], name: "likes", using: :btree
   add_index "products", ["likes"], name: "likes_2", using: :btree
   add_index "products", ["local_extract_date"], name: "extractDate", using: :btree
-  add_index "products", ["local_id"], name: "localId", using: :btree
+  add_index "products", ["local_id"], name: "localId", length: {"local_id"=>255}, using: :btree
   add_index "products", ["product_updated"], name: "shopstyle_updated", using: :btree
   add_index "products", ["retailer_id"], name: "retailerIdIndex", using: :btree
   add_index "products", ["shipping_free"], name: "shipping_free", using: :btree
@@ -301,18 +332,20 @@ ActiveRecord::Schema.define(version: 20141025192940) do
     t.integer  "active"
     t.integer  "retailer_id"
     t.integer  "user_type"
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "encrypted_password",                              default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                                   default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "signup_process",         default: 0
+    t.integer  "signup_process",                                  default: 0
     t.string   "preference"
     t.string   "authentication_token"
+    t.decimal  "latitude",               precision: 10, scale: 0
+    t.decimal  "longitude",              precision: 10, scale: 0
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
