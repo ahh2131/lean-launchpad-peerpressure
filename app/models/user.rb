@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   has_many :activities, :foreign_key => 'fromUser'
   has_many :products, through: :activities
   has_many :lists, through: :activities
-
+  has_many :posts, :foreign_key => 'user_id'
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.email = auth.info.email

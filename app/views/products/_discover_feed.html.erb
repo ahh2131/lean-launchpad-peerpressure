@@ -1,7 +1,0 @@
-<% discover_profiles.each_with_index do |profile, index| %>
-<div class="vigme-social-feed-item col-md-5 col-sm-5">
-	<a href="/profile/<%= profile.id %>">
-<%= render 'shared/product_list_discover', products: products_for_each_user[index], profile: profile, alreadyFollowed: alreadyFollowed[index]  %>
-</a>
-</div>
-<% end %>

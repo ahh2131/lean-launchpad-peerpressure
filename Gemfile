@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 group :development, :test do
+ gem 'sunspot_solr'
  gem 'rspec-rails'
  gem 'factory_girl_rails'
  gem 'rest_client'
@@ -8,14 +9,14 @@ end
 
 group :test do
  gem 'faker'
- gem 'capybara'
- gem 'capybara-webkit'
  gem 'poltergeist'
  gem 'cucumber-rails', :require => false
  gem 'guard-rspec' 
  gem 'launchy' 
  gem 'selenium-webdriver'
 end
+
+gem 'sunspot_rails', '~> 2.1.1'
 
 gem 'geo-distance'
 

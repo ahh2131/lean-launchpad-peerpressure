@@ -10,13 +10,9 @@ Rails.application.routes.draw do
   resources :activities
   resources :products
   root 'products#index'
-  get 'feed' => 'products#socialFeed', as: 'social_feed'
-  get 'moreSocial' => 'products#moreSocialFeed', as: 'more_social_feed'
 
   # nav bar
-  get 'discover' => 'products#discover', as: 'discover'
 
-  patch 'users/update' => 'profile#update', as: 'user_path'
 
   get 'profile' => 'profile#show'
   get 'profile/:id' => 'profile#show', as: 'profile_show'
@@ -28,50 +24,28 @@ Rails.application.routes.draw do
   get 'list/:id' => 'profile#showList', as: 'profile_list'
   get 'settings' => 'profile#settings', as: 'profile_settings'
 
-  post 'products/new' => 'products#findImages'
-  get '/vigit' => 'products#findImages'
-  get '/purchased' => 'products#purchased'
-  post '/purchase/receipt' => 'products#purchaseReceipt'
-
-  get 'product/categorize' => 'products#categorizeProduct', as: 'categorize_product'
-  post 'product/add' => 'products#saveProduct', as: 'save_product'
-  get 'product/showProduct' => 'products#showProductModal', as: 'show_product_modal'
-  post 'product/share' => 'products#share', as: 'share_product'
-  post 'product/buy' => 'products#buy', as: 'buy_product'
-  post 'product/begin' => 'products#displayUrlForm', as: 'product_url_form'
-  get 'social/loaded' => 'products#socialFeedLoaded', as: 'social_feed_loaded'
-  post 'list/new' => 'list#displayListForm', as: 'list_form'
-  post 'list/create' => 'list#create', as: 'list_create'
-  post 'list/addProduct' => 'list#addProductToList', as: 'list_add_product'
-  get 'addProduct' => 'list#addProductToList', as: 'add_product'
-
-
-
-  get 'rankings' => 'ranking#index', as: 'ranking'
-
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]
 
-  # viglets woo
-  get 'viglets' => 'products#viglets', as: 'viglets'
-
-  # admin stuff
-  get 'admin' => 'admin#index', as: 'admin'
-  get 'admin/login' => 'admin#login', as: 'admin_login'
-  get 'admin/purchases' => 'admin#purchaseConfirmation', as: 'purchase_confirmation'
-  get 'receipt/:id' => 'admin#receipt', as: 'receipt'
-  post 'admin/confirm' => 'admin#confirmed', as: "confirm_purchase"
-  #signup process
-  get 'step1' => 'profile#step_one', as: 'signup_step_one'
-  patch 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete_patch'
-  get 'step1complete' => 'profile#step_one_complete', as: 'signup_step_one_complete'
-  get 'step2' => 'profile#step_two', as: 'signup_step_two'
-  post 'step2complete' => 'profile#step_two_complete', as: 'signup_step_two_complete'
-  get 'step3' => 'profile#step_three', as: 'signup_step_three'
-  post 'step3complete' => 'profile#step_three_complete', as: 'signup_step_three_complete'
+  get "api/:user_email/:user_token/profile/:id" => 'profile#show',
+      as: 'api_show_profile', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  post "api/signin" => "profile#getAuthenticationToken",
+      as: 'api_signin', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+  post "api/signup" => "profile#api_signup",
+    as: 'api_signup', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
  
  # mrkt api
+ get "mrkt/:user_email/:user_token/getMutualFriendsImages/:friends" => 'profile#getMutualFriendsImages',
+   as: 'mrkt_get_friends', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+
+ get "mrkt/:user_email/:user_token/getPostDetail/:post_id" => 'posts#getPostDetail',
+   as: 'mrkt_get_detail', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
+ get "mrkt/:user_email/:user_token/getYardPosts" => 'posts#getYardPosts',
+   as: 'mrkt_get_yardsposts', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
+
  get "mrkt/:user_email/:user_token/getPosts" => 'posts#getPosts',
    as: 'mrkt_get_posts', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
 
@@ -98,58 +72,6 @@ post "mrkt/likePost" => "posts#likePost",
 
 post "mrkt/dislikePost" => "posts#dislikePost",
     as: 'mrkt_dislike_post', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
-
-  # api v1
-  get "api/:user_email/:user_token/product/:product_id/:offset" => 'products#showProductModal',
-   as: 'api_show_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  get "api/:user_email/:user_token/feed/:page/:product_page" => 'products#socialFeed',
-   as: 'api_social_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-
-  get "api/:user_email/:user_token/product_feed/:page" => 'products#product_feed',
-   as: 'api_product_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
- 
-  get "api/:user_email/:user_token/discover/:page" => 'products#discover',
-    as: 'api_discover_feed', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  get "api/:user_email/:user_token/profile/:id" => 'profile#show',
-      as: 'api_show_profile', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  post "api/signin" => "profile#getAuthenticationToken",
-      as: 'api_signin', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  post "api/signup" => "profile#api_signup",
-    as: 'api_signup', :defaults => { :format => 'json' }, :constraints => { :email => /[^\/]+/ }
-  
-  # api v1 - add a product flow
-  post "api/findImages" => "products#findImages",
-    as: 'api_find_images', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  post "api/categories" => "products#categorizeProduct",
-    as: 'api_categories', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  post "api/saveProduct" => "products#saveProduct",
-    as: 'api_save_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  
-  # api v1 - save product flow
-  get "api/:user_email/:user_token/share/:product_id" => "products#share", 
-    as: 'api_share_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  get "api/:user_email/:user_token/share/:product_id/:list_id" => "list#addProductToList", 
-    as: 'api_share_product_list', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-
-  get "api/:user_email/:user_token/list/:id/:page" => "profile#showList", 
-    as: 'api_list_products', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  
-   # share product 
-  get 'api/:user_email/:user_token/product/share' => 'products#share', as: 'get_share_product', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-
-
- # api v1 - un/follow
-  get "api/:user_email/:user_token/follow/:user_to_follow" => "profile#follow", 
-   as: 'api_follow', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
-  get "api/:user_email/:user_token/unfollow/:user_to_unfollow" => "profile#unfollow", 
-  as: 'api_unfollow', :defaults => { :format => 'json' }, :constraints => { :user_email => /[^\/]+/ }
- 
-  #theme testing
-  get 'test_module/colorz' => 'test_modules#colorz'
-  get 'test_module/escape' => 'test_modules#escape'
-  get 'test_module/flat' => 'test_modules#flat'
-  get 'test_module/caphov' => 'test_modules#caphov'
-
 
   
   # The priority is based upon order of creation: first created -> highest priority.

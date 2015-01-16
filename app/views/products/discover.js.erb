@@ -1,4 +1,0 @@
-$('#product-list').append('<%= escape_javascript(render "discover_feed", products_for_each_user: @products_for_each_user, discover_profiles: @discover_profiles, alreadyFollowed: @arrayFollowers) %>');
-$('#more_products_wrap').replaceWith('<%= escape_javascript(render "more_button", page: @page ) %>');
-
-

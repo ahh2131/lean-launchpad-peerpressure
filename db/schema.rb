@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141128220031) do
+ActiveRecord::Schema.define(version: 20150115163953) do
 
   create_table "activities", force: true do |t|
     t.string   "fromUser"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20141128220031) do
   create_table "category_product", id: false, force: true do |t|
     t.integer "product_id",  null: false
     t.integer "category_id", null: false
+    t.integer "post_id"
   end
 
   add_index "category_product", ["category_id"], name: "category", using: :btree
@@ -147,6 +148,7 @@ ActiveRecord::Schema.define(version: 20141128220031) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.text     "name"
   end
 
   create_table "price_log", id: false, force: true do |t|
@@ -332,20 +334,20 @@ ActiveRecord::Schema.define(version: 20141128220031) do
     t.integer  "active"
     t.integer  "retailer_id"
     t.integer  "user_type"
-    t.string   "encrypted_password",                              default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                                   default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "signup_process",                                  default: 0
+    t.integer  "signup_process",         default: 0
     t.string   "preference"
     t.string   "authentication_token"
-    t.decimal  "latitude",               precision: 10, scale: 0
-    t.decimal  "longitude",              precision: 10, scale: 0
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
